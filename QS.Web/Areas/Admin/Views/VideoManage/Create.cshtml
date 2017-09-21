@@ -1,0 +1,210 @@
+﻿@using Microsoft.Web.Helpers
+@model QS.DTO.SharedModule.VideoDto
+@{
+    ViewBag.Title = "添加视频";
+    var videoCategories = ViewData["Category"] as SelectList;
+}
+
+@section Styles{
+    <link href="~/Areas/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" />
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            创建视频
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-list"></i>
+                <a href="@Url.Action("Index","VideoManage", new{ Area = "Admin" })">
+                    视频列表
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-video-camera"></i>添加视频
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form action="@Url.Action("Create")" id="video-form" name="video-form" method="post" enctype="multipart/form-data">
+                    <div class="form-body">
+                        <h3 class="form-section">基本信息</h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">视频名称</label>
+                                    @Html.TextBoxFor(model => Model.VideoName, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.VideoName)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">选择类别</label>
+                                    @Html.DropDownList("Category", videoCategories, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Category)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">视频来源</label>
+                                    <div class="clearfix">
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn blue @(Model.IsLocal? "active" : "" )">
+                                                @Html.RadioButtonFor(model => model.IsLocal, true, new { @class = "toggle" }) 本地
+                                            </label>
+                                            <label class="btn blue @(Model.IsLocal ? "" : "active")">
+                                                @Html.RadioButtonFor(model => model.IsLocal, false, new { @class = "toggle" }) 网络
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.IsLocal)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">是否推荐</label>
+                                    <div class="clearfix">
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn red @(Model.Recommend ? "active" : "" )">
+                                                @Html.RadioButtonFor(model => model.Recommend, true, new { @class = "toggle" }) 推荐
+                                            </label>
+                                            <label class="btn red @(Model.Recommend ? "" : "active")">
+                                                @Html.RadioButtonFor(model => model.Recommend, false, new { @class = "toggle" }) 普通
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Recommend)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/row-->
+                        <h3 class="form-section">视频内容</h3>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="form-group">
+                                    <label>视频链接</label>
+                                    @Html.TextBoxFor(model => Model.VideoPath, new { @class = "form-control", @placeholder = "网址" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.VideoPath)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="text-muted">&nbsp;</label>
+                                    @Html.TextBoxFor(model => Model.ComesFrom, new { @class = "form-control", @placeholder = "视频来源..." })
+                                </div>
+                                <span class="error-block">
+                                    @Html.ValidationMessageFor(model => Model.ComesFrom)
+                                </span>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row margin-bottom-15">
+                            <div class="col-md-12">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="fileinput-new thumbnail" style="width: 180px; height: 101px;">
+                                        <img src="http://www.placehold.it/180x101/EFEFEF/AAAAAA&amp;text=SET+COVER-IMAGE" alt="" />
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 180px; max-height: 101px;">
+                                    </div>
+                                    <div>
+                                        <span class="btn default btn-file">
+                                            <span class="fileinput-new">
+                                                选择图片
+                                            </span>
+                                            <span class="fileinput-exists">
+                                                更换
+                                            </span>
+                                            <input type="file" name="imageInput" id="imageInput" accept="image/*">
+                                        </span>
+                                        <a href="#" class="btn default fileinput-exists" data-dismiss="fileinput">
+                                            清除
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="clearfix margin-top-10">
+                                    <span class="label label-danger">
+                                        警告
+                                    </span>
+                                    &nbsp;
+                                    <span class="text-muted">
+                                        为页面显示效果，仅建议上传180*101规格的视频封面
+                                    </span>
+                                </div>
+                                <span class="error-block">@Html.ValidationMessage("UploadError")</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <div class="form-group">
+                                    <label>视频描述</label>
+                                    @Html.TextAreaFor(model => Model.Remark, new { @class = "form-control", rows = 5 })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Remark)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions right">
+                        <button id="cancel" class=" btn default" type="button">
+                            取消
+                        </button>
+                        <button name="confirm" type="submit" class="btn blue"><i class="fa fa-check"></i> 确认</button>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Areas/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #video-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #video-create-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+        });
+    </script>
+
+}

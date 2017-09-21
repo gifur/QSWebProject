@@ -1,0 +1,25 @@
+﻿@model IEnumerable<QS.DTO.SharedModule.VideoDto>
+@if (Model != null && Model.Any())
+{
+    <div class="content_wrap">
+        <ul class="list-unstyled">
+            @foreach (var item in Model)
+            {
+                <li class="row">
+                    <div class="col-md-6 pic-box">
+                        <a href="@Url.Action("Item", new {id = item.VideoId})">
+                            <img src="@item.ThumbPath" alt="" class="img-responsive img-thumbnail">
+                        </a>
+                    </div>
+                    <div class="col-md-6 pic-text">
+                        <h5>
+                            <a href="@Url.Action("Item", new {id = item.VideoId})" title="@item.VideoName">@item.VideoName</a>
+                        </h5>
+                        <p class="info_describe">@Html.GetHeadSentence(@item.Remark, 40)</p>
+                        <p class="info_describe">来源于：@item.ComesFrom</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+}

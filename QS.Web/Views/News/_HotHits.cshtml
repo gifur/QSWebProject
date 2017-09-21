@@ -1,0 +1,18 @@
+﻿@model IEnumerable<QS.Web.Models.NewsSummaryModel>
+<div class="recent-news margin-bottom-10">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="row margin-bottom-10">
+                <div class="col-md-3">
+                    <img src="@item.ViewImage" alt="" class="img-responsive img-circle">
+                </div>
+                <div class="col-md-9 recent-news-inner">
+                    <h3><a href="@Url.Action("Item", "News", new {id = @item.NewsId})">@item.NewsTitle</a></h3>
+                    <p>@item.NewsContent</p>
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,119 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.Module.MessageDto>
+@{
+    ViewBag.Title = "通知列表";
+}
+
+
+@section Styles{
+
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            通知列表
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li class="btn-group">
+                <a href="@Url.Action("Create", "InforManage")" class="btn blue" style="color: #FFF;">
+                    <i class="fa fa-plus-square"></i>
+                    <span>
+                        新建通知
+                    </span>
+                </a>
+            </li>
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-list"></i>
+                <a href="@Url.Action("Index","InforManage", new{ Area = "Admin" })">
+                    通知列表
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                @using (Html.BeginForm("Index", "InforManage", new RouteValueDictionary { { "id", "" } }, FormMethod.Get))
+                {
+                    <div class="actions input-group pull-right input-medium">
+                        <div class="input-group date-picker input-daterange"
+                             data-date-format="yyyy-mm-dd"
+                             style="width: 340px !important;">
+                            <input type="text" class="form-control" name="begin" />
+                            <span class="input-group-addon">
+                                至
+                            </span>
+                            <input type="text" class="form-control" name="end" />
+                        </div>
+                        <div class="input-group-btn">
+                            <button class="btn green" type="submit" accesskey="S"><i class="fa fa-check-circle"></i> 时间段查询</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-advance table-hover">
+                        <thead>
+                            <tr>
+                                <th width="65%">
+                                    <i class="fa fa-coffee"></i> 标题
+                                </th>
+                                <th width="15%">
+                                    <i class="fa fa-calendar"></i> 创建时间
+                                </th>
+                                <th width="20%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td width="65%">
+                                        @item.Title
+                                    </td>
+                                    <td width="15%">
+                                        @item.CreateTime
+                                    </td>
+                                    <td width="20%" class="text-right">
+                                        @Html.ActionLink("详细内容", "Detail", "InforManage", new {id = @item.MId}, new { @class = "btn default btn-xs green-stripe"})
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @Html.Pager(Model, new PagerOptions { PageIndexParameterName = "id" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var $header = $('ul.page-sidebar-menu #about-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #information-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #information-list-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+        });
+    </script>
+}
+
+

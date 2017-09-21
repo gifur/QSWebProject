@@ -1,0 +1,35 @@
+﻿@model IEnumerable<QS.DTO.Module.RecentActivityDto>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <li class="@(item.Status ? "timeline-theme" : "timeline-origin")">
+            <div class="timeline-time">
+                <span class="address">
+                    @item.Address
+                </span>
+                <span class="date">
+                    @item.StartTime.GetDateTimeFormats('D')[2].ToString()
+                </span>
+                <span class="time">
+                    @item.StartTime.ToShortTimeString()
+                </span>
+            </div>
+            <div class="timeline-icon">
+                <i class="fa fa-comments"></i>
+            </div>
+            <div class="timeline-body">
+                <h2>@item.Title</h2>
+                <div class="timeline-content">
+                    @Html.Raw(@item.Content)
+                </div>
+                @*<div class="timeline-footer">
+                        <a href="#" class="nav-link">
+                            阅读更多 <i class="m-icon-swapright m-icon-white"></i>
+                        </a>
+                    </div>*@
+            </div>
+        </li>
+    }
+}

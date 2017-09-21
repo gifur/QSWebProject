@@ -1,0 +1,144 @@
+﻿<ul class="nav navbar-nav pull-right">
+
+    <!-- BEGIN NOTIFICATION DROPDOWN -->
+    @*<li class="dropdown" id="header_notification_bar">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+            <i class="fa fa-warning"></i>
+            <span class="badge">3</span>
+        </a>
+        <ul class="dropdown-menu extended notification">
+            <li>
+                <p>
+                    You have 3 new notifications
+                </p>
+            </li>
+            <li>
+                <ul class="dropdown-menu-list scroller" style="height: 250px;">
+                    <li>
+                        <a href="#">
+                            <span class="label label-sm label-icon label-success">
+                                <i class="fa fa-power-off"></i>
+                            </span>
+                            PA of July has been completed
+                            <span class="time" style="float:right">Just now</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="label label-sm label-icon label-danger">
+                                <i class="fa fa-bolt"></i>
+                            </span>
+                            Someone have not yet finished their PA.
+                            <span class="time" style="float:right">15 mins</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="label label-sm label-icon label-warning">
+                                <i class="fa fa-bell-o"></i>
+                            </span>
+                            PA of July will be shut down today.
+                            <span class="time" style="float:right">30 mins</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="external">
+                <a href="#">
+                    See all notifications <i class="m-icon-swapright"></i>
+                </a>
+            </li>
+        </ul>
+    </li>*@
+    <!-- END NOTIFICATION DROPDOWN -->
+    <!-- BEGIN INBOX DROPDOWN -->
+    @*<li class="dropdown" id="header_inbox_bar">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+            <i class="fa fa-envelope"></i>
+            <span class="badge">
+                3
+            </span>
+        </a>
+        <ul class="dropdown-menu extended inbox">
+            <li>
+                <p>
+                    You have 3 new messages
+                </p>
+            </li>
+            <li>
+                <ul class="dropdown-menu-list scroller" style="height: 250px;">
+                    <li>
+                        <a href="#">
+                            <span class="photo">
+                                <img src="./assets/img/avatar/avatar_anbeisan.jpg" alt="" />
+                            </span>
+                            <span class="subject">
+                                <span class="from">
+                                    AnBeiSan
+                                </span>
+                                <span class="time" style="float:right">
+                                    Just Now
+                                </span>
+                            </span>
+                            <span class="message">
+                                Would you like to have some fish while watching AV ?
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="photo">
+                                <img src="./assets/img/avatar/avatar_putin.jpg" alt="" />
+                            </span>
+                            <span class="subject">
+                                <span class="from">
+                                    Emperor Putin
+                                </span>
+                                <span class="time" style="float:right">
+                                    16 mins
+                                </span>
+                            </span>
+                            <span class="message">
+                                Forget Obama that stupid guy, please.
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="photo">
+                                <img src="./assets/img/avatar/avatar_obama.jpg" alt="" />
+                            </span>
+                            <span class="subject">
+                                <span class="from">
+                                    Ou-See-Sea
+                                </span>
+                                <span class="time" style="float:right">
+                                    2 hrs
+                                </span>
+                            </span>
+                            <span class="message">
+                                I forget my key, do me a favor, reset my password, fat guy.
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="external">
+                <a href="#">
+                    See all messages <i class="m-icon-swapright"></i>
+                </a>
+            </li>
+        </ul>
+    </li>*@
+    <!-- END INBOX DROPDOWN -->
+    <!-- 心理反馈相关-->
+    @{
+        Html.RenderAction("_RecentFeedbackBar", "Feedback");
+    }
+    <!-- 结束心理反馈相关-->
+    <!-- 用户信息 -->
+    @{
+        Html.RenderAction("_UserProfile", "OAuth");
+    }
+    <!--结束用户信息-->
+</ul>

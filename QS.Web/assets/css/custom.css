@@ -1,0 +1,340 @@
+/* here you can put your own css to customize and override the theme */
+.auto-print {
+    display:none;
+}
+/* styles for validation helpers */
+.field-validation-error {
+    /*color: #e80c4d;*/
+    color: #737373;
+    font-weight: bold;
+    font-weight: 500;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #e80c4d;
+    /*background-color: #fee;*/
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.service-box-v1 li {
+	margin: 0px 0px 10px;
+}
+
+.upload-form {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #FBFCFD;
+  overflow: hidden;
+  clear: both;   
+  border: 1px solid #EEE;
+}
+
+.upload-form .input-cont {
+  margin-right: 40px;
+}
+
+.upload-form .input-cont .form-control {
+  width: 100% !important;
+  margin-bottom: 0px;
+}
+
+.upload-form .input-cont input{
+  border: 1px solid #ddd;
+  width: 100%  !important;  
+  margin-top: 0;
+}
+
+.upload-form .input-cont input {
+  background-color: #fff !important;
+}
+
+.upload-form .input-cont input:focus{
+  border: 1px solid #4b8df9 !important;
+}
+
+.upload-form .btn-cont {
+  margin-top: -42px;
+  position: relative;
+  float: right;
+  width:44px;
+}
+
+.upload-form .btn-cont .arrow {
+  position: absolute;
+  top: 17px;
+  right: 43px;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;  
+  border-right: 8px solid #4d90fe;   
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box; 
+}
+
+.chat-form .btn-cont:hover .arrow {
+  border-right-color: #0362fd;
+}
+
+.chat-form .btn-cont:hover .btn {
+  background-color: #0362fd;
+}
+
+.chat-form .btn-cont .btn {
+  margin-top: 8px;
+}
+
+.compart-title { 
+	text-transform: uppercase; 
+    width: 100%; 
+    border-bottom: 1px solid #3cb04a; 
+    font-size: 18px; 
+    /*color: #333333;*/
+    color: #555;
+    padding-bottom: 10px; 
+    font-weight: bold;
+}
+
+/*标题栏*/
+.bar-title {
+    font-size: 18px;
+    font-weight: 600;
+    padding-top: 6px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+/*制作书籍主页添加的样式 2015-1-8*/
+
+.titlemore {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-top: 3px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E4E4E4;
+}
+.titlemore-noborder {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-top: 3px;
+    padding-bottom: 8px;
+}
+.titlemore-div {
+    margin-bottom: 10px;
+    padding-top: 3px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #E4E4E4;
+}
+
+.titlemore-div > h4 {
+    float: left;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.titlemore-div > a:hover,
+.titlemore-div > a {
+    color:#35AA47;
+    float: right;
+    margin-bottom: 0;
+    margin-right: 10px;
+    margin-top: 18px;
+}
+
+.slash-colored {
+    font-weight: 600;
+    letter-spacing: -2px;
+    font-size: 20px;
+    padding-right: 5px;
+}
+.slash-hot {
+    color: #DB3A1B;
+    font-weight: 600;
+    letter-spacing: -2px;
+    font-size: 20px;
+    padding-right: 5px;
+}
+
+.border-1-5 {
+    border-top: 1px solid #EFEFEF;
+    border-bottom: 5px solid #EFEFEF;
+    clear: both;
+    height: 4px;
+    padding-bottom: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#awOnePageButton .view-slide {
+    display: none;
+}
+
+.comments-line {
+    font-size: 16px;
+    font-weight: 600;
+    padding-top: 6px;
+    padding-bottom: 8px;
+}
+
+/*评论添加的样式*/
+.media-children {
+
+	overflow: hidden;
+	margin-left: 20px;
+	margin-top: 10px;
+  	zoom: 1;
+}
+
+.media{
+	border-top: 1px solid #ddd;
+	padding-top: 10px;
+}
+
+.media p {
+	margin-bottom: 0px;
+}
+
+.media hr {
+	margin: 8px 0px;
+}
+
+h4.media-heading {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.error-block {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #E80C4D;
+}
+
+.pager li > a, 
+.pager li > span {
+    padding: 3px 8px;
+}
+
+.widgetheading {
+    margin-bottom: 4px;
+    overflow: hidden;
+    padding: 0px 8px;
+}
+
+.widgetheading h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 6px;
+    margin-bottom: 10px;
+}
+
+.sidebar-ranks li:hover {
+    padding-left: 8px;
+}
+
+/*.img-responsive {
+    background: url("../img/img-backgroung.png") no-repeat scroll center center #F2F2F2;
+}*/
+
+.blog-item h4.media-heading .identificiant {
+    top: auto;padding-left: 2px;
+    color: #777;
+    font-size: 12px;
+    font-weight: 400;
+    position: absolute;
+}
+
+.vertify {
+    padding: 0px 0px !important;
+}
+
+.page-404 .details span {
+    font-size: 16px;
+}
+
+#moregallery .item {
+    border-width: 0px 0px 1px;
+    border-style: dashed;
+    border-color: #DDD;
+    position: relative;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+#first-gallery h4 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#moregallery .item a {
+    color: #626262;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.wechat {
+    background: none repeat scroll 0% 0% #EDEDED;
+    padding: 10px 0px;
+}
+
+.wechat .title {
+    font-size: 14px;
+    text-indent: 0;
+    font-weight: bold;
+}
+
+.dropdown-menu > li > a > .badge {
+    right: 40%;
+}
+
+.panel-group {
+    margin-bottom: 20px;
+    border-top: 1px solid transparent;
+    border-top-color: #DDD;
+}
+
+.panel-default > .panel-heading {
+    background-color: white;
+}
+
+#accordion .panel-default {
+    border-top:1px solid transparent;
+}
+
+.panel-group .panel + .panel {
+    margin-top: 0px;
+}
+
+.panel-title > .btn-message {
+    color: #7C858E;
+    font-size: 15px;
+    /*padding: 8px 18px;*/
+    border-style: dashed;
+    white-space: nowrap;
+    border: 1px dashed #DDD;
+    padding: 4px 10px;
+    margin-bottom: 6px;
+    margin-top: -2px;
+    margin-left: 5px;
+}
+

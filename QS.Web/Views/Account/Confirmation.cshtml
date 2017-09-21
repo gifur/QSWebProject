@@ -1,0 +1,199 @@
+﻿@model QS.Web.Models.AccountModel
+@{
+    ViewBag.Title = "请补充完整信息";
+}
+
+@section Styles{
+    @*<link href="~/assets/css/style-addition.css" rel="stylesheet" />*@
+}
+
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li class="active">填写信息</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container min-hight">
+        <div class="row margin-bottom-40">
+            <div class="col-md-offset-2 col-md-8 login-signup-page">
+                <!-- 表单块 -->
+                <form role="form" action="@Url.Action("Confirmation")" method="post">
+                    <h2>请补充完整信息</h2>
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label>新密码</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                @Html.PasswordFor(model => model.Password, new
+                                {
+                                    @class = "form-control", 
+                                    @placeholder = "首次登录需立即修改密码",
+                                    @required = "true"
+                                })
+                            </div>
+                            <span class="error-block">
+                                @Html.ValidationMessageFor(model => model.Password)
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>再次输入新密码</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-plus"></i></span>
+                                @Html.PasswordFor(model => model.ConfirmPassword, new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "仅允许输入大小写英文字母数字及下划线"
+                                })
+                            </div>
+                            <span class="error-block">
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>用户名</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                @Html.TextBoxFor(model => model.UserName, new
+                                {
+                                    @class = "form-control", @placeholder = "默认为您的学号"
+                                })
+                            </div>
+                            <span class="error-block">
+                                @Html.ValidationMessageFor(model => model.UserName)
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>性别</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-pencil-square"></i></span>
+                                @Html.DropDownListFor(
+                                    model => model.Gender, ViewData["gender"] as SelectList,
+                                    new { @class = "form-control" })
+                            </div>
+                            <span class="error-block">
+                                @Html.ValidationMessageFor(model => model.Gender)
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>电子邮箱</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                @Html.TextBoxFor(model => model.Email, new
+                                {
+                                    @class = "form-control", @placeholder="sample@support.com"
+                                })
+                            </div>
+                            <span class="error-block">
+                                @Html.ValidationMessageFor(model => model.Email)
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>联系电话</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                @Html.TextBoxFor(model => model.Phone, new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "长号（短号最好也输入这里）"
+                                })
+                            </div>
+                            <span class="error-block">
+                                @Html.ValidationMessageFor(model => model.Phone)
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <label>宿舍地址</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-home"></i></span>
+                                @Html.TextBoxFor(model => model.PersonalPage, new { @class="form-control", @placeholder = "XX区-YY栋-ZZ室" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>关于</label>
+                            @Html.TextAreaFor(model => model.About, 3, 3, new { @class = "form-control" })
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <label>姓名</label>
+                            <div class="input-icon">
+                                <i class="fa fa-user"></i>
+                                @Html.TextBoxFor(model => model.RealName, new
+                                {
+                                    @class = "form-control",
+                                    @readonly = "true"
+                                })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>学号</label>
+                            <div class="input-icon">
+                                <i class="fa fa-flag-o"></i>
+                                @Html.TextBoxFor(model => model.StuNumber, new
+                                {
+                                    @class = "form-control",
+                                    @readonly = "true"
+                                })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>身份</label>
+                            <div class="input-icon">
+                                <i class="fa fa-bookmark-o"></i>
+                                @Html.TextBoxFor(model => model.Identification, new
+                                {
+                                    @class = "form-control",
+                                    @readonly = "true"
+                                })
+                            </div>
+                        </div>
+                    </div>
+                    <span class="error-block">@Html.ValidationMessage("duplicate")</span>
+                    <div class="form-actions">
+                        <label>&nbsp;</label>
+                        <div class="col-md-6" style="padding-left:0">
+                            <button type="submit" class="btn green" style="">提交信息</button>
+                        </div>
+                        <div class="pull-right" style="margin-top:20px">
+                            <p class="text-muted">
+                                身份信息有差错？
+                                点击
+                                <a href="javascript:;" id="identity-distance">
+                                    这里
+                                </a>
+                                联系管理员
+                            </p>
+                        </div>
+                        <label>&nbsp;</label>
+                        <label>&nbsp;</label>
+                    </div>
+                </form>
+                <!-- 结束 表单块 -->
+            </div>
+        </div>
+    </div>
+    <!-- 结束 主体 -->
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            $('.Gender').select2({
+                placeholder: "选择分类",
+                allowClear: true
+            });
+        });
+    </script>
+}

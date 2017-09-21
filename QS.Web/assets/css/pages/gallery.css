@@ -1,0 +1,58 @@
+
+
+.portfolio.pinterest h5 a{font-size:16px;}  
+
+.pinterest .work-skillsdate {
+     margin-bottom: 25px
+}
+.pinterest .work-skillsdate p {
+     border-left:4px solid #35aa47;
+     padding:0 0 0 10px; 
+     margin:0; 
+     background:no-repeat 10px 3px; margin: 0 !important
+}
+
+.pinterest .work-skillsdate span {
+     padding-left: 8px; 
+     text-transform: none; 
+     font-weight: bold;
+     color:#35aa47;
+}
+
+
+.pinterest .thumbnail {
+    border-color: #e5e7e7;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    -webkit-box-shadow: 3px 5px 0px #f7f7f7;
+    -moz-box-shadow: 3px 5px 0px #f7f7f7;
+    box-shadow: 3px 5px 0px #f7f7f7;
+    padding: 8px;
+    position: relative;
+}
+
+.pinterest .thumbnail h4 {
+    font-size: 15px;
+    font-weight: 500;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.pinterest .thumbnail h4 a {
+    color: #5F5E5E;
+}
+
+.pinterest .thumbnail h4 a:hover {
+    color: #030303;
+    text-decoration: none;
+}
+
+.pinterest .thumbnail p {
+    margin-bottom: 8px;
+    font-size: 1em;
+    color: #5F5E5E;
+}
+
+

@@ -1,0 +1,28 @@
+﻿<div class="front-topbar">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-sm-9">
+                <ul class="list-unstyled inline">
+                    <li>
+                        <!--<i class="fa fa-envelope-o topbar-info-icon top-2"></i>邮箱： <span>xxoooo@gmail.com</span>-->
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-3 login-reg-links">
+                <ul class="list-unstyled inline">
+                    @if (HttpContext.Current.Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink(@User.Identity.Name, "ProfileDetail", "Account")</li>
+                        <li class="sep"><span>|</span></li>
+                        <li>@Html.ActionLink("退出", "LoginOut", "Account", null, new { id = "loginOut" })</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("登录", "Login", "Account", null, new { id = "loginLink" })</li>
+                    }
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

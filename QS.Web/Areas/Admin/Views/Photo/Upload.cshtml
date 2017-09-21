@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "Upload";
+}
+
+@section Styles {
+    <link href="~/Areas/assets/plugins/uploadify/uploadify.css" rel="stylesheet" />
+    <link href="~/Areas/assets/css/pages/upload-img.css" rel="stylesheet" type="text/css" />
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            图片分享上传
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index", "OAuth")">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Photo", new{ Area = "Admin" })">
+                    图片分享区
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="@Url.Action("Upload", "Photo")">
+                    图片上传
+                </a>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+<div class="row">
+    <div class="col-md-12">
+        <form id="fileupload" action="@Url.Action("Receive")" method="POST" enctype="multipart/form-data">
+            <div class="col-md-12">
+                <input class="form-control" type="hidden" id="attachment" name="attachment"/>
+                <input id="file_upload" name="file_upload" type="file" multiple="multiple" />
+                <div id="fileQueue" class="fileQueue"></div>
+                <a href="javascript:void(0)" class="btn btn-primary" id="btnUpload"
+                   onclick="javascript: $('#file_upload').uploadify('upload', '*');">上传</a>
+                <a href="javascript:void(0)" class="btn btn-default" id="btnCancelUpload" 
+                   onclick="javascript: $('#file_upload').uploadify('cancel', '*');">取消</a>
+                
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
+<div class="row thumbnails" id="div_files">
+</div>
+<!-- END PAGE CONTENT-->
+@section Scripts {
+    <script src="~/Areas/assets/plugins/uploadify/jquery.uploadify.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            // initiate layout and plugins
+            App.init();
+        });
+    </script>
+    <script type="text/javascript">
+
+        $(function() {
+            //添加界面的附件管理
+            $('#file_upload').uploadify({
+                //FLash文件路径
+                'swf': '../../Areas/assets/plugins/uploadify/uploadify.swf',
+                //按钮文本
+                'buttonText': '浏  览',
+                //处理文件上传Action
+                'uploader': '@Url.Action("Receive")',
+                //队列的ID
+                'queueID': 'fileQueue',
+                'simUploadLimit': 0, //同時上傳檔案數，0為無限
+                //队列最多可上传文件数量，默认为999
+                'queueSizeLimit': 20,
+                //选择文件后是否自动上传，默认为true，false的话，要另外定义方法传送upload参数触发上传行为
+                'auto': true,
+                //是否为多选，默认为true
+                'multi': true,
+                //是否完成后移除序列，默认为true
+                'removeCompleted': true,
+                //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
+                'fileSizeLimit': '10MB',
+                //文件描述
+                'fileTypeDesc': 'Image Files',
+                //上传的文件后缀过滤器
+                'fileTypeExts': '*.gif;*.jpge;*.jpg;*.png;*.bmp;*.tif',
+                //Server端的Action，以什么名称接收HttpPostedFileBase [与auto属性相关]
+                'fileObjName': 'fileData',
+                //动态传参数 [与auto属性相关，即是上文所说的另外定义方法]
+                //'onUploadStart': function (file) {
+                //    $("#file_upload").uploadify("settings", 'formData', {
+                //        'folder': 'Attached', 'guid': $("#attachment").val()
+                //    });
+                //},
+                //所有队列完成后执行的事件
+                'onQueueComplete': function(event, data) {
+                    //完成后更新已上传的文件列表
+                    //ShowUpFiles($("#attachment").val(), "div_files"); 
+                    //alert("上传完毕！"); //提示完成
+                    //alert(data);
+                },
+                //上传到服务器，服务器返回相应信息到data里
+                'onUploadSuccess': function(file, data, response) {
+                    var result = $.parseJSON(data);
+                    if (result.state) {
+                        var temp = result.item;
+                        alert(temp.PhotoId + " " + temp.PhotoPath + " " + temp.ThumbPath);
+                    } else {
+                        alert(result.description);
+                    }
+                },
+                'onUploadError': function(event, queueId, fileObj, errorObj) {
+                    alert(errorObj.type + "：" + errorObj.info);
+                },
+                //返回一个错误，选择文件时触发
+                'onSelectError': function(file, errorCode, errorMsg) {
+                    switch (errorCode) {
+                    case -100:
+                        alert("上传的文件数量已经超出限制的" + $('#file_upload').uploadify('settings', 'queueSizeLimit') + "个文件！");
+                        break;
+                    case -110:
+                        alert("文件 [" + file.name + "] 大小超出限制的" + $('#file_upload').uploadify('settings', 'fileSizeLimit') + "大小！");
+                        break;
+                    case -120:
+                        alert("文件 [" + file.name + "] 大小异常！");
+                        break;
+                    case -130:
+                        alert("文件 [" + file.name + "] 类型不正确！");
+                        break;
+                    default:
+                        alert("发生未知错误！");
+                    }
+                },
+                //检测FLASH失败调用
+                'onFallback': function() {
+                    alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+                }
+            });
+        });
+    </script>
+
+
+
+}

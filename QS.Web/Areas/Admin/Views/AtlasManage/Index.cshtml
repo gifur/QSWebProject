@@ -1,0 +1,167 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.SharedModule.AtlasDto>
+@{
+    ViewBag.Title = "图册分享总览";
+    var noImgPath = @"/Areas/assets/img/no-cover.png";
+}
+
+@section Styles{
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            图册总览
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","AtlasManage", new{ Area = "Admin" })">
+                    图片分享
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+
+            @using (Html.BeginForm("Index", "AtlasManage", new RouteValueDictionary { { "id", "" } }, FormMethod.Get, new { @class = "portlet-title" }))
+            {
+                <div class="caption text-muted">
+                    <i class="fa fa-shopping-cart"></i>Description
+                    <span class="hidden-480">
+                        | Dec 27, 2013 7:16:25
+                    </span>
+                </div>
+                <div class="actions">
+                    <a href="@Url.Action("Create", "AtlasManage")" class="btn default yellow-stripe">
+                        <i class="fa fa-plus-square"></i>
+                        <span>
+                            创建新图册
+                        </span>
+                    </a>
+                </div>
+
+            }
+
+            <table id="photo-list" class="table table-bordered table-advance  table-hover">
+                <thead>
+                    <tr role="row" class="heading">
+                        <th width="12%">
+                        </th>
+                        <th width="29%">
+                            <i class="fa fa-coffee"></i> 标题
+                        </th>
+                        <th width="14%">
+                            <i class="fa fa-tags"></i> 分类
+                        </th>
+                        <th width="8%">
+                            <i class="fa  fa-eye"></i> 浏览量
+                        </th>
+                        <th width="8%">
+                            <i class="fa  fa-comments"></i> 评论数
+                        </th>
+                        <th width="15%">
+                            <i class="fa fa-calendar"></i> 创建时间
+                        </th>
+                        <th width="10%">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img class="img-responsive" src="@(item.ThumbPath == null ? noImgPath : item.ThumbPath)" alt="封面图片">
+                            </td>
+                            <td>
+                                @Html.ActionLink(@item.AtlasName, "Detail", new { id = @item.AtlasId})
+                            </td>
+                            <td>
+                               &nbsp;
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.Hits)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.CommentNum)
+                            </td>
+                            <td>
+                                <span class="text-muted">
+                                    @item.CreateTime.ToShortDateString() <i>@item.CreateTime.ToString("hh:mm:ss")</i>
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn default btn-block btn-xs" value="@item.AtlasId">
+                                    <i class="fa fa-times"></i> 删除
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.Pager(Model, new PagerOptions
+            {
+                PageIndexParameterName = "id"
+            })
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #atlas-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #atlas-list-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+        });
+
+        $("table .btn").on('click', function () {
+            var $this = $(this);
+            bootbox.confirm("确定进行删除？", function(result) {
+                if (result) {
+                    var $target = $this.closest('tr');
+                    $.ajax({
+                        type: 'post',
+                        data: { atlasId: $this.val() },
+                        url: '/Admin/AtlasManage/Delete',
+                        success: function (evt) {
+                            if (evt == "success") {
+                                $target.remove();
+                                App.alert({ type: 'success', message: '删除成功！', closeInSeconds: 4, icon: 'check-circle' });
+                            } else {
+                                App.alert({ type: 'danger', message: '抱歉，出现未知错误，请刷新后再重试...', closeInSeconds: 4, icon: 'warning' });
+                            }
+                        },
+                        error: function (scrip) {
+                            App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 4, icon: 'warning' });
+                        }
+                    });
+                }
+            })
+
+        });
+    </script>
+
+}

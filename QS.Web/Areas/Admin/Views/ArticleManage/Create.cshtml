@@ -1,0 +1,268 @@
+﻿@model QS.DTO.SharedModule.ArticleDto
+@{
+    ViewBag.Title = "添加文章";
+    var readyTags = ViewData["ArticleTag"] as SelectList;
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/select2/select2-metronic.css" />
+    <link href="~/Areas/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" />
+
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            添加新文章
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-list"></i>
+                <a href="@Url.Action("Index","ArticleManage", new{ Area = "Admin" })">
+                    文章列表
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-file-text"></i>
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="modal fade" id="articleModel" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title" id="article-title">@Html.ValidationSummary(true)</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="created"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+                                <button type="button" class="btn blue" onclick="Broadcast()" data-dismiss="modal"><i class="fa fa-check"></i> 确认发布</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- BEGIN FORM-->
+                <form action="@Url.Action("Create")" id="articlecreate-form" name="articlecreate-form" method="post" enctype="multipart/form-data">
+                    <div class="form-body">
+                        <h3 class="form-section">基本信息</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">文章标题</label>
+                                    @Html.TextBoxFor(model => Model.ArticleTitle, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.ArticleTitle)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">所在类别</label>
+                                    <select class="category form-control" data-placeholder="选择类别" tabindex="1" id="Category" name="Category">
+                                        <option value="youth">青春文学</option>
+                                        <option value="wisdomlife">身边记事</option>
+                                        <option value="psyche">心理相关</option>
+                                        <option value="qiusuo">求索征文</option>
+                                    </select>
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Category)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            @*<div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">选择标签</label>
+                                    @Html.DropDownList("ArticleTag", readyTags, new { @class = "form-control", @multiple = true })
+                                    @Html.HiddenFor(model => Model.ArticleTags)
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.ArticleTags)
+                                    </span>
+                                </div>
+                            </div>*@
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">&nbsp;</label>
+                                    <div class="clearfix">
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn blue @(Model.IsTop? "active" : "" )">
+                                                @Html.RadioButtonFor(model => model.IsTop, true, new { @class = "toggle" }) 置顶
+                                            </label>
+                                            <label class="btn blue @(Model.IsTop ? "" : "active")">
+                                                @Html.RadioButtonFor(model => model.IsTop, false, new { @class = "toggle" }) 默认
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.IsTop)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-15">
+                            <div class="col-md-12">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="fileinput-new thumbnail" style="width: 500px; height: 280px;">
+                                        <img src="http://www.placehold.it/400x300/EFEFEF/AAAAAA&amp;text=SET+COVER-IMAGE" alt="" />
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 500px; max-height: 280px;">
+                                    </div>
+                                    <div>
+                                        <span class="btn default btn-file">
+                                            <span class="fileinput-new">
+                                                选择图片
+                                            </span>
+                                            <span class="fileinput-exists">
+                                                更换
+                                            </span>
+                                            <input type="file" name="imageInput" id="imageInput" accept="image/*">
+                                        </span>
+                                        <a href="#" class="btn default fileinput-exists" data-dismiss="fileinput">
+                                            清除
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="clearfix margin-top-10">
+                                    <span class="label label-danger">
+                                        提示
+                                    </span>
+                                    &nbsp;
+                                    <span class="text-muted">
+                                        推荐上传(500*280)的图片作为文章封面
+                                    </span>
+                                </div>
+                                <span class="error-block">@Html.ValidationMessage("UploadError")</span>
+                            </div>
+                        </div>
+                        <!--/row-->
+                        <h3 class="form-section">文章内容</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.ArticleContent)
+                                    </span>
+                                    @Html.TextAreaFor(model => model.ArticleContent, 15, 3, new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                    </div>
+                    <div class="form-actions right">
+                        <a class=" btn default" onclick="Preview()" data-toggle="modal" href="#articleModel">
+                            预览
+                        </a>
+                        <button type="button" class="btn blue" onclick="Broadcast()"><i class="fa fa-check"></i> 确认发布</button>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/Areas/assets/plugins/select2/select2.min.js"></script>
+    <script src="~/Areas/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/kindeditor-min.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/lang/zh_CN.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/plugins/code/prettify.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/plugins/autoheight/autoheight.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #article-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #article-create-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+
+            $('.category').select2({
+                placeholder: "选择分类",
+                allowClear: true
+            });
+
+            $('#ArticleTag').select2({
+                placeholder: "点击选择...",
+                allowClear: true
+            });
+        });
+
+        KindEditor.ready(function (K) {
+            var options = {
+                uploadJson: '/ArticleManage/Upload',
+                fileManagerJson: '/ArticleManage/FileManager',
+                allowFileManager: true,
+                autoHeightMode: true,
+                afterCreate: function () {
+                    this.sync();
+                },
+                afterBlur: function () {
+                    this.sync();
+                }
+            };
+            window.editor = K.create('#ArticleContent', options);
+        });
+
+        function Preview() {
+            $('#large').show();
+            var value = editor.html();
+            $("#ArticleContent").val(editor.html());
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ArticleContent", "ArticleManage")',
+                data: {content : $("#ArticleContent").val()},
+                async: true,  //异步
+                success: function (evt) {
+                    $("#created").html(evt);
+                },
+                error: function () {
+                    $("#created").html("<span class='error-block'>预览出错</span>");
+                }
+            });
+        }
+
+        function Broadcast() {
+            var v = $("#ArticleTag").select2("val");
+            $("#ArticleTags").val(v);
+            //$("#ArticleContent").val(editor.html());
+            $("#articlecreate-form").submit();
+        }
+
+    </script>
+
+}

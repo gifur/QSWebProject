@@ -1,0 +1,132 @@
+﻿@model QS.DTO.SharedModule.ArticleDto
+@{
+    ViewBag.Title = @Model.ArticleTitle;
+    ViewBag.CurrentPage = "Article";
+}
+
+@section Styles{
+    <link href="~/assets/css/pages/blog.css" rel="stylesheet" />
+}
+
+<!-- 页面内容 -->
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li><a href="@Url.Action("Index", "Article")">心理文章</a></li>
+                    <li class="active">文章内容</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container min-hight">
+        <!-- 文章内容 -->
+        <div class="row">
+            <!-- 左边文章内容块 -->
+            <div class="col-md-9 blog-item margin-bottom-40 show_contents">
+                <h2>@Model.ArticleTitle</h2>
+                <div class="news-item-page">
+                    @Html.Raw(Model.ArticleContent)
+                </div>
+                <ul class="blog-info">
+                    <li><i class="fa fa-calendar"></i> @Model.CreateTime.ToShortDateString()</li>
+                    <li><i class="fa fa-eye"></i> @Html.ViewTimesFormat(@Model.ViewTimes)</li>
+                    <li><i class="fa fa-tags"></i> @Html.ArticleCategoryFormat(@Model.Category)</li>
+                </ul>
+
+                <div id="comments">
+                    @{
+                        Html.RenderAction("_ArticlePartial", "Comment", new { id = @Model.ArticleId });
+                    }
+                </div>
+                @{
+                    Html.RenderAction("_ArticleFormPartial", "Comment", new { id = @Model.ArticleId });
+                }
+            </div>
+            <!-- 结束  左边文章内容块-->
+            <!-- 右边导航块 -->
+            <div class="col-md-3 col-sm-3 blog-sidebar">
+                <!-- 分类 -->
+                <div class="widgetheading">
+                    <h4>热门文章排行</h4>
+                </div>
+                @{
+                    Html.RenderAction("_PopularTenArticle");
+                }
+                <!-- 结束 分类 -->
+
+                <h4 class="titlemore"><span class="slash-colored">//</span>最新评论</h4>
+                @{
+                    Html.RenderAction("_RecentCommentFromArticle", "Comment");
+                }
+                <div class="space20">
+                </div>
+                <h4 class="titlemore"><span class="slash-colored">//</span>文章分类</h4>
+                @{
+                    Html.RenderAction("_CategoryPartial", "Article");
+                }
+            </div>
+            <!-- 结束 右边导航块 -->
+        </div>
+        <!-- 结束 新闻内容 -->
+    </div>
+    <!-- 结束 主体 -->
+
+</div>
+<!-- 结束页面内容 -->
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+
+            var options = {
+                //target: '#comments',
+                //beforeSubmit: validateDate,
+                success: showResponse,
+                //dataType: 'json',
+                clearForm: false,
+                resetForm: false,
+                timeout: 3000
+            };
+
+            $('#comment-form').on('submit', function(e) {
+                e.preventDefault();
+                $(this).ajaxSubmit(options);
+            });
+
+
+        });
+
+        function showResponse(responseText, statusText, xhr, $form) {
+
+            if (responseText.Success != null) {
+                return;
+            }
+            var result = responseText;
+            var value = parseInt($('#comments #comments-count').text());
+            $('#comments-count').text(value + 1);
+            var $comments = $('#comments').children('div.media');
+            if ($comments.length >= 5) {
+                $comments[4].remove();
+            }
+            $('#comments > h6').after(result);
+            App.scrollTo($('#comments'));
+
+            var $email = $('#comment-form #Email');
+            if (!$email.is(":hidden")) {
+                $email.val("");
+                $('#comment-form #NickName').val("");
+            }
+            $('#comment-form #Content').val("");
+        }
+    </script>
+}

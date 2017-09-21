@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A93A61A1-CEF1-4C7A-8F43-B89249340E24}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QS.Core</RootNamespace>
+    <AssemblyName>QS.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IRepository.cs" />
+    <Compile Include="IRepository\ITagRepository.cs" />
+    <Compile Include="IRepository\IMyMessageRepository.cs" />
+    <Compile Include="IRepository\IRecentActivityRepository.cs" />
+    <Compile Include="IRepository\ISuggestionRepository.cs" />
+    <Compile Include="IRepository\IMessageRepository.cs" />
+    <Compile Include="IRepository\IVideoCommentRepository.cs" />
+    <Compile Include="IRepository\IBookCommentRepository.cs" />
+    <Compile Include="IRepository\IArticleCommentRepository.cs" />
+    <Compile Include="IRepository\INewsCommentRepository.cs" />
+    <Compile Include="IRepository\IBookRepository.cs" />
+    <Compile Include="IRepository\IArticleRepository.cs" />
+    <Compile Include="IRepository\ILogRepository.cs" />
+    <Compile Include="IRepository\ILoginLogRepository.cs" />
+    <Compile Include="IRepository\IVideoRepository.cs" />
+    <Compile Include="IRepository\IAtlasRepository.cs" />
+    <Compile Include="IRepository\IFbDocumentRepository.cs" />
+    <Compile Include="IRepository\IFeedbackRepository.cs" />
+    <Compile Include="IRepository\INewsRepository.cs" />
+    <Compile Include="IRepository\IPhotoRepository.cs" />
+    <Compile Include="IRepository\IReservationRepository.cs" />
+    <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="Module\Comment.cs" />
+    <Compile Include="Module\CommentAggregate\Suggestion.cs" />
+    <Compile Include="Module\CommentAggregate\VideoComment.cs" />
+    <Compile Include="Module\CommentAggregate\BookComment.cs" />
+    <Compile Include="Module\CommentAggregate\ArticleComment.cs" />
+    <Compile Include="Module\CommentAggregate\NewsComment.cs" />
+    <Compile Include="Module\FeedbackAggregate\FbDocument.cs" />
+    <Compile Include="Module\FeedbackAggregate\Feedback.cs" />
+    <Compile Include="IRepository\IUserRepository.cs" />
+    <Compile Include="Module\LogAggregate\Log.cs" />
+    <Compile Include="Module\LogAggregate\LoginLog.cs" />
+    <Compile Include="Module\Tag.cs" />
+    <Compile Include="Module\MyMessage.cs" />
+    <Compile Include="Module\ProfessionAggregate\Reservation.cs" />
+    <Compile Include="Module\RecentActivity.cs" />
+    <Compile Include="Module\SharedAggregate\Atlas.cs" />
+    <Compile Include="Module\SharedAggregate\Book.cs" />
+    <Compile Include="Module\SharedAggregate\Article.cs" />
+    <Compile Include="Module\SharedAggregate\News.cs" />
+    <Compile Include="Module\SharedAggregate\Photo.cs" />
+    <Compile Include="Module\SharedAggregate\Video.cs" />
+    <Compile Include="Module\Message.cs" />
+    <Compile Include="Module\User.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource\Message.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Message.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Specification\AndSpecification.cs" />
+    <Compile Include="Specification\Common\ExpressionBuilder.cs" />
+    <Compile Include="Specification\Common\ParameterRebinder.cs" />
+    <Compile Include="Specification\CompositeSpecification.cs" />
+    <Compile Include="Specification\Contract\ISpecification.cs" />
+    <Compile Include="Specification\DirectSpecification.cs" />
+    <Compile Include="Specification\Implementation\Specification.cs" />
+    <Compile Include="Specification\NotSpecification.cs" />
+    <Compile Include="Specification\OrSpecification.cs" />
+    <Compile Include="Specification\TrueSpecification.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QS.Common\QS.Common.csproj">
+      <Project>{e5f61799-3326-411b-84a5-d1a58e1ce061}</Project>
+      <Name>QS.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\Message.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Message.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

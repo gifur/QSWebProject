@@ -1,0 +1,199 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.Module.RecentActivityDto>
+@{
+    ViewBag.Title = "活动安排总览";
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/bootstrap-datepicker/css/datepicker.css" />
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            所有活动安排预览
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li class="btn-group">
+                <a href="@Url.Action("Create", "ActivityManage")" class="btn blue" style="color: #FFF;">
+                    <i class="fa fa-plus-square"></i>
+                    <span>
+                        添加活动安排
+                    </span>
+                </a>
+            </li>
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","ActivityManage", new{ Area = "Admin" })">
+                    活动安排
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                @using (Html.BeginForm("Index", "ActivityManage", new RouteValueDictionary { { "id", "" } }, FormMethod.Get))
+                {
+                    <div class="actions input-group pull-right input-medium">
+                        <div class="input-group date-picker input-daterange"
+                             data-date-format="yyyy-mm-dd"
+                             style="width: 340px !important;">
+                            <input type="text" class="form-control" name="begin" />
+                            <span class="input-group-addon">
+                                至
+                            </span>
+                            <input type="text" class="form-control" name="end" />
+                        </div>
+                        <div class="input-group-btn">
+                            <button class="btn green" type="submit" accesskey="S"><i class="fa fa-check-circle"></i> 时间段查询</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-advance table-hover">
+                        <thead>
+                            <tr>
+                                <th width="20%">
+                                    <i class="fa fa-coffee"></i> 标题&amp;时间&amp;地点
+                                </th>
+                                <th width="55%">
+                                    <i class="fa fa-archive"></i> 内容
+                                </th>
+                                <th width="15%">
+                                    <i class="fa fa-calendar"></i> 创建时间
+                                </th>
+                                <th width="10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td width="20%">
+                                        @item.Title<br />
+                                        <span class="text-muted">时间：</span><span>@item.StartTime</span><br />
+                                        <span class="text-muted">地点：</span><span>@item.Address</span><br />
+                                        @if (item.Status)
+                                        {
+                                            @:<span class="label label-sm label-danger">显示中</span>
+                                        }
+                                        else
+                                        {
+                                            @:<span class="label label-sm label-default">已过去</span>
+                                        }
+                                    </td>
+                                    <td width="55%">
+                                        @Html.Raw(@item.Content)
+                                    </td>
+                                    <td width="15%">
+                                        @item.CreateTime
+                                    </td>
+                                    <td width="10%">
+                                        <button name="change" value="@item.Id" class="btn default btn-xs green-stripe @(!item.Status? "hide":"")">更改状态</button>
+                                        <button name="delete" value="@item.Id" class="btn default btn-xs green-stripe @(item.Status? "hide":"")">删除</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @Html.Pager(Model, new PagerOptions { PageIndexParameterName = "id" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript" src="~/Areas/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/Areas/assets/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #about-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #activity-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #activity-list-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+            handleDatePickers();
+            $('table').on('click', 'button[name=change]', function() {
+                var $change = $(this);
+                $.ajax({
+                    type: 'post',
+                    data: { id: ($change.val()) },
+                    url: '/Admin/ActivityManage/ChangeStatus',
+                    success: function(evt) {
+                        if (evt != null && evt.Success) {
+                            App.alert({ type: 'success', message: '修改成功！', closeInSeconds: 8, icon: 'check-circle' });
+                            $change.addClass('hide');
+                            $change.closest('td').prev().prev().html('<span class="label label-sm label-default">已过去</span>');
+                            $change.next('button[name=delete]').removeClass('hide');
+                        } else if (evt != null) {
+                            App.alert({ type: 'danger', message: evt.Message, closeInSeconds: 8, icon: 'warning' });
+                        }
+                    },
+                    error: function() {
+                        App.alert({ type: 'danger', message: '抱歉修改失败，请刷新再试', closeInSeconds: 8, icon: 'warning' });
+                    }
+                });
+            });
+            $('table').on('click', 'button[name=delete]', function() {
+                var $delete = $(this);
+                $.ajax({
+                    type: 'post',
+                    data: { id: ($delete.val()) },
+                    url: '/Admin/ActivityManage/Delete',
+                    success: function(evt) {
+                        if (evt != null && evt.Success) {
+                            App.alert({ type: 'success', message: '删除成功！', closeInSeconds: 8, icon: 'check-circle' });
+                            $delete.closest('tr').remove();
+                        } else if (evt != null) {
+                            App.alert({ type: 'danger', message: evt.Message, closeInSeconds: 8, icon: 'warning' });
+                        }
+                    },
+                    error: function () {
+                        App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                    }
+                });
+            });
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        var handleDatePickers = function() {
+
+            if (jQuery().datepicker) {
+                $('.date-picker').datepicker({
+                    rtl: App.isRTL(),
+                    autoclose: true,
+                    clearBtn: true
+                });
+                // fix bug when inline picker is used in modal
+                $('body').removeClass("modal-open");
+            }
+        }
+    </script>
+
+}

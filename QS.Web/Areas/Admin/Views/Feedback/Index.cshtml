@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "心理反馈";
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/bootstrap-datepicker/css/datepicker.css" />
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            心理反馈管理
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-edit"></i>
+                <a href="@Url.Action("Index")">
+                    心理反馈
+                </a>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+@{
+    if (ViewBag.Display == "Closed")
+    {
+        Html.RenderAction("Create", "Feedback");
+    }
+    else
+    {
+        Html.RenderAction("Current", "Feedback", new {ViewBag.Display});
+    }
+}
+
+<!-- END PAGE CONTENT-->
+@section Scripts{
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="~/Areas/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/Areas/assets/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+        jQuery(document).ready(function () {
+            // initiate layout and plugins
+            App.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+            handleDatePickers();
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        var handleDatePickers = function () {
+
+            if (jQuery().datepicker) {
+                $('.date-picker').datepicker({
+                    rtl: App.isRTL(),
+                    autoclose: true
+                });
+                // fix bug when inline picker is used in modal
+                $('body').removeClass("modal-open");
+            }
+        }
+    </script>
+
+}

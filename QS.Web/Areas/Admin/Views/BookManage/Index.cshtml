@@ -1,0 +1,200 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.SharedModule.BookDto>
+@{
+    ViewBag.Title = "书籍分享";
+    const string noImgPath = @"/Areas/assets/img/no-book-cover.png";
+}
+
+@section Styles{
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            书籍分享
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","BookManage", new{ Area = "Admin" })">
+                    书籍分享
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+
+            @using (Html.BeginForm("Index", "BookManage", new RouteValueDictionary { { "id", "" } }, FormMethod.Get, new { @class = "portlet-title" }))
+            {
+                <div class="caption text-muted">
+                    <i class="fa fa-shopping-cart"></i>书籍列表
+                </div>
+                <div class="actions">
+                    <a href="@Url.Action("Create", "BookManage")" class="btn default yellow-stripe">
+                        <i class="fa fa-plus-square"></i>
+                        <span>
+                            添加书籍
+                        </span>
+                    </a>
+                    <div class="btn-group">
+                        <a class="btn default yellow-stripe" href="#" data-toggle="dropdown">
+                            <i class="fa fa-filter"></i>
+                            <span class="hidden-480">
+                                标签筛选
+                            </span>
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="#">
+                                    Export to Excel
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Export to CSV
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Export to XML
+                                </a>
+                            </li>
+                            <li class="divider">
+                            </li>
+                            <li>
+                                <a href="#">
+                                    Print Invoice
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            }
+
+            <table id="photo-list" class="table table-bordered table-advance  table-hover">
+                <thead>
+                    <tr role="row" class="heading">
+                        <th width="12%">
+                            <i class="fa fa-book"></i> 封面
+                        </th>
+                        <th width="25%">
+                            <i class="fa fa-coffee"></i> 书名
+                        </th>
+                        <th width="14%">
+                            <i class="fa fa-tags"></i> 分类
+                        </th>
+                        <th width="8%">
+                            <i class="fa fa-cloud"></i> 资源
+                        </th>
+                        <th width="8%">
+                            <i class="fa  fa-eye"></i> 浏览量
+                        </th>
+                        <th width="8%">
+                            <i class="fa  fa-comments"></i> 评论数
+                        </th>
+                        <th width="10%">
+                            <i class="fa fa-calendar"></i> 创建时间
+                        </th>
+                        <th width="10%">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img class="img-responsive" src="@(item.ThumbPath ?? noImgPath)" alt="封面图片">
+                            </td>
+                            <td>
+                                @Html.ActionLink(@item.BookName, "Detail", new { id = @item.BookId })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.Category)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.HasResource)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.Hits)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.CommentNum)
+                            </td>
+                            <td>
+                                <span class="text-muted" title="@item.CreateTime.ToString("hh:mm:ss")">
+                                    @item.CreateTime.ToShortDateString()
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn default btn-block btn-xs" value="@item.BookId">
+                                    <i class="fa fa-times"></i> 删除
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.Pager(Model, new PagerOptions { PageIndexParameterName = "id" })
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #book-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #book-list-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+        });
+
+        $('table .btn').on('click', function () {
+            var $this = $(this);
+            bootbox.confirm("请确定要删除？[此操作不可恢复]", function(result) {
+                if (result) {
+                    $.ajax({
+                        type: 'post',
+                        data: { bookId: $this.val() },
+                        url: '/Admin/BookManage/Delete',
+                        success: function (evt) {
+                            if (evt == "true") {
+                                App.alert({ type: 'success', message: '删除成功！', closeInSeconds: 8, icon: 'check-circle' });
+                                $this.closest('tr').remove();
+                            } else {
+                                App.alert({ type: 'danger', message: '抱歉，出现未知错误，请刷新后再重试...', closeInSeconds: 8, icon: 'warning' });
+                            }
+                        },
+                        error: function (scrip) {
+                            App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+
+}

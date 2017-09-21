@@ -1,0 +1,154 @@
+﻿@model  IEnumerable<QS.DTO.SharedModule.AtlasDto>
+@{
+    ViewBag.Title = "图片分享";
+    ViewBag.CurrentPage = "Gallery";
+}
+
+@section Styles{
+    @*<link href="/assets/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" />*@
+    <link href="~/assets/css/pages/gallery.css" rel="stylesheet" />
+}
+
+<div class="page-container">
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-20">
+            <div class="container">
+                <div class="col-md-4 col-sm-4">
+                    <h1>&nbsp;</h1>
+                </div>
+                <div class="col-md-8 col-sm-8">
+                    <ul class="pull-right breadcrumb">
+                        <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                        <li class="active">心理图片</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="portfolio" class="pinterest">
+                    @if (Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <div class="col-md-3 col-sm-4">
+                                <div class="thumbnail">
+                                    <a href="@Url.Action("Detail", new { id = @item.AtlasId})">
+                                        <img src="@item.ThumbPath" class="img-responsive" alt="@item.AtlasName" />
+                                    </a>
+                                    <h4>
+                                        @Html.ActionLink(@item.AtlasName, "Detail", new { id = @item.AtlasId })
+                                    </h4>
+
+                                    <p>@item.Remark</p>
+                                    <div class="work-skillsdate">
+                                        <p>
+                                            <span><i class="fa fa-eye"></i></span> @Html.ViewTimesFormat(@item.Hits) <span><i class="fa fa-comments"></i></span> @Html.CommentsFormat(@item.CommentNum)
+                                        </p>
+                                        <p>
+                                            <span><i class="fa fa-calendar"></i></span> @Html.DateFormat(@item.CreateTime)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row margin-bottom-40 margin-top-50">
+            <div id="before-append" class="text-center col-md-offset-4 col-md-4 ">
+                <button class="btn btn-default btn-block display-none" id="appendBtn">
+                    <span><i class="fa fa-magnet"></i> 加载更多</span>
+                </button>
+            </div>
+            <div id="state" class="text-center col-md-offset-4 col-md-4">
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- 结束主体 -->
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript" src="~/assets/plugins/masonry.pkgd.min.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/imagesloaded.pkgd.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            var $container = $('#portfolio');
+            var msnry;
+            var count = $('div.col-md-3 > .thumbnail').length;
+            $container.imagesLoaded(function () {
+                    msnry = $container.masonry({
+                    columnWidth: 0,
+                    itemSelector: '.col-md-3'
+                    //isFitWidth: true
+                });
+            });
+
+            var ajaxLoading = false;
+            var $state = $('#state');
+            var loadingment = "<img class='loading' src='~/assets/img/loading_black.gif' alt='加载中...'/>";
+            var errorment = "<span><i class='fa fa-frown-o'></i>&nbsp;加载出错</span>";
+            var nomorement = "<span><i class='fa fa-smile-o'></i>&nbsp;没有更多了...</span>";
+
+            $(window).scroll(function () {
+
+                if ($(document).height() - $(window).height() - $(document).scrollTop() < 10) {
+                    if (!ajaxLoading) {
+                        getData();
+                    }
+                }
+
+            });
+            $('#appendBtn').on('click', function () {
+                if (!ajaxLoading) {
+                    getData();
+                }
+            });
+
+            function getData() {
+                $.ajax({
+                    url: '@Url.Action("Index", "Gallery")',
+                    type: 'POST',
+                    data: {
+                        skipCount: $('div.col-md-3 > .thumbnail').length
+                    },
+                    dataType: 'html',
+                    timeout: 10000,
+                    error: function() {
+                         $state.html(errorment);
+                    },
+                    beforeSend: function () {
+                        ajaxLoading = true;
+                         $state.html(loadingment);
+                    },
+                    success: function (data) {
+                        $state.empty();
+
+                        if (data == null || data == "") {
+                            $('#appendBtn').hide();
+                            $state.html(nomorement);
+                            return;
+                        }
+
+                        var $newElems = $(data);
+                        $container.append($newElems);
+                        $newElems.imagesLoaded(function () {
+                            $container.masonry('appended', $newElems);
+                        });
+                        
+                        ajaxLoading = false;
+                    }
+                });
+            }
+        });
+    </script>
+
+}

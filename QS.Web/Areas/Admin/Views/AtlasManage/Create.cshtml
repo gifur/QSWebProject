@@ -1,0 +1,433 @@
+﻿@{
+    ViewBag.Title = "创建分享图册";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Areas/assets/plugins/uploadify/uploadify.css" />
+    <link rel="stylesheet" href="~/Areas/assets/css/pages/upload-img.css" type="text/css" />
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            图片分享上传
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index", "OAuth")">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "Photo", new{ Area = "Admin" })">
+                    图片分享区
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="@Url.Action("Upload", "Photo")">
+                    图片上传
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet" id="form-create">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-camera-retro"></i> 创建图册 -
+                    <span class="step-title">
+                        步骤 1 / 2
+                    </span>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="form-horizontal">
+                    <div class="form-wizard">
+                        <div class="form-body">
+                            <ul class="nav nav-pills nav-justified steps">
+                                <li>
+                                    <a href="#tab1" data-toggle="tab" class="step">
+                                        <span class="number">
+                                            1
+                                        </span>
+                                        <span class="desc">
+                                            <i class="fa fa-check"></i> 基本信息
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tab2" data-toggle="tab" class="step">
+                                        <span class="number">
+                                            2
+                                        </span>
+                                        <span class="desc">
+                                            <i class="fa fa-check"></i> 上传图片
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="bar" class="progress progress-striped" role="progressbar">
+                                <div class="progress-bar progress-bar-success">
+                                </div>
+                            </div>
+                            <div class="tab-content">
+                                <div class="alert alert-danger display-none">
+                                    <button class="close" data-dismiss="alert"></button>
+                                    图册的<strong>标题</strong>和<strong>描述</strong>内容不能为空......
+                                </div>
+                                <div class="alert alert-success display-none">
+                                    <button class="close" data-dismiss="alert"></button>
+                                    Your form validation is successful!
+                                </div>
+                                <div class="tab-pane active" id="tab1">
+                                    <form action="@Url.Action("Create")" method ="post" class="form-horizontal" id="submit_form">
+                                        <h3 class="block">输入关于新建相册的基本信息</h3>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                图册标题：
+                                                <span class="required">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control maxlength-handler" maxlength="100" name="AtlasName" id="AtlasName" placeholder="">
+                                                <span class="help-block">
+                                                    最长100字符
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">
+                                                图册描述：
+                                                <span class="required">
+                                                    *
+                                                </span>
+                                            </label>
+                                            <div class="col-md-10">
+                                                <textarea class="form-control maxlength-handler" maxlength="500" rows="6" name="Remark" id="Remark"></textarea>
+                                                <span class="help-block">
+                                                    最长500字符
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="tab2">
+                                    <form action="@Url.Action("Save")" method="post" class="form-horizontal" id="confirm_form">
+                                        @Html.Hidden("atlasId")
+                                        @Html.Hidden("photoId")
+                                    </form>
+                                    <h4 class="form-section">上传图片</h4>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <form id="fileupload" action="@Url.Action("Receive")" method="POST" enctype="multipart/form-data">
+                                                <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                                                <div class="col-md-12">
+                                                    <input class="form-control" type="hidden" id="attachment" name="attachment" />
+                                                    <input id="file_upload" name="file_upload" type="file" multiple="multiple" />
+                                                    <div id="fileQueue"></div>
+                                                    <a href="javascript:void(0)" class="btn btn-primary" id="btnUpload"
+                                                       onclick="javascript: $('#file_upload').uploadify('upload', '*');">上传</a>
+                                                    <a href="javascript:void(0)" class="btn btn-default" id="btnCancelUpload"
+                                                       onclick="javascript: $('#file_upload').uploadify('cancel', '*');">取消</a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row thumbnails" id="photoview">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-offset-3 col-md-9">
+                                        <button class="btn yellow button-delete">
+                                            <i class="m-icon-swapleft  m-icon-white"></i> 取消并删除
+                                        </button>
+                                        <a href="javascript:;" class="btn blue button-next">
+                                            新建并继续 <i class="m-icon-swapright m-icon-white"></i>
+                                        </a>
+                                        <button class="btn green button-view">
+                                            保存并查看分享 <i class="m-icon-swapright m-icon-white"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="evaluation" type="text/x-dot-template">
+    <div class="col-md-3" id="{{=it.PhotoId}}">
+        <div class="thumbnail">
+            <img src="{{=it.ThumbPath}}" alt="" class="img-responsive" />
+            <span class="cover-selected" style="display:none" id="{{=it.PhotoId}}">
+            </span>
+            <div class="caption">
+                <p>
+                    {{=it.Remark}}
+                </p>
+                <div class="btn-toolbar">
+                    <div class="btn-group btn-group-sm btn-group-solid">
+                        <button type="button" class="btn blue">编辑描述</button>
+                        <button type="button" name="setCover" class="btn red">设为封面</button>
+                        <button type="button" name="removeBtn" class="btn green">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- END PAGE CONTENT-->
+@section Scripts {
+    <script src="~/Scripts/doT.min.js"></script>
+    <script src="~/Areas/assets/plugins/uploadify/jquery.uploadify.js"></script>
+    <script src="~/Areas/assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/Areas/assets/scripts/custom/atlas-create.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            // initiate layout and plugins
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #atlas-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #atlas-create-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+            FormWizard.init();
+        });
+        var returnId = "";
+        $coverPath = $('#tab2 #photoId');
+        var count = 0;
+        $('.maxlength-handler').maxlength({
+            limitReachedClass: "label label-danger",
+            alwaysShow: true,
+            threshold: 5
+        });
+
+
+        function validateDate(formData, jqForm, options) {
+            var form = jqForm[0];
+            if (!form.AtlasName.value || !form.Remark.value) {
+                App.alert({ type: 'danger', message: '图册的<strong>标题</strong>和<strong>描述</strong>内容不能为空......', closeInSeconds: 10, icon: 'warning' });
+                App.scrollTo($('.page-title'));
+                return false;
+            }
+            $('#form-create').bootstrapWizard('next');
+            return true;
+        }
+
+        function showResponse(responseText, statusText, xhr, $form) {
+            var result = responseText;
+            if (result.status == "success") {
+                $('#atlasId').val(result.data);
+                returnId = result.data;
+            } else {
+                App.alert({ type: 'danger', message: '抱歉，创建失败，请刷新再试试', closeInSeconds: 10, icon: 'warning' });
+                App.scrollTo($('.page-title'));
+            }
+
+        }
+
+        var options = {
+            beforeSubmit: validateDate,
+            success: showResponse,
+            dataType: 'json',
+            clearForm: true,
+            resetForm: true,
+            timeout: 3000
+        };
+        $('#form-create').find('.button-next').click(function() {
+            $('#submit_form').submit();
+        });
+
+        $('#form-create').find('.button-delete').click(function () {
+            bootbox.confirm("你确定要放弃此次创建操作吗？", function(result) {
+                if (result) {
+                    $.post("/Admin/AtlasManage/Delete", { atlasId: returnId }, function (data, textStatus) {
+                        if (data == "success") {
+                            bootbox.alert("已经取消相关创建操作，现将跳转到图册主页页面", function () {
+                                location.href = "/Admin/AtlasManage/Index";
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#form-create').find('.button-view').click(function () {
+            if (count == 0) {
+                bootbox.confirm("你确定不上传图片？", function(result) {
+                    if (result) {
+                        $('#confirm_form').submit();
+                    }
+                });
+            } else {
+                var temp = $('#atlasId').val() + "\r\n" + $('#photoId').val();
+                $('#confirm_form').submit();
+            }
+        });
+
+        $('#submit_form').submit(function() {
+            $(this).ajaxSubmit(options);
+            return false;
+        });
+
+        $('[name=setCover]:button').live("click", function() {
+            var $mark = $(this).closest('.caption').siblings('span[class="cover-selected"]');
+            if (!$mark.is(':visible')) {
+                $mark.show();
+                $mark.parent().parent().siblings().find('span').hide();
+                $coverPath.val($(this).closest('.col-md-3').attr('id'));
+            }
+        });
+
+        $('[name=removeBtn]:button').live("click", function() {
+            var $mark = $(this).closest('.caption').siblings('span[class="cover-selected"]');
+            var $parent = $(this).closest('.col-md-3');
+
+            $.ajax({
+                type: 'post',
+                data: { photoId: $parent.attr('id') },
+                url: '/Admin/Photo/Delete',
+                success: function(evt) {
+                    if (evt == "true") {
+                        if ($mark.is(':visible')) {
+                            var $firstPhoto = $('#photoview div:first');
+                            if ($parent.attr('id') == $firstPhoto.attr('id')) {
+                                //在是封面的前提下判断出其是第一个元素
+                                if (count == 1) {
+                                    //如果只有它一张图片，那么需要清空封面图片
+                                    $coverPath.val("");
+                                } else {
+                                    //将封面推给其下一个元素
+                                    var $nextPhoto = $parent.next();
+                                    $nextPhoto.children().find('span').show();
+                                    $coverPath.val($nextPhoto.attr('id'));
+                                }
+                            } else {
+                                $firstPhoto.children().find('span').show();
+                                $coverPath.val($firstPhoto.attr('id'));
+                            }
+
+                        }
+                        $parent.remove();
+                        count--;
+                    } else {
+                        bootbox.alert("抱歉！删除出现错误");
+                    }
+                },
+                error: function(scrip) {
+                    App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                }
+            });
+        });
+
+        $(function() {
+            //添加界面的附件管理
+            $('#file_upload').uploadify({
+                //FLash文件路径
+                'swf': '../../Areas/assets/plugins/uploadify/uploadify.swf',
+                //按钮文本
+                'buttonText': '浏  览',
+                //处理文件上传Action
+                'uploader': '@Url.Action("Receive")',
+                //队列的ID
+                'queueID': 'fileQueue',
+                'simUploadLimit': 0, //同時上傳檔案數，0為無限
+                //队列最多可上传文件数量，默认为999
+                'queueSizeLimit': 20,
+                //选择文件后是否自动上传，默认为true，false的话，要另外定义方法传送upload参数触发上传行为
+                'auto': false,
+                //是否为多选，默认为true
+                'multi': true,
+                //是否完成后移除序列，默认为true
+                'removeCompleted': true,
+                //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
+                'fileSizeLimit': '10MB',
+                //文件描述
+                'fileTypeDesc': '图片类型',
+                //上传的文件后缀过滤器
+                'fileTypeExts': '*.gif;*.jpge;*.jpg;*.png;*.bmp;*.tif',
+                //Server端的Action，以什么名称接收HttpPostedFileBase [与auto属性相关]
+                'fileObjName': 'fileData',
+                //动态传参数 [与auto属性相关，即是上文所说的另外定义方法]
+                'onUploadStart': function(file) {
+                    $("#file_upload").uploadify("settings", 'formData', {
+                        'atlasId': returnId
+                    });
+                },
+                //所有队列完成后执行的事件
+                'onQueueComplete': function(event, data) {
+                    //完成后更新已上传的文件列表
+                    //ShowUpFiles($("#attachment").val(), "div_files");
+                    //alert("上传完毕！"); //提示完成
+                    //alert(data);
+                },
+                //上传到服务器，服务器返回相应信息到data里
+                'onUploadSuccess': function(file, data, response) {
+                    var result = $.parseJSON(data);
+                    if (result.state) {
+                        var temp = result.item;
+                        var interText = doT.template($("#evaluation").text());
+                        $("#photoview").append(interText(temp));
+                        count++;
+                        if (count == 1) {
+                            $('.thumbnail:first > span').show();
+                            $coverPath.val(temp.PhotoId);
+                        }
+                    } else {
+                        alert(result.description + "页面的图册编号为： " + returnId);
+                    }
+                },
+                'onUploadError': function(event, queueId, fileObj, errorObj) {
+                    alert(errorObj.type + "：" + errorObj.info);
+                },
+                //返回一个错误，选择文件时触发
+                'onSelectError': function(file, errorCode, errorMsg) {
+                    switch (errorCode) {
+                    case -100:
+                        alert("上传的文件数量已经超出限制的" + $('#file_upload').uploadify('settings', 'queueSizeLimit') + "个文件！");
+                        break;
+                    case -110:
+                        alert("文件 [" + file.name + "] 大小超出限制的" + $('#file_upload').uploadify('settings', 'fileSizeLimit') + "大小！");
+                        break;
+                    case -120:
+                        alert("文件 [" + file.name + "] 大小异常！");
+                        break;
+                    case -130:
+                        alert("文件 [" + file.name + "] 类型不正确！");
+                        break;
+                    default:
+                        alert("发生未知错误！");
+                    }
+                },
+                //检测FLASH失败调用
+                'onFallback': function() {
+                    alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+                }
+            });
+        });
+
+
+
+
+    </script>
+}

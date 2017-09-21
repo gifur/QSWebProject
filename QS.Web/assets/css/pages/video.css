@@ -1,0 +1,179 @@
+﻿.content_wrap {
+    padding: 5px 0px;
+    margin-right: 15px;
+}
+.content_wrap li {
+    margin-bottom: 8px;
+}
+
+.content_wrap li:hover {
+    border-right: 5px solid #35aa47;
+}
+
+.content_wrap .pic-box {
+    padding-left: 15px;
+    padding-right: 0px;
+}
+
+.content_wrap .pic-text {
+    background: none repeat scroll 0% 0% #F2F2F2;
+    height: 101px;
+}
+
+.content_wrap .pic-text h5 {
+    margin-bottom: 12px;
+        overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.play-rank-item a,
+.content_wrap .pic-text a {
+    color: #333;
+    
+}
+
+.play-rank-item a:hover,
+.content_wrap .pic-text a:hover, a:focus {
+    color: #35aa47;
+    text-decoration: none;
+}
+
+.content_wrap .pic-text .info_describe {
+    color: #999;
+    font-size: 12px;
+    width: 100%;
+    line-height: 18px;
+}
+
+.play-rank {
+    font-size: 14px;
+}
+
+.mod-piclist {
+    display: block;
+}
+
+.ordinary {
+    color: #FFF;
+    width: 20px;
+    height: 20px;
+    float: left;
+    text-align: center;
+    line-height: 20px;
+    margin: 1px 10px 0px 0px;
+    border-radius: 2px;
+}
+
+.play-rank-tags .fa,
+.hot-ordinary {
+    background: -moz-linear-gradient(center top , #7AB800, #69A000) repeat scroll 0% 0% transparent;
+}
+.def-ordinary {
+    background: -moz-linear-gradient(center top , #AAA, #999) repeat scroll 0% 0% transparent;
+}
+
+.play-rank-item {
+    background: none repeat scroll 0% 0% #F2F2F2;
+    padding: 10px 10px 0px;
+    border-bottom: 1px solid #EBEBEB;
+}
+
+.play-rank-item li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #CCC;
+}
+
+.tit-ordinary {
+    width: 160px;
+    float: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.play-rank-nums {
+    float: left;
+    text-align: right;
+    width: 72px;
+    font-size: 12px;
+    color: #999;
+}
+
+.play-rank-tags {
+    float: left;
+    text-align: right;
+    width: 80px;
+    font-size: 12px;
+    color: #999;
+}
+
+.fs-icons {
+    display: inline-block;
+    font-style: normal;
+}
+
+.fs-hot, .fs-hot-gray {
+    width: 17px;
+    height: 17px;
+    line-height: 16px;
+    border: 1px solid #699F00;
+    text-align: center;
+    background-color: #699F00;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.mod-piclist .site-piclist_pic {
+    position: relative;
+    width: 100%;
+}
+
+.mod-piclist .site-piclist_pic_link {
+    width: 280px;
+    height: 158px;
+    display: block;
+}
+
+.site-piclist_pic_link img {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.mod-piclist-ft {
+    height: 24px;
+    line-height: 24px;
+    color: #FFF;
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.6);
+}
+
+.play-rank .fs-hot {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 2px;
+    background: -moz-linear-gradient(center top , #7AB800, #69A000) repeat scroll 0% 0% transparent;
+}
+
+.fs-hot {
+    color: #FFF;
+}
+
+.textOverflow {
+    padding-left: 5px;
+}
+
+.textOverflow {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+}

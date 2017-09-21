@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "影视心灵";
+    ViewBag.CurrentPage = "Shared-Video";
+}
+
+@section Styles{
+    <link href="/assets/plugins/bxslider/jquery.bxslider.css" rel="stylesheet" />
+    <link href="/assets/css/pages/portfolio.css" rel="stylesheet" type="text/css" />
+}
+
+    <!-- 页面内容 -->
+<div class="page-container container">
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-20">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
+                    <li>@Html.ActionLink("真心推荐", "Index", "Video")</li>
+                    <li class="active">影视心灵</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="row">
+        <div class="col-md-12">
+            <!-- 主体 -->
+            <!-- 显示并过滤图片类型 -->
+            <div class="filter-v1">
+                <ul class="mix-filter">
+                    <li><a href="#recent">最新内容</a></li>
+                    <li><a href="#psychology">心理短片</a></li>
+                    <li><a href="#life">感悟人生</a></li>
+                    <li><a href="#ted">TED专场</a></li>
+                    <li><a href="#dvju">心理DV剧</a></li>
+                    <li><a href="#other">其他精彩</a></li>
+                </ul>
+            </div>
+            <!-- 结束 过滤并显示图片类型 -->
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        @{
+            Html.RenderAction("SubIndex", new {category = "心理短片"});
+            <div class="clearfix"></div>
+            Html.RenderAction("SubIndex", new { category = "感悟人生" });
+            <div class="clearfix"></div>
+            Html.RenderAction("SubIndex", new { category = "TED专场" });
+            <div class="clearfix"></div>
+            Html.RenderAction("SubIndex", new { category = "心理DV剧" });
+            <div class="clearfix"></div>
+            Html.RenderAction("SubIndex", new { category = "其他精彩" });
+        }
+    </div>
+    <!-- 结束 主体 -->
+</div>
+<!-- 结束页面内容 -->
+
+@section Scripts{
+    <script type="text/javascript" src="/assets/plugins/bxslider/jquery.bxslider.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            $('.carousel').carousel({
+                pause: true,
+                interval: false
+            });
+        });
+    </script>
+}

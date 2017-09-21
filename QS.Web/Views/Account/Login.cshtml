@@ -1,0 +1,105 @@
+﻿@model QS.Web.Models.LoginModel
+@{
+    ViewBag.Title = "欢迎登录";
+}
+@section Styles{
+}
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li class="active">登录</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container margin-bottom-40">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 login-signup-page">
+                <form action="Login" method="POST">
+                    <h4>&nbsp;</h4>
+                    <div class="form-group margin-bottom-20">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            @Html.TextBoxFor(model => model.NameOrNumber, new { @class = "form-control", placeholder = "用户名/学号" })
+                        </div>
+                        <span class="error-block">
+                            @Html.ValidationMessageFor(model => model.NameOrNumber)
+                        </span>
+                    </div>
+                    <div class="form-group margin-bottom-20">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "密码" })
+                        </div>
+                        <span class="error-block">
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </span>
+                    </div>
+                    <div class="form-group margin-bottom-20">
+                        <div class="input-group">
+                            <span class="input-group-addon vertify">
+                                <img id="valiCode" title="看不清？点击换一个"
+                                     src="@Url.Action("GetValidateCode", "Account")" alt="验证码"/>
+                            </span>
+                            @Html.TextBoxFor(model => model.ValidateCode, new { @class = "form-control placeholder-no-fix", placeholder = "输入验证码" })
+                        </div>
+                        <span class="error-block">
+                            @Html.ValidationMessageFor(model => model.ValidateCode)
+                        </span>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="checkbox-list"><label class="checkbox">@Html.CheckBoxFor(model => model.RememberMe) 记住我</label></div>
+                            
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <button type="submit" class="btn theme-btn pull-right">登录&nbsp;<i class="fa fa-sign-in"></i></button>
+                        </div>
+                    </div>
+                    <div class="margin-bottom-20">
+                        <div class="clearfix">
+                            <input type="hidden" name="ReturnUrl" value="@ViewBag.returnUrl" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="pull-right">
+                        <p class="text-muted">
+                            忘记密码了？
+                            点击
+                            <a href="@Url.Action("ForgotPassword")" id="forget-password">
+                                这里
+                            </a>
+                            找回密码
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            App.initUniform();
+        });
+
+        $(function () {
+            $("#valiCode").bind("click", function () {
+                this.src = "../Account/GetValidateCode?time=" + (new Date()).getTime();
+            });
+        });
+    </script>
+}

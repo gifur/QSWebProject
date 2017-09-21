@@ -1,0 +1,166 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.SharedModule.VideoDto>
+@{
+    ViewBag.Title = "视频分享";
+    const string noImgPath = @"/Areas/assets/img/no-cover.png";
+}
+
+@section Styles{
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            视频分享
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","VideoManage", new{ Area = "Admin" })">
+                    视频分享
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+
+            @using (Html.BeginForm("Index", "VideoManage", new RouteValueDictionary { { "id", "" } }, FormMethod.Get, new { @class = "portlet-title" }))
+            {
+                <div class="caption text-muted">
+                    <i class="fa fa-shopping-cart"></i>视频列表
+                </div>
+                <div class="actions">
+                    <a href="@Url.Action("Create", "VideoManage")" class="btn default yellow-stripe">
+                        <i class="fa fa-plus-square"></i>
+                        <span>
+                            创建新视频
+                        </span>
+                    </a>
+                </div>
+
+            }
+
+            <table id="photo-list" class="table table-bordered table-advance  table-hover">
+                <thead>
+                    <tr role="row" class="heading">
+                        <th width="12%">
+                        </th>
+                        <th width="25%">
+                            <i class="fa fa-coffee"></i> 标题
+                        </th>
+                        <th width="14%">
+                            <i class="fa fa-tags"></i> 分类
+                        </th>
+                        <th width="8%">
+                            <i class="fa fa-location-arrow"></i> 来源
+                        </th>
+                        <th width="8%">
+                            <i class="fa  fa-eye"></i> 浏览量
+                        </th>
+                        <th width="8%">
+                            <i class="fa  fa-comments"></i> 评论数
+                        </th>
+                        <th width="10%">
+                            <i class="fa fa-calendar"></i> 创建时间
+                        </th>
+                        <th width="10%">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img class="img-responsive" src="@(item.ThumbPath ?? noImgPath)" alt="封面图片">
+                            </td>
+                            <td>
+                                @*@Html.ActionLink(@item.VideoName, "Detail", new { id = @item.VideoId })*@ @Html.DisplayFor(it => item.VideoName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.Category)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.ComesFrom)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.Hits)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(it => item.CommentNum)
+                            </td>
+                            <td>
+                                <span class="text-muted" title="@item.CreateTime.ToString("hh:mm:ss")">
+                                    @item.CreateTime.ToShortDateString()
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn default btn-block btn-xs" value="@item.VideoId">
+                                    <i class="fa fa-times"></i> 删除
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.Pager(Model, new PagerOptions { PageIndexParameterName = "id" })
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #video-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #video-list-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+        });
+
+        $('table .btn').on('click', function () {
+            var $this = $(this);
+            bootbox.confirm("您确定删除此视频分享？", function(result) {
+                if (result) {
+                    $.ajax({
+                        type: 'post',
+                        data: { videoId: $this.val() },
+                        url: '/Admin/VideoManage/Delete',
+                        success: function (evt) {
+                            if (evt == "true") {
+                                App.alert({ type: 'success', message: '删除成功！', closeInSeconds: 8, icon: 'check-circle' });
+                                $this.closest('tr').remove();
+                            } else {
+                                App.alert({ type: 'danger', message: '抱歉，出现未知错误，请刷新后再重试...', closeInSeconds: 8, icon: 'warning' });
+                            }
+                        },
+                        error: function (scrip) {
+                            App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+
+}

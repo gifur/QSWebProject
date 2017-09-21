@@ -1,0 +1,14 @@
+﻿@model IEnumerable<QS.Web.Models.NewestCommentModel>
+<div class="blog-twitter">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="blog-twitter-block">
+                <p>@item.Content</p>来源于：<a href="@Url.Action("Item", "Article", new {id = @item.Id})"><em>@item.Title</em></a>
+                <span>@Html.DateFormat(@item.Time)</span>
+                <i class="fa fa-angle-double-left blog-twiiter-icon"></i>
+            </div>
+        }
+    }
+</div>

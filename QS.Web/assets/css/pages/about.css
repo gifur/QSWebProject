@@ -1,0 +1,161 @@
+﻿h6 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.heading-section h4 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #656565;
+}
+
+.front-team  span {
+    color:#35aa47;
+}
+
+.testimonials-v1 .carousel-info img {
+    border-radius: 150px !important;
+}
+
+.testimonials-v1 span.testimonials-name {
+    margin: 20px 0 0;
+}
+
+/* ===================================
+6. Sliders
+==================================== */
+/* --- flexslider --- */
+
+#featured .flexslider {
+	padding:0;
+	margin: 10px 0 30px; 
+	background: #fff; 
+	position: relative; 
+	zoom: 1;
+}
+
+.flex-caption {
+    background:none; 
+    -ms-filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000); 
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endColorstr=#4C000000); 
+    zoom: 1;
+}
+.flex-caption {
+     /*bottom: 35px;*/
+     bottom: 20px; 
+     background-color: rgba(0, 0, 0, 0.8); 
+     color: #fff; 
+     margin: 0; 
+     /*padding: 25px 25px 25px 30px;*/ 
+     padding: 10px 20px 20px 30px;
+     position: absolute; right: 0; 
+     /*width: 295px;*/
+}
+.flex-caption h3 {color: #fff; letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase;}
+.flex-caption p {margin: 0 0 15px;}
+
+.flex-control-paging li a {
+    border-radius: 20px !important;
+}
+.flex-control-nav {
+    bottom: 0px;
+}
+
+#content {
+    position: relative;
+    background: none repeat scroll 0% 0% #FFF;
+    padding: 50px 0px 40px;
+}
+
+.box {
+    width: 100%;
+}
+
+.aligncenter {
+    text-align: center;
+}
+
+.box-gray {
+    background: none repeat scroll 0% 0% #F8F8F8;
+    padding: 20px 20px 30px;
+    height: 240px;
+}
+
+.box-gray h4, .box-gray i {
+    margin-bottom: 20px;
+}
+
+.box-gray ul {
+    padding-left: 20px;
+}
+
+/*.box-gray h4 {
+    background: none repeat scroll 0% 0% #35aa47;
+    color: #FFF;
+}*/
+
+.box-bottom {
+    padding: 20px 0px;
+    text-align: center;
+    background: none repeat scroll 0% 0% #68A4C4;
+}
+
+.box-bottom a {
+    color: #FFF;
+    font-weight: 700;
+}
+
+.box-bottom a:hover {
+    color: #EEE;
+    text-decoration: none;
+}
+
+.solidline {
+    border-top: 1px solid #F5F5F5;
+    margin: 0px 0px 30px;
+}
+
+
+section.callaction {
+    background: none repeat scroll 0% 0% #F9F9F9;
+    padding: 30px 0px 0px;
+}
+
+.big-cta {
+    padding: 0px 20px 30px;
+}
+
+.cta-text {
+    /*text-align: center;*/
+    margin-top: 10px;
+}
+
+.cta-text h2 span {
+    color: #68A4C4;
+}
+
+.heading-section {
+    text-align: center;
+    padding: 80px 0px 40px;
+}
+
+/*send message*/
+
+#sendmessage {
+    border: 1px solid #E6E6E6;
+    background: none repeat scroll 0% 0% #F6F6F6;
+    display: none;
+    text-align: center;
+    padding: 15px 12px 15px 65px;
+    margin: 10px 0px 30px;
+    font-weight: 600;
+}
+
+#comment-form label {
+    font-weight: 800;
+    color: #666;
+    margin-top: 10px;
+}

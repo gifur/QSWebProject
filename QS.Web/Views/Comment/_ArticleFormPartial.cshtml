@@ -1,0 +1,45 @@
+﻿@model QS.DTO.CommentModule.ArticleCommentDto
+<div class="post-comment">
+    <h3 class="comments-line text-muted">发表评论</h3>
+    <form role="form" id="comment-form" action="@Url.Action("ArticleFormPartial", "Comment")" method="post">
+        @Html.HiddenFor(model => Model.IsMember)
+        @Html.HiddenFor(model => Model.ArticleId)
+        @if (Model.IsMember != 0)
+        {
+            @Html.HiddenFor(model => Model.Email)
+            <div class="form-group">
+                <label>昵称</label>
+                @Html.TextBoxFor(model => Model.NickName, new
+                {
+                    @class = "form-control",
+                    @readonly = "true"
+                })
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label>昵称</label>
+                @Html.TextBoxFor(model => Model.NickName, new { @class = "form-control" })
+                <span class="error-block" id="nickname-block">
+                </span>
+            </div>
+            <div class="form-group">
+                <label>邮箱 <span class="color-red">*</span></label>
+                @Html.TextBoxFor(model => Model.Email, new { @class = "form-control" })
+                <span class="error-block" id="email-block">
+                    @Html.ValidationMessageFor(model => Model.Email)
+                </span>
+            </div>
+        }
+
+        <div class="form-group">
+            <label>内容 <span class="color-red">*</span></label>
+            @Html.TextAreaFor(model => Model.Content, new { @class = "form-control", rows = 8 })
+            <span class="error-block" id="content-block">
+                @Html.ValidationMessageFor(model => Model.Content)
+            </span>
+        </div>
+        <p><button class="btn btn-default theme-btn" type="submit">贴上</button></p>
+    </form>
+</div>

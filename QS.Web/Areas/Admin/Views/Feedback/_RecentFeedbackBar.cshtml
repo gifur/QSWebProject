@@ -1,0 +1,81 @@
+﻿@model QS.DTO.FeedbackModule.FeedbackDto
+<li class="dropdown" id="header_feedback_bar">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+        <i class="fa fa-tasks"></i>
+        @*<span class="badge">
+        </span>*@
+    </a>
+    <ul class="dropdown-menu extended tasks">
+        @if (Model == null)
+        {
+            <li>
+                <p>
+                    心理反馈还未开始或已结束！
+                </p>
+            </li>
+        }
+        else if (Model.Status == QS.DTO.FeedbackModule.EnumFbStatus.Await)
+        {
+            <li>
+                <p>
+                    心理反馈即将开始！
+                </p>
+            </li>
+        }
+        else
+        {
+            <li>
+                <p>
+                    @Model.FeedbackName
+                </p>
+            </li>
+            <li>
+                <ul class="dropdown-menu-list scroller" style="height: 180px;">
+                    <li>
+                        <div>
+                            <span class="task">
+                                <span class="desc">
+                                    时间进度
+                                </span>
+                                <span class="percent">
+                                    @(ViewBag.Percent)%
+                                </span>
+                            </span>
+                            <span class="progress progress-striped active">
+                                <span style="width: @(ViewBag.Percent)%;" class="progress-bar progress-bar-danger" aria-valuenow="@ViewBag.Percent" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="sr-only">
+                                        @(ViewBag.Percent)% 
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <span class="task">
+                                <span class="desc">
+                                    上交情况
+                                </span>
+                                <span class="percent">
+                                    60%
+                                </span>
+                            </span>
+                            <span class="progress progress-striped active">
+                                <span style="width: 60%;" class="progress-bar progress-bar-warning" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
+                                    <span class="sr-only">
+                                        60% Complete
+                                    </span>
+                                </span>
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="external">
+                <a href="@Url.Action("Index", "Feedback")">
+                    点击查看详情 <i class="m-icon-swapright"></i>
+                </a>
+            </li>
+        }
+    </ul>
+</li>

@@ -1,0 +1,145 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.Web.Models.NewsSummaryModel>
+@{
+    ViewBag.Title = "新闻速递";
+    ViewBag.CurrentPage = "News";
+}
+
+@section Styles{
+    <link href="~/assets/css/pages/blog.css" rel="stylesheet" />
+}
+
+<!-- 页面内容 -->
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
+                    <li class="active">新闻速递</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container min-hight">
+        <!-- 新闻内容 -->
+        <div class="row">
+            <!-- 左边新闻块 -->
+            <div class="col-md-9 col-sm-9 blog-posts margin-bottom-40">
+                @if (Model != null)
+                {
+                    var count = 0;
+                    foreach (var item in Model)
+                    {
+                        if (count++ > 0)
+                        {
+                            <hr class="blog-post-sep">
+                        }
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4">
+                                <img src="@item.ViewImage" alt="" class="img-responsive img-thumbnail">
+                            </div>
+                            <div class="col-md-8 col-sm-8">
+                                <h2><a href="@Url.Action("Item", new{id = @item.NewsId})">@item.NewsTitle</a></h2>
+                                <ul class="blog-info">
+                                    <li><i class="fa fa-calendar"></i> @item.CreateTime</li>
+                                    <li><i class="fa fa-eye"></i> @Html.ViewTimesFormat(@item.ViewTimes)</li>
+                                    <li><i class="fa fa-comments"></i> @Html.CommentsFormat(@item.CommentNum)</li>
+                                    <li><i class="fa fa-tags"></i> @item.NewsTags</li>
+                                    @item.Category
+                                </ul>
+                                <p>@item.NewsContent</p>
+                                <a class="more" href="@Url.Action("Item", new{id = @item.NewsId})">[详细]</a>
+                            </div>
+                        </div>
+                    }
+                }
+            <div class="text-center">
+                @Html.Pager(Model, new PagerOptions
+                {
+                    PageIndexParameterName = "pageIndex",
+                    ShowFirstLast = false,
+                    ContainerTagName = "ul",
+                    CssClass = "pagination pagination-centered",
+                    PagerItemWrapperFormatString = "<li>{0}</li>",
+                    CurrentPagerItemWrapperFormatString = "<li class=\"active\"><a>{0}</a></li>"
+                })
+            </div>
+            </div>
+
+            <!-- 结束  左边新闻块-->
+            <!-- 右边导航块 -->
+            <div class="col-md-3 col-sm-3 blog-sidebar">
+                <!-- 分类 -->
+                <h4 class="titlemore"><span class="slash-colored">//</span>新闻分类</h4>
+                <ul class="nav sidebar-categories margin-bottom-40" id="categories">
+                    <li><a href="@Url.Action("Category", "News", new{category = "热点聚焦"})">热点聚焦</a></li>
+                    <li><a href="@Url.Action("Category", "News", new{category = "校园生活"})">校园生活</a></li>
+                    <li><a href="@Url.Action("Category", "News", new{category = "求索活动"})">求索活动</a></li>
+                </ul>
+                <!-- 结束 分类 -->
+                <!-- 热点新闻 -->
+                <h4 class="titlemore"><span class="slash-colored">//</span>热门点击</h4>
+                @{
+                    Html.RenderAction("_HotHits", "News", new {number = 5});
+                }
+                <!-- 结束 热点聚焦 -->
+                <!-- 心理前沿 -->
+                <div class="titlemore-div">
+                    <h4><span class="slash-colored">//</span>心理图片</h4>
+                    @Ajax.ActionLink(@"换一批", "_PhotoGalleryPartial", "Gallery", new AjaxOptions
+                    {
+                        UpdateTargetId = "gallery",
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "Put"
+                    })
+                </div>
+                <div id="gallery" class="blog-photo-stream margin-bottom-20">
+                    @{
+                        Html.RenderAction("_PhotoGalleryPartial", "Gallery");
+                    }
+                </div>
+                <!-- 结束  -->
+                <!-- 新闻标签 -->
+                @*<div class="blog-tags margin-bottom-20">
+                    <h4 class="titlemore"><span class="slash-colored">//</span>热门标签</h4>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-tags"></i>爱情</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>职场</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>心灵</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>原创</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>心灵感悟</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>情绪管理</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>治愈系</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>恋爱心理</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>求索</a></li>
+                    </ul>
+                </div>*@
+                <!-- 结束 新闻标签 -->
+            </div>
+            <!-- 结束 右边导航块 -->
+        </div>
+        <!-- 结束 新闻内容 -->
+    </div>
+    <!-- 结束 主体 -->
+
+</div>
+<!-- 结束页面内容 -->
+@section Scripts{
+    @{Html.RegisterMvcPagerScriptResource();}
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            $('#categories li').click(function () {
+                $(this).addClass('active');
+            });
+        });
+    </script>
+}

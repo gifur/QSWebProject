@@ -1,0 +1,56 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.LogModule.LoginLogDto>
+@{
+    ViewBag.Title = "日志管理";
+}
+
+@section Styles{
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            日志管理
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","LogManage", new{ Area = "Admin" })">
+                    日志管理
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        暂无相关内容...
+    </div>
+</div>
+
+@section Scripts{
+
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #system-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #log-header').children(':first').children('span.arrow').addClass('open');
+            //$('ul.page-sidebar-menu #login-list-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+        });
+
+    </script>
+}

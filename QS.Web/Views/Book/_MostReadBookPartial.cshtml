@@ -1,0 +1,17 @@
+﻿@model IEnumerable<QS.DTO.SharedModule.BookDto>
+<div class="play-rank margin-bottom-10">
+    <ul class="play-rank-item list-unstyled">
+        @if (Model != null && Model.Any())
+        {
+            var count = 0;
+            foreach (var item in Model)
+            {
+                <li class="clearfix">
+                    <span class="ordinary @(++count <= 3 ? "hot-ordinary" : "def-ordinary") ">@count</span>
+                    <a class="tit-ordinary" href="@Url.Action("Item", new{id = @item.BookId})" title="@item.BookName">@item.BookName</a>
+                    <span class="play-rank-nums">@(item.Already)人读过</span>
+                </li>
+            }
+        }
+    </ul>
+</div>

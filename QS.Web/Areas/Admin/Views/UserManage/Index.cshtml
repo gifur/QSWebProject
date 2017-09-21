@@ -1,0 +1,144 @@
+﻿@using QS.DTO.Module
+@model List<UserDto>
+@{
+    ViewBag.Title = "用户列表";
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/select2/select2-metronic.css" />
+    <link rel="stylesheet" href="~/Areas/assets/plugins/data-tables/DT_bootstrap.css" />
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            用户管理
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","UserManage", new{ Area = "Admin" })">
+                    用户管理
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+<div class="row" id="sortable_portlets">
+    <div class="col-md-12 column sortable">
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-users"></i>用户列表
+                </div>
+                <div class="actions">
+                    <div class="btn-group">
+                        <a class="btn btn-default" href="#" data-toggle="dropdown">
+                            <i class="fa fa-cogs"></i> 当前列状态 <i class="fa fa-angle-down"></i>
+                        </a>
+                        <div id="sample_1_column_toggler" class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                            <label><input type="checkbox" checked data-column="1">学号</label>
+                            <label><input type="checkbox" checked data-column="2">用户名</label>
+                            <label><input type="checkbox" checked data-column="3">姓名</label>
+                            <label><input type="checkbox" checked data-column="4">身份</label>
+                            <label><input type="checkbox" checked data-column="5">性别</label>
+                            <label><input type="checkbox" data-column="6">电子邮箱</label>
+                            <label><input type="checkbox" data-column="7">联系方式</label>
+                            <label><input type="checkbox" data-column="8">宿舍地址</label>
+                            <label><input type="checkbox" checked data-column="9">当前状态</label>
+                            <label><input type="checkbox" checked data-column="10">操作</label>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="table-toolbar">
+                    <div class="btn-group">
+                        <a class="btn green" href="@Url.Action("Create")" style="width:120px">
+                            <i class="fa fa-plus"></i>  添加新用户
+                        </a>
+                    </div>
+                </div>
+                <table class="table table-striped table-bordered table-hover" id="sample_1">
+                    <thead style="background-color: #EEE !important;">
+                        <tr>
+                            <th>学号</th>
+                            <th>用户名</th>
+                            <th>姓名</th>
+                            <th>身份</th>
+                            <th>性别</th>
+                            <th>电子邮箱</th>
+                            <th>联系电话</th>
+                            <th>宿舍地址</th>
+                            <th>当前状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (UserDto item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(it => item.StuNumber)</td>
+                                <td>@Html.DisplayFor(it => item.UserName)</td>
+                                <td>@Html.DisplayFor(it => item.RealName)</td>
+                                <td>@Html.DisplayFor(it => item.Identification)</td>
+                                <td>@(item.Gender == GenderType.Male ? "男" : (item.Gender == GenderType.Female ? "女" : "保密"))</td>
+                                <td>@Html.DisplayFor(it => item.Email)</td>
+                                <td>@Html.DisplayFor(it => item.Phone)</td>
+                                <td>@Html.DisplayFor(it => item.PersonalPage)</td>
+                                <td>
+                                    @if (item.State == UserState.Activated)
+                                    { @:<span class="label label-sm label-success">正常使用</span>
+                                    }
+                                    else if (item.State == UserState.Nonactivated)
+                                    {@:<span class="label label-sm label-primary">未被激活</span>
+                                    }
+                                    else if(item.State == UserState.Retire)
+                                    {@:<span class="label label-sm label-default">停止使用</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a class="btn default btn-xs green-stripe"
+                                       href="@Url.Action("DetailEdit", new {stuNumber = @item.StuNumber})">
+                                        更多信息</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END PAGE CONTENT-->
+@section Scripts{
+    <script type="text/javascript" src="~/Areas/assets/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/data-tables/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/data-tables/DT_bootstrap.js"></script>
+    <script src="~/Areas/assets/scripts/custom/table-advanced-user.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #user-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #sub-user-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #user-list-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init(); // initlayout and core plugins
+            TableAdvanced.init();
+    });
+    </script>
+}

@@ -1,0 +1,38 @@
+﻿@model QS.Web.Models.UserSafetyModel
+<li class="dropdown user">
+    @if (HttpContext.Current.Request.IsAuthenticated)
+    {
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+            <img alt="" src="~/Profiles/HeadImage/@Model.PhotoUrl" width="30" height="30"/>
+            <span class="username">
+                @Model.UserName
+            </span>
+            <i class="fa fa-angle-down"></i>
+        </a>
+    <ul class="dropdown-menu">
+        <li>
+            <a href="#">
+                <i class="fa fa-user"></i> 个人信息
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <i class="fa fa-warning"></i> 我的消息
+                <span class="badge badge-danger">3</span>
+            </a>
+        </li>
+        <li class="divider">
+        </li>
+        <li>
+            <a href="@Url.Action("Index", "Home", new{Area = ""})">
+                <i class="fa fa-warning"></i> 网站前台
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("LoginOut", "OAuth")">
+                <i class="fa fa-key"></i> 退出
+            </a>
+        </li>
+    </ul>
+    }
+</li>

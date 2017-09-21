@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "找不到请求的资源";
+}
+
+@section Styles{
+     <link href="~/assets/css/pages/page404.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="page-container">
+    <!-- 主体 -->
+    <div class="container margin-bottom-40 show_contents">
+        <div class="row">
+            <div class="col-md-12 page-404">
+                <div class="number" style="top:10px;">
+                    404
+                </div>
+                <div class="details">
+                    <h3>啊~哦~ 您要查看的页面不存在或已删除！</h3>
+                    <p>
+                        请检查您输入的网址是否正确，或者点击链接继续访问空间<br>
+                        你可以回到&nbsp;<a href="@Url.Action("Index", "Home")">网站首页</a>&nbsp;或尝试搜索想要找的内容
+                    </p>
+                    @*<form action="page_search_result.html">
+                        <div class="input-group input-medium">
+                            <input type="text" placeholder="请输入关键字" class="form-control">
+                            <span class="input-group-btn">
+                                <button class="btn blue" type="submit"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </form>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 主体 -->
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+        });
+    </script>
+}

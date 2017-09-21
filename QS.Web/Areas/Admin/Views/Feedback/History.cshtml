@@ -1,0 +1,161 @@
+﻿@using QS.DTO.FeedbackModule
+@model IEnumerable<FeedbackDto>
+@{
+    ViewBag.Title = "心理反馈列表";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/Areas/assets/plugins/data-tables/DT_bootstrap.css" />
+}
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            以往心理反馈列表
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-edit"></i>
+                <a href="@Url.Action("Index")">
+                    心理反馈
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-edit"></i>
+                <a href="@Url.Action("History")">
+                    反馈列表
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<input type="hidden" value="@ViewData["Message"]" id="mes" />
+<div class="row">
+    <div class="col-md-12">
+        <!-- Begin: life time stats -->
+        <div class="portlet">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-bar-chart-o"></i>全部内容
+                </div>
+                <div class="actions">
+                    <a href="@Url.Action("Create")" class="btn default red-stripe">
+                        <i class="fa fa-plus"></i>
+                        <span class="hidden-480">
+                            新建心理反馈进程
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                @if (!Model.Any())
+                {
+                    <div class="well">
+                        <h4 class="text-center">
+                            暂无数据！
+                        </h4>
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-striped table-bordered table-hover" id="history_record">
+                        <thead>
+                            <tr>
+                                <th style="width:8px;">
+                                    <input type="checkbox" class="group-checkable" data-set="#history_record .checkboxes" />
+                                </th>
+                                <th>
+                                    标题
+                                </th>
+                                <th>
+                                    开始时间
+                                </th>
+                                <th>
+                                    结束时间
+                                </th>
+                                <th>
+                                    状态
+                                </th>
+                                <th class="text-right">
+                                    创建时间
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="odd gradeX">
+                                    <td>
+                                        <input type="checkbox" class="checkboxes" value="1" />
+                                    </td>
+                                    <td>
+                                        @Html.RouteLink(item.FeedbackName, "Detail", new { feedbackId = item.FeedbackId, feedbackName = item.FeedbackName })
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(it => item.StartTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(it => item.EndTime)
+                                    </td>
+                                    <td>
+                                        @if (item.Status == EnumFbStatus.Await)
+                                        {
+                                            @:<span class="label label-sm label-success">等待就绪</span>
+                                        }
+                                        else if (item.Status == EnumFbStatus.Underway)
+                                        {
+                                            @:<span class="label label-sm label-danger">正在进行</span>
+                                        }
+                                        else
+                                        {
+                                            @:<span class="label label-sm label-default">已经关闭</span>
+                                        }
+                                    </td>
+                                    <td class="text-right">
+                                        @Html.DisplayFor(it => item.CreateTime)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- END PAGE CONTENT-->
+@section Scripts{
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script type="text/javascript" src="~/Areas/assets/plugins/data-tables/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/data-tables/DT_bootstrap.js"></script>
+    <script src="~/Areas/assets/scripts/custom/task-feedback.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+        jQuery(document).ready(function() {
+            // initiate layout and plugins
+            var $header = $('ul.page-sidebar-menu #psy-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #feedback-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #feedback-history-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+            TaskOfFeedback.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+        });
+    </script>
+}

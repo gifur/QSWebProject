@@ -1,0 +1,188 @@
+﻿@model QS.DTO.SharedModule.NewsDto
+@{
+    ViewBag.Title = @Model.NewsTitle;
+    ViewBag.CurrentPage = "News";
+}
+
+@section Styles{
+    <link href="~/assets/css/pages/blog.css" rel="stylesheet" />
+}
+
+<!-- 页面内容 -->
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li><a href="@Url.Action("Index", "News")">新闻速递</a></li>
+                    <li class="active">新闻内容</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container min-hight">
+        <!-- 新闻内容 -->
+        <div class="row">
+            <!-- 左边新闻块 -->
+            <div class="col-md-9 blog-tag-data show_contents blog-item">
+                <h4>@Model.NewsTitle</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-inline blog-tags">
+                            @if (@Model.NewsTags != null)
+                            {
+                                var items = @Model.NewsTags.Split(',');
+                                <li>
+                                    <i class="fa fa-tags"></i>
+                                            @foreach (var item in items)
+                                            {
+                                                <a href="#">
+                                                    @item
+                                                </a>
+                                            }
+                                    
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="col-md-6 blog-tag-data-inner">
+                        <ul class="list-inline news-timeview">
+                            <li>
+                                <i class="fa fa-calendar"></i>
+                                @Model.CreateTime
+                            </li>
+                            <li>
+                                <i class="fa fa-eye"></i>
+                                @Html.ViewTimesFormat(@Model.ViewTimes)
+                            </li>
+                            <li>
+                                <i class="fa fa-tag"></i>
+                                @Model.Category
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="news-item-page">
+                    @Html.Raw(Model.NewsContent)
+                </div>
+                <div id="comments">
+                    @{
+                        Html.RenderAction("_NewsPartial", "Comment", new { id = @Model.NewsId });
+                    }   
+                </div>
+                    @{
+                        Html.RenderAction("_NewsFormPartial", "Comment", new { id = @Model.NewsId });
+                    }
+                </div>
+            <!-- 结束  左边新闻块-->
+            <!-- 右边导航块 -->
+            <div class="col-md-3 col-sm-3 blog-sidebar">
+                <!-- 分类 -->
+                <h4 class="titlemore"><span class="slash-colored">//</span>新闻分类</h4>
+                <ul class="nav sidebar-categories margin-bottom-40" id="categories">
+                    <li><a href="@Url.Action("Category", "News", new{category = "热点聚焦"})">热点聚焦</a></li>
+                    <li><a href="@Url.Action("Category", "News", new{category = "校园生活"})">校园生活</a></li>
+                    <li><a href="@Url.Action("Category", "News", new{category = "求索活动"})">求索活动</a></li>
+                </ul>
+                <!-- 结束 分类 -->
+                <!-- 热点新闻 -->
+                <h4 class="titlemore"><span class="slash-colored">//</span>热门点击</h4>
+                @{
+                    Html.RenderAction("_HotHits", "News", new { number = 5 });
+                }
+                <!-- 结束 热点聚焦 -->
+                <!-- 心理前沿 -->
+                <div class="titlemore-div">
+                    <h4><span class="slash-colored">//</span>心理图片</h4>
+                    @Ajax.ActionLink(@"换一批", "_PhotoGalleryPartial", "Gallery", new AjaxOptions
+                    {
+                        UpdateTargetId = "gallery",
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "Put"
+                    })
+                </div>
+                <div id="gallery" class="blog-photo-stream margin-bottom-20">
+                    @{
+                        Html.RenderAction("_PhotoGalleryPartial", "Gallery");
+                    }
+                </div>
+                <!-- 结束  -->
+                <!-- 新闻标签 -->
+                @*<div class="blog-tags margin-bottom-20">
+                    <h4 class="titlemore"><span class="slash-colored">//</span>热门标签</h4>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-tags"></i>爱情</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>职场</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>心灵</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>原创</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>心灵感悟</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>情绪管理</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>治愈系</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>恋爱心理</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>求索</a></li>
+                    </ul>
+                </div>*@
+                <!-- 结束 新闻标签 -->
+            </div>
+            <!-- 结束 右边导航块 -->
+        </div>
+        <!-- 结束 新闻内容 -->
+    </div>
+    <!-- 结束 主体 -->
+
+</div>
+<!-- 结束页面内容 -->
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+
+            var options = {
+                success: showResponse,
+                //dataType: 'json',
+                clearForm: false,
+                resetForm: false,
+                timeout: 3000
+            };
+
+            $('#comment-form').on('submit', function(e) {
+                e.preventDefault();
+                $(this).ajaxSubmit(options);
+            });
+
+
+        });
+
+        function showResponse(responseText, statusText, xhr, $form) {
+            
+            if (responseText.Success != null) {
+                return;
+            }
+            var result = responseText;
+            var value = parseInt($('#comments #comments-count').text());
+            $('#comments-count').text(value + 1);
+            var $comments = $('#comments').children('div.media');
+            if ($comments.length >= 5) {
+                $comments[4].remove();
+            }
+            $('#comments > h6').after(result);
+            App.scrollTo($('#comments'));
+            
+            var $email = $('#comment-form #Email');
+            if (!$email.is(":hidden")) {
+                $email.val("");
+                $('#comment-form #NickName').val("");
+            }
+            $('#comment-form #Content').val("");
+        }
+    </script>
+}

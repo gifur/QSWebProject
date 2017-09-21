@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "访问被拒绝";
+}
+
+@section Styles{
+    <link href="~/assets/css/pages/page404.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="page-container">
+    <!-- 主体 -->
+    <div class="container margin-bottom-40 show_contents">
+        <div class="row">
+            <div class="col-md-12 page-404">
+                <div class="number" style="top:10px;">
+                    403
+                </div>
+                <div class="details margin-top-20">
+                    <h3>禁止访问：访问被拒绝</h3>
+                    <p>
+                        抱歉，因为某些原因导致您无法访问此目录或页面<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 主体 -->
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+        });
+    </script>
+}

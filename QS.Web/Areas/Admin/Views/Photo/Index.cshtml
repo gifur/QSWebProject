@@ -1,0 +1,199 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.SharedModule.PhotoDto>
+@{
+    ViewBag.Title = "图片分享";
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/bootstrap-datepicker/css/datepicker.css" />
+    <link href="~/Areas/assets/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable.css" />
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            分享图片
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","Photo", new{ Area = "Admin" })">
+                    图片分享
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+
+                @using (Html.BeginForm("Index", "NewsManage", new RouteValueDictionary { { "id", "" } }, FormMethod.Get, new { @class = "portlet-title" }))
+                {
+                    <div class="caption text-muted">
+                        <i class="fa fa-shopping-cart"></i>Description
+                        <span class="hidden-480">
+                            | Dec 27, 2013 7:16:25
+                        </span>
+                    </div>
+                    <div class="actions">
+                        <a href="@Url.Action("Upload", "Photo")" class="btn default yellow-stripe">
+                            <i class="fa fa-plus-square"></i>
+                            <span>
+                                上传图片
+                            </span>
+                        </a>
+                    </div>
+
+                }
+            
+            <table id="photo-list"  class="table table-bordered table-advance  table-hover">
+                <thead>
+                    <tr role="row" class="heading">
+                        <th width="12%">
+                            <input type="checkbox" id="inline">&nbsp;编辑状态
+                        </th>
+                        <th width="29%">
+                            <i class="fa fa-coffee"></i> 图片描述
+                        </th>
+                        <th width="14%">
+                            <i class="fa fa-tags"></i> 图片分类
+                        </th>
+                        <th width="8%">
+                            <i class="fa  fa-eye"></i> 浏览量
+                        </th>
+                        <th width="8%">
+                            <i class="fa  fa-comments"></i> 评论数
+                        </th>
+                        <th width="15%">
+                            <i class="fa fa-calendar"></i> 创建时间
+                        </th>
+                        <th width="10%">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@item.PhotoPath" class="fancybox-button" data-rel="fancybox-button">
+                                    <img class="img-responsive" src="@item.ThumbPath" alt="@item.PhotoName">
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#" id="remark" data-type="textarea" data-pk="@item.PhotoId" class="description"
+                                   data-placeholder="暂无描述"
+                                   data-original-title="输入图片描述内容">@item.Remark</a>
+                            </td>
+                            <td>
+                                @item.PhotoTags
+                            </td>
+                            <td>
+                                @item.Hits
+
+                            </td>
+                            <td>
+                                @item.CommentNum
+                            </td>
+                            <td>
+                                <span class="text-muted">
+                                    @item.CreateTime.ToShortDateString() <i>@item.CreateTime.ToString("hh:mm:ss")</i>
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn default btn-block btn-xs" onclick="deleteItem(this, '@item.PhotoId')">
+                                    <i class="fa fa-times"></i> 删除
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.Pager(Model, new PagerOptions { PageIndexParameterName = "id" })
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript" src="~/Areas/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/Areas/assets/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+    <script src="~/Areas/assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/jquery.mockjax.js"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+            $.fn.editable.defaults.disabled = true;
+            $.fn.editable.defaults.mode = 'inline';
+            $.fn.editable.defaults.inputclass = 'form-control';
+            $.fn.editable.defaults.url = '/Admin/Photo/Edit';
+            $.mockjax({
+                url: '/post',
+                response: function (settings) {
+                    
+                }
+            });
+            $('.description').editable({
+                //    showbuttons: 'bottom'
+            });
+
+        });
+
+    </script>
+
+    <script type="text/javascript">
+        
+        $('#enable').click(function () {
+            $('#photo-list .editable').editable('toggleDisabled');
+        });
+
+        $('#inline').on('change', function (e) {
+            $('#photo-list .editable').editable('toggleDisabled');
+        });
+        
+        function deleteItem(target, photoId) {
+            bootbox.confirm("你确定删除图片，尽管其可能关联到其他地方？", function(result) {
+                if (result) {
+                    $.ajax({
+                        type: 'post',
+                        data: { photoId: photoId },
+                        url: '/Admin/Photo/Delete',
+                        success: function(evt) {
+                            if (evt == "true") {
+                                App.alert({ type: 'success', message: '删除成功！', closeInSeconds: 8, icon: 'check-circle' });
+                                var tr = target.parentNode.parentNode;
+                                var tbody = tr.parentNode;
+                                tbody.removeChild(tr);
+                            } else {
+                                App.alert({ type: 'danger', message: '抱歉，出现未知错误，请刷新后再重试...', closeInSeconds: 8, icon: 'warning' });
+                            }
+                        },
+                        error: function(scrip) {
+                            App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+
+}

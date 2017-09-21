@@ -1,0 +1,80 @@
+﻿@model QS.DTO.CommentModule.SuggestionDto
+
+@using (Ajax.BeginForm("SuggestionFormPartial",
+    new AjaxOptions { OnSuccess = "ajaxsuccess", OnFailure = "ajaxfail"}))
+{
+    <div class="form-group">
+        <label class="control-label">如何称呼？<span class="color-red">*</span></label>
+        <div class="col-sm-12">
+            @Html.TextBoxFor(model => model.NickName, new { @class = "form-control" })
+            <span class="error-block">
+                @Html.ValidationMessageFor(model => model.NickName)
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label">电子邮箱 <span class="color-red">*</span></label>
+        <div class="col-sm-12">
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+            <span class="error-block">
+                @Html.ValidationMessageFor(model => model.Email)
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label">填写的内容 <span class="color-red">*</span></label>
+        <div class="col-sm-12">
+            @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 8 })
+            <span class="error-block">
+                @Html.ValidationMessageFor(model => model.Content)
+            </span>
+        </div>
+    </div>
+    <div class="form-group  hide">
+        <input id="res" name="res" type="reset"/> 
+    </div>
+    <button type="submit" class="btn btn-default theme-btn" style="margin-top:12px;">
+        <i class="fa fa-check"></i> 提交
+    </button>
+}
+
+<script type="text/javascript">
+    function ajaxsuccess(evt) {
+        if (evt == null || evt.Success == false) {
+            App.alert({
+                container: '#suggestion-container',
+                place: 'prepent',
+                type: 'danger',
+                message: '数据验证不通过',
+                focus: false,
+                closeInSeconds: 8,
+                icon: 'warning'
+            });
+        } else {
+            App.alert({
+                container: '#suggestion-container',
+                place: 'prepent',
+                type: 'success',
+                message: '您的评价或建议已经提交，感谢您的支持！',
+                focus: false,
+                closeInSeconds: 8,
+                icon: 'check-circle'
+            });
+            $("input[name='res']").click();
+        }
+        App.scrollTo($('#scrollitem'));
+        
+    }
+    function ajaxfail() {
+        App.alert({
+            container: '#suggestion-container',
+            place: 'prepent',
+            type: 'danger',
+            message: '出现错误，请刷新后再进行填写提交！',
+            focus: false,
+            closeInSeconds: 8,
+            icon: 'warning'
+        });
+        App.scrollTo($('#scrollitem'));
+    }
+</script>

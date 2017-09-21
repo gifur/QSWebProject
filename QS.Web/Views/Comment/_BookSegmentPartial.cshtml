@@ -1,0 +1,46 @@
+﻿@using Microsoft.Web.Helpers
+@using QS.Web.Common
+@using QS.DTO.CommentModule
+@model BookCommentDto
+
+<div class="media" id="@Model.CommentId">
+    @if (Model.IsMember > 0)
+    {
+        <a href="#" class="pull-left">
+            <img src="~/Profiles/HeadImage/@Model.PhotoUrl" alt="" class="media-object">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">@Model.NickName<span style="right: auto;padding-left: 2px;">@Model.Identification</span> <span>@Html.DateFormat(@Model.CreateTime) @*/ <a href="#">回复</a>*@</span></h4>
+            <p>@Model.Content</p>
+            <span class="status">@(Model.ReadStatus == ReadStatus.Wish ? "想读" : (@Model.ReadStatus == ReadStatus.Reading ? "在读" : "读过"))</span>
+            @if (Model.ReadStatus != ReadStatus.Wish)
+            {
+                <div class="rateit"
+                     data-rateit-value="@Model.Score"
+                     data-rateit-ispreset="true"
+                     data-rateit-readonly="true">
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <a href="#" class="pull-left">
+            @Gravatar.GetHtml(@Model.Email, attributes: new { @class = "media-object" })
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">@Model.NickName <span>@Html.DateFormat(@Model.CreateTime) @*/ <a href="#">回复</a>*@</span></h4>
+            <p>@Model.Content</p>
+            <span class="status">@(Model.ReadStatus == ReadStatus.Wish ? "想读" : (@Model.ReadStatus == ReadStatus.Reading ? "在读" : "读过"))</span>
+            @if (Model.ReadStatus != ReadStatus.Wish)
+            {
+                <div class="rateit"
+                     data-rateit-value="@Model.Score"
+                     data-rateit-ispreset="true"
+                     data-rateit-readonly="true">
+                </div>
+            }
+        </div>
+    }
+</div>
+<script type="text/javascript" src="~/assets/plugins/rateit/src/jquery.rateit.min.js"></script>

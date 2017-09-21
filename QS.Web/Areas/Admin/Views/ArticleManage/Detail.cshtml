@@ -1,0 +1,245 @@
+﻿@model QS.DTO.SharedModule.ArticleDto
+@{
+    ViewBag.Title = @Model.ArticleTitle;
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/select2/select2-metronic.css" />
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable.css" />
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            @Model.ArticleTitle
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-list"></i>
+                <a href="@Url.Action("Index","ArticleManage", new{ Area = "Admin" })">
+                    文章列表
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <button id="enable" class="btn blue">更改修改状态</button>
+        <button class="btn red" id="delete"><i class="fa fa-warning"></i> 删除此篇文章</button>
+        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <input type="hidden" id="nid" name="nid" value="@Model.ArticleId" />
+        <table id="user" class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <td style="width:15%">
+                        文章标题
+                    </td>
+                    <td style="width:50%">
+                        <a href="#" id="articletitle" data-type="text" data-pk="@Model.ArticleId" data-original-title="输入文章标题">
+                            @Model.ArticleTitle
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        是否置顶
+                    </td>
+                    <td>
+                        <a href="#" id="top" data-type="select" data-pk="@Model.ArticleId" data-value="@(@Model.IsTop? 1 : 0)" data-original-title="请选择">
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        所属分类
+                    </td>
+                    <td>
+                        <a href="#" id="category" data-type="select" data-pk="@Model.ArticleId" data-original-title="选择分类">
+                            @Model.Category
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        标签
+                    </td>
+                    <td>
+                        <a href="#" id="tags" data-type="checklist" data-pk="@Model.ArticleId" data-value="@Model.ArticleTags" data-original-title="选择标签">
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>文章内容</span>
+                    </td>
+                    <td>
+                        <button id="editSwitch" name="editSwitch" onclick="editchange()" class="btn btn-sm default">
+                            <i class="fa fa-pencil"></i> [修改]
+                        </button>
+                        <button id="saveContent" name="saveContent" class="btn btn-sm default" style="display:none">
+                            <i class="fa fa-save"></i> [保存]
+                        </button>
+                        <button id="cancelContent" name="saveContent" class="btn btn-sm default" style="display:none" onclick="cancelEdit()">
+                            <i class="fa fa-times"></i> [取消]
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="result"></div>
+    </div>
+</div>
+<div class="row">
+    <div id="content" class="col-md-12">
+        @Html.Raw(@Model.ArticleContent)
+    </div>
+</div>
+<div class="row">
+    <div id="edit-content" class="col-md-12">
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/Areas/assets/plugins/select2/select2.min.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/kindeditor-min.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/lang/zh_CN.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/plugins/code/prettify.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/plugins/autoheight/autoheight.js"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+    <script src="~/Areas/assets/scripts/custom/article-edit.js"></script>
+
+    <script type="text/javascript">
+
+        var content = document.getElementById("content");
+        var editcontent = document.getElementById("edit-content");
+
+        var editswitch = document.getElementById("editSwitch");
+
+        var savecontent = document.getElementById("saveContent");
+        var cancelcontent = document.getElementById("cancelContent");
+
+
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #article-header').addClass('open').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #article-header').children('ul').attr('style', 'display:block');
+            App.init();
+
+            //editable 的全局设置
+            $.fn.editable.defaults.inputclass = 'col-md-12';
+            $.fn.editable.defaults.url = '@Url.Action("Edit")';
+            $.fn.editable.defaults.disabled = true;
+            editswitch.disabled = true;
+
+            FormEditable.init();
+
+            editcontent.style.display = 'none';
+        });
+
+        var editor;
+
+        function HelloEdit() {
+            var options = {
+                uploadJson: '/ArticleManage/Upload',
+                fileManagerJson: '/ArticleManage/FileManager',
+                allowFileManager: true,
+                autoHeightMode: true,
+                afterCreate: function() {
+                    this.sync();
+                },
+                afterBlur: function() {
+                    this.sync();
+                }
+            };
+            editor = KindEditor.create('#edit-content', options);
+        }
+
+        function editchange() {
+            if (content.style.display == '') {
+                content.style.display = 'none';
+                editcontent.style.display = '';
+                HelloEdit();
+                editor.html($('#content').html());
+
+                //按钮隐藏与显示
+                savecontent.style.display = '';
+                cancelcontent.style.display = '';
+                editswitch.style.display = 'none';
+
+
+                //设置全局状态修改按钮不可用
+                document.getElementById("enable").disabled = true;
+
+                //处理一些额外的情况
+                document.getElementById("result").innerHTML = "";
+
+            }
+        }
+
+        $('#saveContent').click(function (e) {
+
+            //调用Ajax，将文章内容传回后台并进行保存
+            $.ajax({
+                type: "POST",
+                url: '/Admin/ArticleManage/Edit',
+                data: { pk: $('#nid').val(), value: editor.html(), name: 'content' },
+                async: true,  //异步
+                success: function (evt) {
+                    //document.getElementById("success").style.display = "";
+                    var temp =
+                        '<div class="alert alert-success alert-dismissable" id="success">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>' +
+                            '文章内容修改成功！' +
+                            '</div>';
+                    $('#result').html(temp);
+                    $('#content').html(editor.html());
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    var temp =
+                        '<div class="alert alert-danger alert-dismissable" id="fail">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>' +
+                            '文章内容修改失败！ : ' + textStatus +
+                            '</div>';
+                    $('#result').html(temp);
+                }
+            });
+
+            cancelEdit();
+        });
+
+        function cancelEdit() {
+
+            {
+                //按钮隐藏与显示
+                savecontent.style.display = 'none';
+                cancelcontent.style.display = 'none';
+                editswitch.style.display = '';
+
+                content.style.display = '';
+                KindEditor.remove('#edit-content');
+                editcontent.style.display = 'none';
+
+                //恢复全局修改按钮的点击事件
+                document.getElementById("enable").disabled = false;
+            }
+        }
+
+    </script>
+}

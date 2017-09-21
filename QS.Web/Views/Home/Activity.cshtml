@@ -1,0 +1,128 @@
+﻿@model  IEnumerable<QS.DTO.Module.RecentActivityDto>
+@{
+    ViewBag.Title = "活动安排";
+    ViewBag.CurrentPage = "Us-Activity";
+}
+
+@section Styles{   
+<link href="~/assets/css/pages/timeline.css" rel="stylesheet" />
+}
+
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li><a href="@Url.Action("Activity", "Home")">求索风采</a></li>
+                    <li class="active">活动介绍</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container min-hight show_contents">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="timeline">
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <li class="@(item.Status ? "timeline-theme" : "timeline-origin")">
+                                <div class="timeline-time">
+                                    <span class="address">
+                                        @item.Address
+                                    </span>
+                                    <span class="date">
+                                        @*@item.StartTime.ToString("yyyy/mm/dd") @item.StartTime.DayOfWeek*@
+                                        @item.StartTime.GetDateTimeFormats('D')[2].ToString()
+                                    </span>
+                                    <span class="time">
+                                        @item.StartTime.ToShortTimeString()
+                                    </span>
+                                </div>
+                                <div class="timeline-icon">
+                                    <i class="fa fa-comments"></i>
+                                </div>
+                                <div class="timeline-body">
+                                    <h2>@item.Title</h2>
+                                    <div class="timeline-content">
+                                        @Html.Raw(@item.Content)
+                                    </div>
+                                    @*<div class="timeline-footer">
+                                        <a href="#" class="nav-link">
+                                            阅读更多 <i class="m-icon-swapright m-icon-white"></i>
+                                        </a>
+                                    </div>*@
+                                </div>
+                            </li>
+                        }
+                    }
+                </ul>
+                <div class="row">
+                    <div id="state" class="text-center col-md-offset-4 col-md-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 主体 -->
+</div>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+            jQuery(document).ready(function() {
+                App.init();
+            });
+            var $container = $('ul.timeline');
+            var ajaxLoading = false;
+            var $state = $('#state');
+            var loadingment = "<img class='loading' src='~/assets/img/loading_black.gif' alt='加载中...'/>";
+            var errorment = "<span><i class='fa fa-frown-o'></i>&nbsp;加载出错</span>";
+            $(window).scroll(function () {
+                if ($(document).height() - $(window).height() - $(document).scrollTop() < 10) {
+                    if (!ajaxLoading) {
+                        getData();
+                    }
+                }
+            });
+            function getData() {
+                $.ajax({
+                    url: '/Home/Activity',
+                    type: 'POST',
+                    data: {
+                        skipCount: $('ul.timeline').children('li').length
+                    },
+                    dataType: 'html',
+                    timeout: 10000,
+                    error: function () {
+                        $state.html(errorment);
+                    },
+                    beforeSend: function () {
+                        ajaxLoading = true;
+                        $state.html(loadingment);
+                    },
+                    success: function (data) {
+                        $state.empty();
+
+                        if (data == null || data == "") {
+                            return;
+                        }
+
+                        var $newElems = $(data);
+                        $container.append($newElems);
+                        ajaxLoading = false;
+                    }
+                });
+            }
+    </script>
+}

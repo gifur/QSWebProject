@@ -1,0 +1,19 @@
+﻿@model  IEnumerable<QS.DTO.SharedModule.AtlasDto>
+<div class="col-md-9">
+    <ul class="bxslider">
+        @if (Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <li>
+                    <em>
+                        <img src="@item.ThumbPath" alt="" class="img-responsive"/>
+                    </em>
+                    <a class="bxslider-block" href="@Url.Action("Detail", new {id = @item.AtlasId})">
+                        <strong>@item.AtlasName</strong>
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</div>

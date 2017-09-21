@@ -1,0 +1,135 @@
+﻿@model QS.Web.Models.LoginModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<!-- BEGIN HEAD -->
+<head>
+    <meta charset="utf-8" />
+    <title>欢迎登录 | Beautiful Mind Happy Life</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="QiuSuo Studio - Background System" name="description" />
+    <meta content="scau_Joseph" name="author" />
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="~/Areas/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/assets/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <link href="~/Areas/assets/css/style-metronic.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/assets/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Areas/assets/css/pages/login-soft.css" rel="stylesheet" type="text/css" />
+
+    <link rel="shortcut icon" href="~/Areas/assets/img/back_favicon.ico" type="image/x-icon" />
+    <style type="text/css">
+        .help-block, .error-block {
+            color: #FFF !important;
+        }
+    </style>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="login">
+    <div class="logo">
+        <a href="@Url.Action("Index", "Home", new {Area = ""})">
+            <img src="~/Areas/assets/img/logo-login.png" alt="" />
+        </a>
+    </div>
+    <div class="content">
+        <!-- 登录表单 -->
+        <form class="login-form" action="@Url.Action("Login", "OAuth")" method="post">
+            <h3 class="form-title">后台人员登录</h3>
+            <div class="alert alert-danger display-hide">
+                <button class="close" data-close="alert"></button>
+                <span>
+                    请输入您的账号和密码
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">用户名</label>
+                <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    @Html.TextBoxFor(model => model.NameOrNumber, new { @class = "form-control placeholder-no-fix", placeholder = "用户名", required="required"})
+                </div>
+                <span class="error-block">
+                    @Html.ValidationMessageFor(model => model.NameOrNumber)
+                </span>
+            </div>
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">密码</label>
+                <div class="input-icon">
+                    <i class="fa fa-lock"></i>
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control placeholder-no-fix", placeholder = "密码", required = "required" })
+                </div>
+                <span class="error-block">
+                    @Html.ValidationMessageFor(model => model.Password)
+                </span>
+            </div>
+            <div class="form-actions">
+                <div class="input-group input-icon">
+                    <span class="input-group-addon" style="padding: 0 0 !important;">
+                        <img id="valiCode" title="看不清？点击换一个"
+                             src="@Url.Action("GetValidateCode", "OAuth")" alt="验证码" />
+                    </span>
+                    @Html.TextBoxFor(model => model.ValidateCode, new { @class = "form-control", placeholder = "输入验证码" })
+                </div>
+                <span class="error-block">
+                    @Html.ValidationMessageFor(model => model.ValidateCode)
+                </span>
+            </div>
+            <div class="form-actions">
+                <input type="hidden" name="ReturnUrl" value="@ViewBag.returnUrl" />
+                @*<label class="checkbox">
+                    <input type="checkbox" name="remember" value="1" /> 记住我？
+                </label>*@
+                <button type="submit" class="btn green pull-right">
+                    登录 <i class="m-icon-swapright m-icon-white"></i>
+                </button>
+            </div>
+            
+        </form>
+        <!-- 结束 登录表单 -->
+    </div>
+    <br />
+    <!-- 版权说明 -->
+    <div class="copyright">
+        2014 &copy; QiuSuo Studio
+    </div>
+    <!-- 结束 版权说明 -->
+    <!-- BEGIN CORE PLUGINS -->
+    <!--[if lt IE 9]>
+        <script src="~/Areas/assets/plugins/respond.min.js"></script>
+        <script src="~/Areas/assets/plugins/excanvas.min.js"></script>
+        <![endif]-->
+    <script src="~/Areas/assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="~/Areas/assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="~/Areas/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Areas/assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Areas/assets/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="~/Areas/assets/scripts/core/app.js" type="text/javascript"></script>
+    <script src="~/Areas/assets/scripts/custom/login-soft.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!-- BEGIN JAVASCRIPTS -->
+    <script>
+        jQuery(document).ready(function () {
+            App.init();
+        });
+        $(function () {
+            $("#valiCode").bind("click", function () {
+                this.src = "../OAuth/GetValidateCode?time=" + (new Date()).getTime();
+            });
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

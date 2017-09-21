@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title | Happy life Beautiful mind</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="QiuSuo Studio Psychology Website" name="description" />
+    <meta content="scau_Joseph" name="author" />
+    <link href="~/Areas/assets/img/back_favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    
+    <!-- 开始全局受委托的样式 -->
+    @Styles.Render("~/areas/assets/plugins/css")
+    <link href="~/Areas/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- 结束全局受委托的样式 -->
+    <!-- 页面样式 -->
+    @RenderSection("Styles", required: false)
+    <!-- 结束页面样式 -->
+    <!-- 开始主题样式 -->
+    @Styles.Render("~/areas/assets/themes/css")
+    <link href="~/Areas/assets/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color" />
+    <!-- 结束主题样式 -->
+</head>
+<body class="page-header-fixed">
+    <!-- 页面头部 -->
+    <!-- BEGIN HEADER -->
+    <div class="header navbar navbar-fixed-top">
+        <!-- BEGIN TOP NAVIGATION BAR -->
+        <div class="header-inner">
+
+            <!-- BEGIN LOGO -->
+            <a class="navbar-brand" href="@Url.Action("Index", "OAuth")">
+                <img src="~/Areas/assets/img/logo.png" alt="logo" class="img-responsive" />
+            </a>
+            <!-- END LOGO -->
+            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+            <a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <img src="~/Areas/assets/img/menu-toggler.png" alt="" />
+            </a>
+            <!-- END RESPONSIVE MENU TOGGLER -->
+            <!-- BEGIN TOP NAVIGATION MENU -->
+            @Html.Partial("_NavigationMenu")
+            <!-- END TOP NAVIGATION MENU -->
+
+        </div>
+        <!-- END TOP NAVIGATION BAR -->
+    </div>
+    <!-- END HEADER -->
+    <!-- 页面内容 -->
+    <!-- BEGIN CONTAINER -->
+    
+    <div class="page-container">
+        <!-- BEGIN SIDEBAR -->
+        @Html.Partial("_LeftMenuBar")
+        <!-- END SIDEBAR -->
+        <!-- BEGIN CONTENT -->
+        <div class ="page-content-wrapper">
+            <div class="page-content">
+                <!-- BEGIN PAGE CONTENT-->
+                <input type="hidden" value="@ViewData["Message"]" id="mes" />
+                @RenderSection("featured", required: false)
+                @RenderBody()
+                <!-- END PAGE CONTENT-->
+            </div>
+        </div>
+    </div>
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <div class="footer">
+        <div class="footer-inner">
+            2014 &copy; QiuSuo Studio - Created &amp; Learned By scau_Joseph
+        </div>
+        <div class="footer-tools">
+            <span class="go-top">
+                <i class="fa fa-angle-up"></i>
+            </span>
+        </div>
+    </div>
+    <!-- END FOOTER -->
+    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+    <!-- BEGIN CORE PLUGINS -->
+    <!--[if lt IE 9]>
+    <script src="~/Areas/assets/plugins/respond.min.js"></script>
+    <script src="~/Areas/assets/plugins/excanvas.min.js"></script>
+    <![endif]-->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/admin/script")
+    <script src="~/assets/plugins/jquery.cookie.min.js"></script>
+    @Scripts.Render("~/bundles/admin/core")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

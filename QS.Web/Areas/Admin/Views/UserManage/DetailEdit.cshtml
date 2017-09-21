@@ -1,0 +1,299 @@
+﻿@using QS.DTO.Module
+@model UserDto
+@{
+    ViewBag.Title = "用户详细信息";
+}
+
+@section Styles{
+
+}
+
+<!--开始标题与面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            @(Model.RealName)的个人信息
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li class="btn-group">
+                <button type="button" class="btn blue dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                    <span>
+                        更多操作
+                    </span>
+                    <i class="fa fa-angle-down"></i>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <a href="javascript:;" onclick="func_delete(@Model.UserId)">
+                            删除用户
+                        </a>
+                    </li>
+                    <li class="divider">
+                    </li>
+                    <li>
+                        <a href="javascript:;" onclick="func_resect(@Model.UserId)">
+                            重置密码
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index")">
+                    用户列表
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-edit"></i>
+                <a href="javascript:;">
+                    修改用户信息
+                </a>
+            </li>
+                
+        </ul>
+    </div>
+</div>
+<!--结束标题与面包屑导航-->
+<!--开始展示页面内容-->
+<div class="row" id="sortable_portlets">
+    <div class="col-md-12 column sortable">
+        <div class="portlet box">
+            <div class="portlet-title">
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form action="@Url.Action("SaveEdit")" method="post" class="horizontal-form">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <img class="img-responsive" alt="@Model.UserName" 
+                                         src="~/Profiles/HeadImage/@Model.PhotoUrl" />
+                                    @Html.HiddenFor(model => model.PhotoUrl)
+                                    <input type="hidden" value="@ViewData["Message"]" id="mes" />
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="form-section">基本信息</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">用户名：</label>
+                                    <div class="col-md-9">
+                                        <label class="control-label">
+                                            @(Model.UserName)
+                                        </label>
+                                        @Html.HiddenFor(model => model.UserName)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">性别：</label>
+                                    <div class="col-md-9">
+                                        <label class="control-label">
+                                            @(Model.Gender == GenderType.Male ? "男":(Model.Gender == GenderType.Female ? "女" : "保密"))
+                                        </label>
+                                        @Html.HiddenFor(model => model.Gender)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">电子邮箱：</label>
+                                    <div class="col-md-9">
+                                        <label class="control-label">
+                                            @(Model.Email)
+                                        </label>
+                                        @Html.HiddenFor(model => model.Email)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">联系电话：</label>
+                                    <div class="col-md-9">
+                                        <label class="control-label">
+                                            @(Model.Phone)
+                                        </label>
+                                        @Html.HiddenFor(model => model.Phone)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">宿舍地址：</label>
+                                    <div class="col-md-9">
+                                        <label class="control-label">
+                                            @(Model.PersonalPage)
+                                        </label>
+                                        @Html.HiddenFor(model => model.PersonalPage)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">关于：</label>
+                                    <div class="col-md-9">
+                                        <label class="control-label">
+                                            @(Model.About)
+                                        </label>
+                                        @Html.HiddenFor(model => model.About)
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <h4 class="form-section">可编辑信息</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">姓名</label>
+                                    @Html.TextBoxFor(model => model.RealName, new
+                                    {
+                                        @class = "form-control"
+                                    })
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">学号</label>
+                                    @Html.TextBoxFor(model => model.StuNumber, new
+                                    {
+                                        @class = "form-control"
+                                    })
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">身份</label>
+                                    @Html.TextBoxFor(model => model.Identification, new
+                                    {
+                                        @class = "form-control"
+                                    })
+                                </div>
+                                @Html.HiddenFor(model => model.UserId)
+                                @Html.HiddenFor(model => model.Password)
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">当前状态</label>
+                                    <div class="radio-list">
+                                        <label class="radio-inline">
+                                            @Html.RadioButtonFor(model => model.State, "Nonactivated") 未被激活
+                                        </label>
+                                        <label class="radio-inline">
+                                            @Html.RadioButtonFor(model => model.State, "Activated") 正常使用
+                                        </label>
+                                        <label class="radio-inline">
+                                            @Html.RadioButtonFor(model => model.State, "Retire") 停止使用
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                    </div>
+                    <div class="form-actions right">
+                        <a href="@Url.Action("Index")" class="btn default">返回</a>
+                        <button type="submit" class="btn blue"><i class="fa fa-check"></i> 确认编辑</button>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--结束页面内容-->
+
+
+@section Scripts{
+    <script>
+        jQuery(document).ready(function() {
+            var $header = $('ul.page-sidebar-menu #user-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #sub-user-header').addClass('open').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #sub-user-header').children('ul').attr('style', 'display:block');
+            App.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+        });
+
+        var func_delete = function(value) {
+            bootbox.confirm("你确认删除此用户而不是选择[停止使用]", function(result) {
+                if (result) {
+                    $.ajax({
+                        type: 'post',
+                        data: { id: value },
+                        url: '/Admin/UserManage/Delete',
+                        success: function(evt) {
+                            if (evt != null && evt.Success) {
+                                bootbox.alert("删除成功", function() {
+                                    window.location = "/Admin/UserManage/Index";
+                                });
+                            } else if (evt != null) {
+                                App.alert({ type: 'danger', message: evt.Message, closeInSeconds: 8, icon: 'warning' });
+                            }
+                        },
+                        error: function() {
+                            App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                        }
+                    });
+                }
+            });
+        };
+
+
+        var func_resect = function(value) {
+            bootbox.confirm("确定进行密码重置？（密码将默认恢复为学号）", function(result) {
+                if (result) {
+                    $.ajax({
+                        type: 'post',
+                        data: { id: value },
+                        url: '/Admin/UserManage/ResetPassword',
+                        success: function(evt) {
+                            if (evt != null && evt.Success) {
+                                App.alert({ type: 'success', message: '重置密码成功！', closeInSeconds: 8, icon: 'check-circle' });
+                            } else if (evt != null) {
+                                App.alert({ type: 'danger', message: evt.Message, closeInSeconds: 8, icon: 'warning' });
+                            }
+                        },
+                        error: function() {
+                            App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+
+}

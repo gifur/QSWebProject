@@ -1,0 +1,119 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.SharedModule.VideoDto>
+@{
+    ViewBag.Title = ViewBag.Category;
+    ViewBag.CurrentPage = "Shared-Video";
+}
+
+@section Styles{
+    <link href="/assets/css/pages/portfolio.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/pages/video.css" rel="stylesheet" />
+    <style type="text/css">
+        .vjs-default-skin .vjs-control-bar {
+            font-size: 100%;
+        }
+        .tit-ordinary {
+            width: 140px;
+        }
+    </style>
+
+}
+
+<div class="page-container">
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-20">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li><a href="@Url.Action("Index", "Video")">影视心灵</a></li>
+                    <li class="active">@ViewBag.Category</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container min-hight">
+        <div class="col-md-8 col-sm-8" style="margin-top:45px;">
+            <div class="row thumbnails">
+                @if (Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="col-md-3 col-sm-4">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Item", "Video", new {id = @item.VideoId})">
+                                    <img src="@item.ThumbPath" alt="@item.VideoName" class="img-responsive">
+                                </a>
+                                <h5 class="text-center">
+                                    <a href="@Url.Action("Item", "Video", new {id = @item.VideoId})" title="@item.VideoName">@item.VideoName</a>
+                                </h5>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="text-center">
+                @Html.Pager(Model, new PagerOptions
+       {
+           PageIndexParameterName = "id",
+           ShowFirstLast = false,
+           ContainerTagName = "ul",
+           CssClass = "pagination pagination-centered",
+           PagerItemWrapperFormatString = "<li>{0}</li>",
+           CurrentPagerItemWrapperFormatString = "<li class=\"active\"><a>{0}</a></li>"
+
+       }, "VideoCategory", new { category = @ViewBag.Category })
+            </div>
+
+        </div>
+        <div class="col-md-4 col-sm-4">
+            <h4 class="titlemore"><span class="slash-colored">//</span>求索推荐</h4>
+            @{
+                Html.RenderAction("_VideoCommendPartial");
+            }
+            <!-- 结束 分类 -->
+            <!-- 热点新闻 -->
+            <div class="widgetheading">
+                <h4>点击排行热榜</h4>
+            </div>
+            @{
+                Html.RenderAction("_VideoClickMostPartial", "Video");
+            }
+
+            <!-- 新闻标签 -->
+            @*<div class="blog-tags margin-bottom-20">
+                <h2>热门标签</h2>
+                <ul>
+                    <li><a href="#"><i class="fa fa-tags"></i>爱情</a></li>
+                    <li><a href="#"><i class="fa fa-tags"></i>职场</a></li>
+                    <li><a href="#"><i class="fa fa-tags"></i>心灵</a></li>
+                    <li><a href="#"><i class="fa fa-tags"></i>原创</a></li>
+                    <li><a href="#"><i class="fa fa-tags"></i>心灵感悟</a></li>
+                    <li><a href="#"><i class="fa fa-tags"></i>情绪管理</a></li>
+                    <li><a href="#"><i class="fa fa-tags"></i>治愈系</a></li>
+                    <li><a href="#"><i class="fa fa-tags"></i>恋爱心理</a></li>
+                    <li><a href="#"><i class="fa fa-tags"></i>求索</a></li>
+                </ul>
+            </div>*@
+        </div>
+
+    </div>
+    <!-- 结束 主体 -->
+</div>
+
+@section Scripts{
+<script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            jQuery('.carousel').carousel({
+                interval: 8000,
+                pause: 'hover'
+            });
+        });
+</script>
+}

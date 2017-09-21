@@ -1,0 +1,119 @@
+﻿@model QS.DTO.Module.TagDto
+@{
+    ViewBag.Title = "新建标签";
+    var belongItems = ViewData["BelongItems"] as IEnumerable<SelectListItem>; ;
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/select2/select2-metronic.css" />
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            新建标签
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-list"></i>
+                <a href="@Url.Action("Create","TagManage", new{ Area = "Admin" })">
+                    新建标签
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box">
+            <div class="portlet-title">
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form action="@Url.Action("Create")" method="post">
+                    <div class="form-body">
+                        <div class="row">
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">标签名称</label>
+                                    @Html.TextBoxFor(model => Model.TagName, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.TagName)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">所属媒介</label>
+                                    @Html.DropDownList("Belong", belongItems, new { @class = "form-control" })
+                                    @Html.HiddenFor(model => Model.Belong)
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Belong)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">搜索名称</label>
+                                    @Html.TextBoxFor(model => Model.TagEnglish, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.TagEnglish)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">标签描述</label>
+                                    @Html.TextAreaFor(model => model.TagDescription, new { @class = "form-control", rows = 3 })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.TagDescription)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions right">
+                        <button type="submit" class="btn blue"><i class="fa fa-check"></i> 确认</button>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/Areas/assets/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #tag-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #tag-create-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+            $('#Belong').select2({
+                placeholder: "点击选择...",
+                allowClear: true
+            });
+        });
+    </script>
+
+}

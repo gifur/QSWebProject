@@ -1,0 +1,10 @@
+﻿@model  IEnumerable<QS.DTO.SharedModule.AtlasDto>
+<ul class="list-unstyled">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <li><a href="@Url.Action("Detail", "Gallery", new {id = @item.AtlasId} )"><img src="@item.ThumbPath" alt=""></a></li>
+        }
+    }
+</ul>

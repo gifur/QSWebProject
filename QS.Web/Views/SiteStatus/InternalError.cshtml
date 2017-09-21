@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "出现错误啦";
+}
+
+@section Styles{
+    <link href="~/assets/css/pages/page500.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="page-container">
+
+    <!-- 主体 -->
+    <div class="container margin-bottom-40">
+        <div class="row">
+            <div class="col-md-12 page-500">
+                <div class="number">
+                    500
+                </div>
+                <div class="details">
+                    <h3>对不起，出错啦！</h3>
+                    <p>
+                        但是我们已经在修理啦<br>
+                        @if (ViewBag.UrlRefer == null)
+                        {
+                            @:麻烦等下再回来~~<br>
+                        }
+                        else
+                        {
+                            @:点击返回&nbsp;<a href="@ViewBag.UrlRefer">之前页面</a>&nbsp;麻烦等下再回来~~<br>
+                        }
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 主体 -->
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+        });
+    </script>
+}

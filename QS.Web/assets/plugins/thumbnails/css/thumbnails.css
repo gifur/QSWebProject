@@ -1,0 +1,66 @@
+/* thumbnails */
+.slider.thumbnails { background:none; height: auto; margin-bottom:30px; margin-left:auto; margin-right:auto; }  
+.slider.thumbnails .showcase-content img { padding:10px; border:1px solid #e7e7e7; /*width:938px;*/ }  
+.opera .slider.thumbnails .showcase-content img { outline:none; border:1px solid #e7e7e7; padding: 9px;/*width:938px;*/ }             
+/*.slider.thumbnails .showcase-content-wrapper { padding-bottom:24px; background:url('../images/shadows/960.png') no-repeat center bottom; }*/ 
+.slider.thumbnails .showcase-thumbnail { margin-right:12px; position:relative; width:68px; }
+.slider.thumbnails .showcase-thumbnail img { width:60px; max-width:none; vertical-align:baseline; padding:3px; border:1px solid #CFCFCF; opacity:0.6; filter: alpha(opacity=60); } 
+.slider.thumbnails .showcase-thumbnail img:hover, .slider.thumbnails .showcase-thumbnail.active img { cursor:pointer; border-color:#CFCFCF; opacity:1; filter: alpha(opacity=100); }             
+.slider.thumbnails .showcase-thumbnail-caption{position:absolute;bottom:2px;padding-left:10px;padding-bottom:5px;}
+.slider.thumbnails .showcase-thumbnail-content{padding:10px;text-align:center;padding-top:25px;}
+.slider.thumbnails .showcase-thumbnail-restriction { margin-top:10px; margin-left:30px; }  
+.slider.thumbnails .showcase-thumbnail-container { position:relative; margin-top:20px; }
+.slider.thumbnails .showcase-thumbnail-button-backward, .slider.thumbnails .showcase-thumbnail-button-forward { width:30px; height:16px; position:absolute; top:50%; margin-top:-8px; }                     
+.slider.thumbnails .showcase-thumbnail-button-backward { left:0; }
+.slider.thumbnails .showcase-thumbnail-button-forward { right:0; }
+.slider.thumbnails .showcase-thumbnail-button-backward:hover, .slider.thumbnails .showcase-thumbnail-button-forward:hover { cursor:pointer; }
+.slider.thumbnails .showcase-thumbnail-button-backward .showcase-thumbnail-horizontal span, 
+.slider.thumbnails .showcase-thumbnail-button-forward .showcase-thumbnail-horizontal span { display:block; width:11px; height:16px; background:url('../images/slider-thumbnails-arrows.png') no-repeat; text-indent:-9999px; }
+.slider.thumbnails .showcase-thumbnail-button-backward .showcase-thumbnail-horizontal span { background-position:left top; }
+.slider.thumbnails .showcase-thumbnail-button-forward .showcase-thumbnail-horizontal span { background-position:right top; float:right; }
+.slider.thumbnails .showcase-caption{background-image:url("../images/white-opacity-80.png");bottom:10px;color:#000000;display:none;left:10px;margin:10px;padding:8px 15px;position:absolute;right:10px;text-align:left;opacity: 0.5;}
+.slider.thumbnails .showcase-caption p { font-size:24px; margin:0; padding:0; }
+.slider.thumbnails .showcase-plus-anchor { background-image: url("../images/plus.png"); background-repeat: no-repeat; position: absolute; bottom: -40px;}
+.slider.thumbnails .showcase-plus-anchor:hover { background-position:-32px 0;}
+.slider.thumbnails div.showcase-tooltip{background-color:#fff;color:#000;text-align:center;padding:5px 8px;background-image:url('../images/white-opacity-80.png');}
+.slider.thumbnails div.showcase-tooltip img { width:auto; height:auto; border:0 !important; padding:0; display:block; }      
+
+.slider.thumbnails .showcase, .slider.thumbnails .showcase-content {max-width:100%; height:auto !important; }   
+.slider.thumbnails .showcase-content img { height: auto !important; }
+.boxed .slider.thumbnails .showcase-thumbnail-restriction { max-width:95%; }
+
+/* Landscape phone to portrait tablet */
+@media (min-width: 768px) and (max-width: 979px)  { 
+    .responsive .slider.thumbnails .showcase-thumbnail { margin-right:9px; }
+    .slider.thumbnails .showcase-thumbnail-restriction { margin-left:18px; margin-top:0; }
+}
+
+/* Navigation arrows */
+	.showcase-arrow-previous, .showcase-arrow-next
+	{
+		position: absolute;
+		background: url('../images/arrows.png');
+		width: 33px;
+		height: 33px;
+		top: 220px;
+		cursor: pointer;
+	}
+	.showcase-arrow-previous
+	{
+		left: -60px;
+	}
+	.showcase-arrow-previous:hover
+	{
+		background-position: 0px -34px;
+	}
+	
+	.showcase-arrow-next
+	{
+		right: -56px;
+		background-position: -34px 0;
+	}
+	
+	.showcase-arrow-next:hover
+	{
+		background-position: -34px -34px;
+	}

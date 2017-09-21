@@ -1,0 +1,449 @@
+﻿@using QS.DTO.SharedModule
+@model AtlasDto
+@{
+    ViewBag.Title = Model.AtlasName;
+    var childrenPhotos = ViewBag.underPhotos as List<PhotoDto>;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/Areas/assets/plugins/uploadify/uploadify.css" />
+    <link href="~/Areas/assets/css/pages/portfolio.css" rel="stylesheet" />
+    <link href="~/Areas/assets/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/bootstrap-editable/bootstrap-editable/css/bootstrap-editable.css" />
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h4 class="page-title">
+            @Model.AtlasName
+        </h4>
+        <ul class="page-breadcrumb breadcrumb">
+            <li class="btn-group">
+                <button id="enable" class="btn blue">开启/取消 编辑状态</button>
+            </li>
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index", "OAuth")">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="@Url.Action("Index", "AtlasManage", new{ Area = "Admin" })">
+                    图册主页
+                </a>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+<div class="row">
+    <div class="col-md-12">
+        <table id="atlas" class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <td style="width:15%">
+                        图册标题：
+                    </td>
+                    <td style="width:50%">
+                        <a href="#" id="atlastitle" data-type="text" data-pk="@Model.AtlasId" data-original-title="输入图册标题">
+                            @Model.AtlasName
+                        </a>
+                    </td>
+                    <td style="width:35%">
+                        <span class="text-muted">
+                            Simple text field
+                        </span>
+                        <input type="hidden" value="@Model.ThumbPath" id="coverPath" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        图册描述：
+                    </td>
+                    <td>
+                        <a href="#" id="description" data-type="textarea" data-pk="@Model.AtlasId" data-placeholder="输入图册描述" data-original-title="输入描述内容">@Model.Remark</a>
+                    </td>
+                    <td>
+                        <span class="text-muted">
+                            Required text field, originally empty
+                        </span>
+                        @Html.HiddenFor(it => Model.AtlasId)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <h3>照片列表 <small>(all ajax requests here are emulated)</small></h3>
+        <div class="row mix-grid thumbnails" id="photoview">
+            @if (childrenPhotos != null && childrenPhotos.Any())
+            {
+                foreach (var item in childrenPhotos)
+                {
+                    <div class="col-md-3 col-sm-4 mix" id="@item.PhotoId" style="display: block;  opacity: 1;">
+                        <div class="mix-inner">
+                            <img class="img-responsive thumbpath" src="@item.ThumbPath" alt="">
+                            <span class="cover-selected" style="display:none">
+                            </span>
+                            <div class="mix-details">
+                                <p>@item.Remark</p>
+                                <a href="javascript:;" class="mix-link" id="setCover" title="设为封面">
+                                    <i class="fa fa-check-square-o"></i>
+                                </a>
+                                <a class="mix-remark" title="修改描述" @*data-toggle="modal" href="#responsive"*@>
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                                <a class="mix-delete" id="removeBtn" title="删除">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                                <a class="mix-preview fancybox-button" href="@item.PhotoPath" title="@item.Remark" data-rel="fancybox-button">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div>
+            <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+            <div class="col-md-12">
+                <input class="form-control" type="hidden" id="attachment" name="attachment" />
+                <input id="file_upload" name="file_upload" type="file" multiple="multiple" />
+                <a href="javascript:void(0)" class="btn btn-primary" id="btnUpload"
+                   onclick="javascript: $('#file_upload').uploadify('upload', '*');">上传</a>
+                <a href="javascript:void(0)" class="btn btn-default" id="btnCancelUpload"
+                   onclick="javascript: $('#file_upload').uploadify('cancel', '*');">取消</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fluid col-md-3" id="file_queue">
+</div>
+<script id="evaluation" type="text/x-dot-template">
+    <div class="col-md-3 col-sm-4 mix" id="{{=it.PhotoId}}" style="display: block;  opacity: 1;">
+        <div class="mix-inner">
+            <img class="img-responsive thumbpath" src="{{=it.ThumbPath}}" alt="">
+            <span class="cover-selected" style="display:none">
+            </span>
+            <div class="mix-details">
+                <p>{{=it.Remark}}</p>
+                <a href="javascript:;" class="mix-link" id="setCover" title="设为封面">
+                    <i class="fa fa-check-square-o"></i>
+                </a>
+                <a class="mix-remark" title="修改描述" @*data-toggle="modal" href="#responsive"*@>
+                    <i class="fa fa-pencil-square-o"></i>
+                </a>
+                <a class="mix-delete" id="removeBtn" title="删除">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+                <a class="mix-preview fancybox-button" href="{{=it.PhotoPath}}" title="{{=it.Remark}}" data-rel="fancybox-button">
+                    <i class="fa fa-search"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- END PAGE CONTENT-->
+@section Scripts {
+    <script src="~/Scripts/doT.min.js"></script>
+    <script src="~/Areas/assets/plugins/uploadify/jquery.uploadify.js"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript" src="~/Areas/assets/plugins/bootstrap-editable/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+    <script src="~/Areas/assets/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #atlas-header').addClass('open').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #atlas-header').children('ul').attr('style', 'display:block');
+            // initiate layout and plugins
+            App.init();
+
+            // initiate editable status
+            $.fn.editable.defaults.disabled = true;
+            $.fn.editable.defaults.url = '@Url.Action("Edit")';
+            $('#description').editable({
+                validate: function (value) {
+                    if ($.trim(value) == '') return '图册描述不能为空！';
+                }
+            });
+
+            $('#enable').click(function () {
+                $('#atlas .editable').editable('toggleDisabled');
+            });
+
+            $('#atlastitle').editable({
+                validate: function (value) {
+                    if ($.trim(value) == '') return '图册标题不能为空！';
+                },
+                success: function () {
+                    bootbox.alert("图册标题已更新，请刷新后查看最新更改");
+                }
+            });
+
+            $.fn.editable.defaults.inputclass = 'col-md-12';
+            $.fn.editable.defaults.success = function (data) {
+                if (data != null && typeof data == 'object' && !data.success) {
+                    bootbox.alert(data.message);
+                }
+            }
+            // end editable status
+
+            var $coverstore = $('#coverPath');
+            initCover($coverstore.val());
+
+
+        });
+
+        var atlasValue = $('#AtlasId').val();
+        var count = 0;
+
+        function initCover(value) {
+            var $thumbpaths = $('div.mix-inner > .thumbpath');
+            count = $thumbpaths.length;
+            $thumbpaths.each(function () {
+                var data = $(this).attr('src');
+                if (data == value) {
+                    $(this).next().show();
+                }
+            });
+        }
+
+        //弹窗修改图片描述
+        var defaultvalue = "";
+        function BootboxContent(value) {
+            var content = '<div class="row">' +
+                            '<div class="col-md-12">' +
+                                '<textarea class="form-control" maxlength="100" rows="4" name="remarkarea" id="remarkarea"></textarea>' +
+                                '<span id = "bootboxtip" class="help-block">自动截取前100字符</span>' +
+                            '</div>' +
+                        '</div>';
+            var object = $('<div/>').html(content).contents();
+            object.find('#remarkarea').maxlength({
+                limitReachedClass: "label label-danger",
+                alwaysShow: true
+            }).val(value);
+            return object;
+        }
+        $('.mix-remark').on("click", function () {
+            var selectId = $(this).closest('div.col-md-3').attr('id');
+            var element = $(this).siblings('p');
+            defaultvalue = element.text();
+            bootbox.dialog({
+                message: BootboxContent(defaultvalue),
+                title: "请输入描述内容",
+                buttons: {
+                    success: {
+                        label: "取消",
+                        className: "btn-default",
+                        callback: function () {
+                            return true;
+                        }
+                    },
+                    main: {
+                        label: "确定",
+                        className: "btn-primary",
+                        callback: function () {
+                            var temp = $('#remarkarea').val();
+                            if (temp.trim().length <= 0) {
+                                bootbox.alert("输入不能为空，不愿意的话你可以取消此操作", function () {
+                                    $('#remarkarea').val(defaultvalue);
+                                });
+                                return false;
+                            }
+                            if (temp == defaultvalue) {
+                                return true;
+                            }
+                            $.post("/Admin/Photo/Edit", {
+                                pk: selectId,
+                                name: 'remark',
+                                value: temp
+                            }, function (data) {
+                                if (data != null && typeof data == 'object' && !data.success) {
+                                    bootbox.alert("修改描述发生错误");
+                                    return;
+                                }
+                                element.text(temp);
+                            });
+                        }
+                    }
+                }
+            });
+
+        });
+
+        $('#setCover').live("click", function () {
+            var $mark = $(this).closest('.mix-details').siblings('span[class="cover-selected"]');
+            if (!$mark.is(':visible')) {
+                $.post("/Admin/AtlasManage/Edit", {
+                    pk: atlasValue,
+                    name: 'thumbpath',
+                    value: $mark.prev().attr('src')
+                }, function (data, textStatus) {
+                    if (data != null && typeof data == 'object' && !data.success) {
+                        bootbox.alert(data.message);
+                    }
+                    $mark.show();
+                    $mark.parent().parent().siblings().find('span').hide();
+                    $('#coverPath').val($mark.prev().attr('src'));
+                }, "json"
+                );
+
+            }
+        });
+
+        $('#removeBtn').live("click", function () {
+            var $mark = $(this).closest('.mix-details').siblings('span[class="cover-selected"]');
+            var $parent = $(this).closest('.col-md-3');
+            $.ajax({
+                type: 'post',
+                data: { photoId: $parent.attr('id') },
+                url: '/Admin/Photo/Delete',
+                success: function (evt) {
+                    if (evt == "true") {
+                        if ($mark.is(':visible')) {
+                            var $firstPhoto = $('#photoview div:first');
+                            if ($parent.attr('id') == $firstPhoto.attr('id')) {
+                                //在是封面的前提下判断出其是第一个元素
+                                if (count == 1) {
+                                    //如果只有它一张图片，那么需要清空封面图片,这时页面应该没有图片
+                                    $.post("/Admin/AtlasManage/Save", { atlasId: atlasValue }, function (data) {
+                                        if (data != null && typeof data == 'object') {
+                                            if (data.success) {
+                                                bootbox.alert(data.message);
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    //将封面推给其下一个元素
+                                    var $nextPhoto = $parent.next();
+                                    $nextPhoto.children().find('#setCover').click();
+                                }
+                            } else {
+                                $firstPhoto.children().find('#setCover').click();
+                            }
+
+                        }
+                        $parent.remove();
+                        count--;
+                    } else {
+                        bootbox.alert("抱歉！删除出现错误");
+                    }
+                },
+                error: function (scrip) {
+                    App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                }
+            });
+        });
+
+        var ASPSESSID = "@Session.SessionID";
+        var AUTHID = "@(Request.Cookies[FormsAuthentication.FormsCookieName] == null ? string.Empty : Request.Cookies[FormsAuthentication.FormsCookieName].Value)";
+
+
+        $(function () {
+            //添加界面的附件管理
+            $('#file_upload').uploadify({
+                //FLash文件路径
+                'swf': '../../Areas/assets/plugins/uploadify/uploadify.swf',
+                //按钮相关
+                //'buttonImage': '/Areas/assets/img/png_plus.png',
+                //浏览按钮的宽度
+                //'width': '220',
+                //浏览按钮的高度
+                //'height': '220',
+                //处理文件上传Action
+                'uploader': '/Admin/AtlasManage/Receive',
+                //队列的ID
+                'queueID': 'file_queue',
+                'simUploadLimit': 0, //同時上傳檔案數，0為無限
+                //队列最多可上传文件数量，默认为999
+                'queueSizeLimit': 20,
+                //选择文件后是否自动上传，默认为true，false的话，要另外定义方法传送upload参数触发上传行为
+                'auto': true,
+                //单个文件大小，0为无限制，可接受KB,MB,GB等单位的字符串值
+                'fileSizeLimit': '10MB',
+                //文件描述
+                'fileTypeDesc': '图片类型',
+                //上传的文件后缀过滤器
+                'fileTypeExts': '*.gif;*.jpge;*.jpg;*.png;*.bmp;*.tif',
+                //Server端的Action，以什么名称(默认为Filedata)接收HttpPostedFileBase [与auto属性相关]
+                'fileObjName': 'fileData',
+                'formData': { 'ASPSESSID': ASPSESSID, 'AUTHID': AUTHID },
+                //动态传参数 [与auto属性相关，即是上文所说的另外定义方法]
+                'onUploadStart': function (file) {
+                    $("#file_upload").uploadify("settings", 'formData', {
+                        'atlasId': $("#AtlasId").val()
+                    });
+                },
+                //所有队列完成后执行的事件
+                'onQueueComplete': function (event, data) {
+                    //完成后更新已上传的文件列表
+                    //ShowUpFiles($("#attachment").val(), "div_files");
+                    //alert("上传完毕！"); //提示完成
+                    //alert(data);
+                },
+                //上传到服务器，服务器返回相应信息到data里
+                'onUploadSuccess': function (file, data, response) {
+                    var result = $.parseJSON(data);
+                    if (result.state) {
+                        var temp = result.item;
+                        //var temp = { "PhotoId": "Jake", "Remark": 31 };
+                        var interText = doT.template($("#evaluation").text());
+                        //var oldHtml = document.getElementById('photoview').innerHTML;
+                        $("#photoview").append(interText(temp));
+                        //$("#photoview").append("<p>姚明退役了...</p>");
+                        //alert(temp.PhotoId + " " + temp.PhotoPath + " " + temp.ThumbPath);
+                        count++;
+                        if (count == 1) {
+                            $('.thumbnail:first > span').show();
+                        }
+                    } else {
+                        alert(result.description);
+                    }
+                },
+                'onUploadError': function (event, queueId, fileObj, errorObj) {
+                    alert(errorObj.type + "：" + errorObj.info);
+                },
+                //返回一个错误，选择文件时触发
+                'onSelectError': function (file, errorCode, errorMsg) {
+                    switch (errorCode) {
+                        case -100:
+                            alert("上传的文件数量已经超出限制的" + $('#file_upload').uploadify('settings', 'queueSizeLimit') + "个文件！");
+                            break;
+                        case -110:
+                            alert("文件 [" + file.name + "] 大小超出限制的" + $('#file_upload').uploadify('settings', 'fileSizeLimit') + "大小！");
+                            break;
+                        case -120:
+                            alert("文件 [" + file.name + "] 大小异常！");
+                            break;
+                        case -130:
+                            alert("文件 [" + file.name + "] 类型不正确！");
+                            break;
+                        default:
+                            alert("发生未知错误！");
+                    }
+                },
+                //检测FLASH失败调用
+                'onFallback': function () {
+                    alert("您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。");
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,121 @@
+﻿@model QS.Web.Areas.Admin.Models.UserCreateModel
+@{
+    ViewBag.Title = "用户列表";
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            用户管理
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","UserManage", new{ Area = "Admin" })">
+                    用户管理
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-plus"></i>
+                <a href="@Url.Action("Create","UserManage", new{ Area = "Admin" })">
+                    添加用户
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+<div class="row" id="sortable_portlets">
+    <div class="col-md-12 sortable">
+        <div class="portlet box blue ">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-users"></i>新建用户
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                @using (Html.BeginForm("Create", "UserManage", FormMethod.Post))
+                {
+                    <div class="form-horizontal form-row-seperated">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="note note-success">
+                                    <p>
+                                        新增的用户状态默认为<span class="label label-sm label-primary">未被激活</span>状态，新用户登录时用户名和密码均为创建时所输入的学号，首次登录时会提示填写完整信息，创建用户时你只需填写如下三项必要信息即可：
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.StuNumber, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-9">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-flag-o"></i>
+                                        @Html.TextBoxFor(model => model.StuNumber, new { @class = "form-control" })
+                                    </div>
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => model.StuNumber)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.RealName, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-9">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-user"></i>
+                                        @Html.TextBoxFor(model => model.RealName, new { @class = "form-control" })
+                                    </div>
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => model.RealName)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group last">
+                                @Html.LabelFor(model => model.Identification, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-9">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-bookmark-o"></i>
+                                        @Html.TextBoxFor(model => model.Identification, new { @class = "form-control" })
+                                    </div>
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => model.Identification)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions fluid right">
+                            <a href="@Url.Action("Index","UserManage")" class="btn default">取消</a>
+                            <button type="submit" class="btn blue">确定</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- END PAGE CONTENT-->
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #user-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #sub-user-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #user-create-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init(); // initlayout and core plugins
+        });
+    </script>
+}

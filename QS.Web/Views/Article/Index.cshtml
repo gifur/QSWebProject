@@ -1,0 +1,121 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.Web.Models.ArticleSummaryModel>
+@{
+    ViewBag.Title = "心理文章";
+    ViewBag.CurrentPage = "Article";
+}
+
+@section Styles{
+    <link href="/assets/css/pages/blog.css" rel="stylesheet" />
+}
+
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li class="active">心理文章</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container min-hight">
+        <!-- 文章内容 -->
+        <div class="row">
+            <div class="col-md-9 col-sm-9 article-block  margin-bottom-40">
+                @if (Model != null)
+                {
+                    var count = 0;
+                    foreach (var item in Model)
+                    {
+                        if (count++ > 0)
+                        {
+                            <hr class="blog-post-sep">
+                        }
+                        <div class="row">
+                            <div class="col-md-4 blog-img blog-tag-data">
+                                <img src="@item.ViewImage" alt="" class="img-thumbnail img-responsive">
+                                @*<ul class="list-inline blog-tags">
+                                <li>
+                                    <i class="fa fa-tags"></i>
+                                    <a href="#">
+                                        励志人生
+                                    </a>
+                                </li>
+                                </ul>*@
+                            </div>
+                            <div class="col-md-8 blog-article">
+                                <h2>
+                                    @Html.ActionLink(@item.ArticleTitle, "Item", new { id = @item.ArticleId })
+                                </h2>
+                                <ul class="blog-info">
+                                    <li><i class="fa fa-calendar"></i> @item.CreateTime.ToShortDateString()</li>
+                                    <li><i class="fa fa-eye"></i> @Html.ViewTimesFormat(@item.ViewTimes)</li>
+                                    <li><i class="fa fa-comments"></i> @Html.CommentsFormat(@item.CommentNum)</li>
+                                    <li><i class="fa fa-tag"></i> @Html.ArticleCategoryFormat(@item.Category)</li>
+                                </ul>
+                                <p>@item.ArticleContent</p>
+                                <a class="btn theme-btn btn-sm" href="@Url.Action("Item", new {id = @item.ArticleId})">
+                                    阅读更多 <i class="m-icon-swapright m-icon-white"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                }
+                <div class="text-center margin-top-20">
+                    @Html.Pager(Model, new PagerOptions
+                    {
+                        PageIndexParameterName = "pageIndex",
+                        ShowFirstLast = false,
+                        ContainerTagName = "ul",
+                        CssClass = "pagination pagination-centered",
+                        PagerItemWrapperFormatString = "<li>{0}</li>",
+                        CurrentPagerItemWrapperFormatString = "<li class=\"active\"><a>{0}</a></li>"
+                    })
+                </div>
+            </div>
+            <!-- 结束  左边文章内容块-->
+            <!-- 右边导航块 -->
+            <div class="col-md-3 col-sm-3 blog-sidebar">
+                <!-- 分类 -->
+                <div class="widgetheading">
+                    <h4>热门文章排行</h4>
+                </div>
+                @{
+                    Html.RenderAction("_PopularTenArticle");
+                }
+                <!-- 结束 分类 -->
+
+                <h4 class="titlemore"><span class="slash-colored">//</span>最新评论</h4>
+                @{
+                    Html.RenderAction("_RecentCommentFromArticle", "Comment");
+                }
+                <div class="space20">
+                </div>
+                <h4 class="titlemore"><span class="slash-colored">//</span>文章分类</h4>
+                @{
+                    Html.RenderAction("_CategoryPartial", "Article");
+                }
+            </div>
+        </div>
+        <!-- 结束 文章内容 -->
+    </div>
+    <!-- 结束 主体 -->
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+            jQuery(document).ready(function () {
+                App.init();
+            });
+    </script>
+}

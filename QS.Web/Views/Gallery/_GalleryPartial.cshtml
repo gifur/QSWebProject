@@ -1,0 +1,30 @@
+﻿@model  IEnumerable<QS.DTO.SharedModule.AtlasDto>
+
+@if (Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="col-md-3 col-sm-4">
+            <div class="thumbnail">
+                <div class="picture_overlay">
+                    <a href="@Url.Action("Detail", "Gallery", new { id = @item.AtlasId})">
+                        <img src="@item.ThumbPath" class="img-responsive" alt="001" />
+                    </a>
+                </div>
+                <h4>
+                    @Html.ActionLink(@item.AtlasName, "Detail", new { id = @item.AtlasId })
+                </h4>
+
+                <p>@item.Remark</p>
+                <div class="work-skillsdate">
+                    <p>
+                        <span><i class="fa fa-eye"></i></span> @Html.ViewTimesFormat(@item.Hits) <span><i class="fa fa-comments"></i></span> @Html.CommentsFormat(@item.CommentNum)
+                    </p>
+                    <p>
+                        <span><i class="fa fa-calendar"></i></span> @Html.DateFormat(@item.CreateTime)
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+}

@@ -1,0 +1,148 @@
+﻿@using QS.DTO.FeedbackModule
+@model QS.Web.Models.FeedbackViewModel
+@{
+    ViewBag.Title = "心理反馈";
+    ViewBag.CurrentPage = "Personal_Feedback";
+}
+
+@section Styles{
+    <link href="~/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/pages/psychology-feedback.css" rel="stylesheet" type="text/css" />
+    @*<link href="~/assets/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet" />*@
+    @*<link href="~/assets/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+    <link href="~/assets/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />*@
+    <link href="~/assets/css/pages/page404.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-20">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li><a href="@Url.Action("Feedback", "Task")">个人事务</a></li>
+                    <li class="active">心理反馈</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container" style="margin-bottom: 54px !important;">
+        <input type="hidden" value="@ViewData["Message"]" id="mes" />
+        @if (Model.Current == null)
+        {
+            <div class="row">
+                <div class="col-md-12 page-404">
+                    <div class="details">
+                        <h3>啊~哦~ 本月的心理反馈时间还没开始呢！</h3>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (Model.Current.Status == EnumFbStatus.Await)
+        {
+            <div class="row">
+                <div class="col-md-12 page-404">
+                    <div class="number">
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <div class="details">
+                        <span><strong>即将开始！</strong>本月的心理反馈上交时间为：</span>
+                        <h3>@Model.Current.StartTime.ToShortDateString() 到 @Model.Current.EndTime.ToShortDateString() </h3>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (Model.Current.Status == EnumFbStatus.Underway)
+        {
+            <input type="hidden" value="@Model.Current.EndTime.AddDays(1)" id="endtime" />
+            <div class="row">
+                <div class="col-md-6">
+                    @using (@Html.BeginForm("Feedback", "Task", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="upload-form" style="margin-top:25px;">
+                            <div class="fileinput fileinput-new col-md-12 col-sm-12" data-provides="fileinput">
+                                <div class="input-group" @*style="width: 540px !important;"*@>
+                                    <div class="form-control uneditable-input span3" data-trigger="fileinput">
+                                        <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                        <span class="fileinput-filename">
+                                        </span>
+                                    </div>
+                                    <span class="input-group-addon btn theme-btn btn-file">
+                                        <span class="fileinput-new">
+                                            选择文件
+                                        </span>
+                                        <span class="fileinput-exists">
+                                            重新选择
+                                        </span>
+                                        <input type="file" name="fileUrl"
+                                               accept="application/msword" />
+                                    </span>
+                                    <a href="#" class="input-group-addon btn theme-btn fileinput-exists" data-dismiss="fileinput">
+                                        清空
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="clearfix  col-md-12 col-sm-12 margin-top-10">
+                                <div class="col-md-2 col-sm-2">
+                                    <button type="submit" class="btn theme-btn" title="@(Model.Record != null ? "上传新反馈表将覆盖原已上传的文件":"")">上传</button>
+                                </div>
+                                <div class="col-md-10 col-sm-10 text-right" style="margin-top: 15px;">
+                                    @if (Model.Record == null)
+                                    {
+                                        <span class="label label-warning">还未上传</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-primary">已上传</span>
+                                        <span>
+                                            &nbsp;@Model.Record.DocumentName
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                            <span class="error-block">
+                                @Html.ValidationMessage("duplicate")
+                            </span>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <div class="details pull-right">
+                        <h3>距离提交结束时间：</h3>
+                        <div class="coming-soon-countdown">
+                            <div id="defaultCountdown">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <!-- 结束 主体 -->
+</div>
+
+@section Scripts{
+    <script src="~/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+    <script src="~/assets/plugins/countdown/jquery.countdown.js"></script>
+    <script src="~/assets/plugins/countdown/plugin/jquery.countdown-zh-CN.js"></script>
+    @*<script src="~/assets/scripts/psychology-feedback.js" type="text/javascript"></script>*@
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            if ($('#endtime').length > 0) {
+                var str = $('#endtime').val();
+                str = str.replace(/-/g, "/");
+                var austDay = new Date(str);
+                $('#defaultCountdown').countdown({ until: austDay });
+            }       
+        });
+    </script>
+
+}

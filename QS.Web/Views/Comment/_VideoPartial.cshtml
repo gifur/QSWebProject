@@ -1,0 +1,70 @@
+﻿@using Microsoft.Web.Helpers
+@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.CommentModule.VideoCommentDto>
+@{
+    var pageIndex = ViewBag.PageIndex is int ? (int)ViewBag.PageIndex : 1;
+    var pageMax = ViewBag.PageMax is int ? (int)ViewBag.PageMax : 1;
+}
+
+<h6 class="comments-line text-muted">共有<span id="comments-count">@ViewBag.Count</span>条评论</h6>
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="media">
+            <a href="#" class="pull-left">
+                @if (item.IsMember != 0)
+                {
+                    <img src="~/Profiles/HeadImage/@item.PhotoUrl" alt="" class="media-object">
+                }
+                else
+                {
+                    @Gravatar.GetHtml(@item.Email, attributes: new { @class = "media-object" })
+                }
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">@item.NickName <span>@Html.DateFormat(@item.CreateTime) @*/ <a href="#">回复</a>*@</span></h4>
+                <p>@item.Content</p>
+            </div>
+        </div>
+    }
+}
+<hr>
+<ul class="pager">
+    @if (pageIndex > 1)
+    {
+        <li class="previous">
+            @Ajax.ActionLink(@"上一页", "_VideoPartial", "Comment", new { pageIndex = @pageIndex - 1 }, new AjaxOptions
+            {
+                UpdateTargetId = "comments",
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "Put",
+                OnSuccess = "onAjaxSuccess"
+            })
+        </li>
+    }
+    else
+    {
+        <li class="previous disabled"><a href="#">上一页</a></li>
+    }
+    @if (pageIndex < pageMax)
+    {
+        <li class="next">
+            @Ajax.ActionLink(@"下一页", "_VideoPartial", "Comment", new { pageIndex = @pageIndex + 1 }, new AjaxOptions
+            {
+                UpdateTargetId = "comments",
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "Put",
+                OnSuccess = "onAjaxSuccess"
+            })
+        </li>
+    }
+    else
+    {
+        <li class="next disabled"><a href="#">下一页</a></li>
+    }
+
+</ul>
+<script type="text/javascript">
+    function onAjaxSuccess() { App.scrollTo($('#comments')); }
+</script>

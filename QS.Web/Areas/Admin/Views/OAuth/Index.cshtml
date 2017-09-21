@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "后台管理";
+}
+
+@section Styles {
+}
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h3 class="page-title">
+            后台管理 <small>求索工作室后台主页，欢迎你！</small>
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index", "OAuth")">
+                    主页
+                </a>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+</div>
+
+<!-- BEGIN PAGE CONTENT-->
+<div class="tiles">
+    <a class="tile double-down bg-blue" href="@Url.Action("Index", "UserManage")">
+        <div class="tile-body">
+            <i class="fa fa-users"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                人员管理
+            </div>
+        </div>
+    </a>
+    <a class="tile bg-green" href="@Url.Action("Index", "BookManage")">
+        <div class="tile-body">
+            <i class="fa fa-book"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                书籍管理
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </a>
+    <a class="tile double selected bg-blue" href="@Url.Action("Index", "NewsManage")">
+        <div class="tile-body">
+            <i class="fa fa-info-circle"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                新闻管理
+            </div>
+            <div class="number">
+                &nbsp;
+            </div>
+        </div>
+    </a>
+    <a class="tile selected bg-red" href="@Url.Action("Index", "VideoManage")">
+        <div class="tile-body">
+            <i class="fa fa-video-camera"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                视频管理
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </a>
+    <a class="tile double bg-purple" href="@Url.Action("Index", "ArticleManage")">
+        <div class="tile-body">
+            <i class="fa fa-file-text-o"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                文章管理
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </a>
+    <a class="tile bg-purple double" href="@Url.Action("Index", "Feedback")">
+        <div class="tile-body">
+            <i class="fa fa-bar-chart-o"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                心理反馈
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </a>
+    <a class="tile bg-green" href="@Url.Action("Index", "Suggestion")">
+        <div class="tile-body">
+            <i class="fa fa-bell"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                评论/评价
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </a>
+    <a class="tile double bg-dark" href="@Url.Action("Index", "ActivityManage")">
+        <div class="tile-body">
+            <h4>活动预告</h4>
+            <p>
+            </p>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                <i class="fa fa-bullhorn"></i>
+            </div>
+            <div class="number">
+                
+            </div>
+        </div>
+    </a>
+    <a class="tile bg-blue" href="@Url.Action("Index", "Reservation")">
+        <div class="tile-body">
+            <i class="fa fa-stethoscope"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                心理咨询
+            </div>
+            <div class="number">
+                &nbsp;
+            </div>
+        </div>
+    </a>
+    <a class="tile bg-purple" href="@Url.Action("Index", "inforManage")">
+        <div class="tile-body">
+            <i class="fa fa-comments-o"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                通知管理
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </a>
+    <a class="tile double bg-red selected" href="@Url.Action("Index","AtlasManage")">
+        <div class="tile-body">
+            <i class="fa fa-camera-retro"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                心理图片
+            </div>
+            <div class="number">
+                &nbsp;
+            </div>
+        </div>
+    </a>
+    <a class="tile bg-purple" href="@Url.Action("Index", "TagManage")">
+        <div class="tile-body">
+            <i class="fa fa-tag"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                标签管理
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </a>
+    <div class="tile bg-yellow selected">
+        <div class="tile-body">
+            <i class="fa fa-cogs"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                相关设置
+            </div>
+        </div>
+    </div>
+    <a class="tile bg-green double" href="@Url.Action("Index", "LogManage")">
+        <div class="tile-body">
+            <i class="fa fa-bar-chart-o"></i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                日志管理
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </a>
+</div>
+<!-- END PAGE CONTENT-->
+
+@section Scripts {
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            $('ul.page-sidebar-menu #index-link').addClass('active');
+            App.init();
+        });
+    </script>
+}

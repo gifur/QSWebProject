@@ -1,0 +1,20 @@
+﻿@model IEnumerable<QS.DTO.SharedModule.VideoDto>
+           
+
+<div class="play-rank margin-bottom-10">
+    <ul class="play-rank-item list-unstyled">
+        @if (Model != null && Model.Any())
+        {
+            var count = 0;
+            foreach (var item in Model)
+            {
+                <li class="clearfix">
+                    <span class="ordinary @(++count <= 3 ? "hot-ordinary" : "def-ordinary") ">@count</span>
+                    <a class="tit-ordinary" href="@Url.Action("Item", new{id = @item.VideoId})"title="@item.VideoName">@item.VideoName</a>
+                    <span class="play-rank-tags"><i class="fa fa-tag"></i>@item.Category</span>
+                    <span class="play-rank-nums">@item.Hits</span>
+                </li>
+            }
+        }
+    </ul>
+</div>

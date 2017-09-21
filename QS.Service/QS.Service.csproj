@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A694CDCD-1244-4165-BC1F-DB22760A8145}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QS.Service</RootNamespace>
+    <AssemblyName>QS.Service</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Effection\MyMessageService.cs" />
+    <Compile Include="Effection\TagService.cs" />
+    <Compile Include="Effection\MessageService.cs" />
+    <Compile Include="Effection\LogService.cs" />
+    <Compile Include="Effection\RecentActivityService.cs" />
+    <Compile Include="Effection\SuggestionService.cs" />
+    <Compile Include="Effection\CommentService.cs" />
+    <Compile Include="Effection\ArticleService.cs" />
+    <Compile Include="Effection\LoginLogService.cs" />
+    <Compile Include="Effection\VideoService.cs" />
+    <Compile Include="Effection\BookService.cs" />
+    <Compile Include="Effection\AtlasService.cs" />
+    <Compile Include="Effection\FbDocumentService.cs" />
+    <Compile Include="Effection\FeedbackService.cs" />
+    <Compile Include="Effection\NewsService.cs" />
+    <Compile Include="Effection\PhotoService.cs" />
+    <Compile Include="Effection\ReservationService.cs" />
+    <Compile Include="Effection\UserService.cs" />
+    <Compile Include="ITagService.cs" />
+    <Compile Include="IMyMessageService.cs" />
+    <Compile Include="IMessageService.cs" />
+    <Compile Include="ILogService.cs" />
+    <Compile Include="IRecentActivityService.cs" />
+    <Compile Include="ISuggestionService.cs" />
+    <Compile Include="ICommentService.cs" />
+    <Compile Include="IArticleService.cs" />
+    <Compile Include="ILoginLogService.cs" />
+    <Compile Include="IVideoService.cs" />
+    <Compile Include="IBookService.cs" />
+    <Compile Include="IAtlasService.cs" />
+    <Compile Include="IFbDocumentService.cs" />
+    <Compile Include="IFeedbackService.cs" />
+    <Compile Include="INewsService.cs" />
+    <Compile Include="IPhotoService.cs" />
+    <Compile Include="IReservationService.cs" />
+    <Compile Include="IUserService.cs" />
+    <Compile Include="Message.Designer.cs">
+      <DependentUpon>Message.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QS.Common\QS.Common.csproj">
+      <Project>{e5f61799-3326-411b-84a5-d1a58e1ce061}</Project>
+      <Name>QS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QS.Core\QS.Core.csproj">
+      <Project>{a93a61a1-cef1-4c7a-8f43-b89249340e24}</Project>
+      <Name>QS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QS.DTO\QS.DTO.csproj">
+      <Project>{1b75f96a-0d02-4461-9bed-5729d2564edf}</Project>
+      <Name>QS.DTO</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Message.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Message.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。启用“NuGet 程序包还原”可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

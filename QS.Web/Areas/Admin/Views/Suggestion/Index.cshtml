@@ -1,0 +1,117 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.CommentModule.SuggestionDto>
+@{
+    ViewBag.Title = "评论和建议";
+}
+
+@section Styles{
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            所有的评论和建议
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","Suggestion", new{ Area = "Admin" })">
+                    评论和建议列表
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-advance table-hover">
+                        <thead>
+                            <tr>
+                                <th width="20%">
+                                    <i class="fa fa-coffee"></i> 昵称&amp;邮箱
+                                </th>
+                                <th width="70%">
+                                    <i class="fa fa-archive"></i> 内容
+                                </th>
+                                <th width="10%" class="text-right">
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td width="20%">
+                                        @item.NickName<br />
+                                        <span class="text-muted">邮箱：</span><span>@item.Email</span><br />
+                                        <span class="text-muted">时间：</span><span>@item.CreateTime</span>
+                                    </td>
+                                    <td width="70%">
+                                        @Html.Raw(@item.Content)
+                                    </td>
+                                    <td width="10%" class="text-right">
+                                        <button name="delete" value="@item.Id" class="btn default btn-xs green-stripe ">删除</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @Html.Pager(Model, new PagerOptions { PageIndexParameterName = "id" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #about-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #suggestion-link').addClass('active');
+            App.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+            $('table').on('click', 'button[name=delete]', function() {
+                var $delete = $(this);
+                $.ajax({
+                    type: 'post',
+                    data: { id: ($delete.val()) },
+                    url: '/Admin/Suggestion/Delete',
+                    success: function(evt) {
+                        if (evt != null && evt.Success) {
+                            App.alert({ type: 'success', message: '删除成功！', closeInSeconds: 8, icon: 'check-circle' });
+                            $delete.closest('tr').remove();
+                        } else if (evt != null) {
+                            App.alert({ type: 'danger', message: evt.Message, closeInSeconds: 8, icon: 'warning' });
+                        }
+                    },
+                    error: function () {
+                        App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                    }
+                });
+            });
+        });
+
+    </script>
+}

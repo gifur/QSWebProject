@@ -1,0 +1,224 @@
+﻿@{
+    ViewBag.Title = "个人信息";
+    ViewBag.CurrentPage = "Personal_Profile";
+}
+
+@section Styles{
+    <link href="~/assets/css/pages/profile.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li><a href="@Url.Action("ProfileDetail", "Account")">个人事务</a></li>
+                    <li class="active">个人信息</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container margin-bottom-40">
+        <div class="row profile-account">
+            <div class="col-md-3">
+                <ul class="ver-inline-menu tabbable margin-bottom-10">
+                    <li>
+                        <img src="~/Profiles/HeadImage/@ViewBag.Photo" class="img-responsive" alt="" />
+                    </li>
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab_profile">
+                            <i class="fa fa-cog"></i> 个人资料
+                        </a>
+                        <span class="after">
+                        </span>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#tab_img">
+                            <i class="fa fa-picture-o"></i> 更换头像
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#tab_password">
+                            <i class="fa fa-lock"></i> 修改密码
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#tab_set">
+                            <i class="fa fa-eye"></i> 个性化
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="tab-content">
+                    <div id="tab_profile" class="tab-pane active">
+                        @{
+                            Html.RenderAction("_Personal");
+                        }
+                    </div>
+                    <div id="tab_img" class="tab-pane">
+                        @using (Html.BeginForm("ChangeImage", "Account", FormMethod.Post, new {id="img-form", enctype = "multipart/form-data" }))
+                        {
+
+                            <p>
+                            </p>
+                            <div>
+                                <div class="form-group">
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
+                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+                                        </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;">
+                                        </div>
+                                        <div>
+                                            <span class="btn default btn-file">
+                                                <span class="fileinput-new black">
+                                                    选择头像
+                                                </span>
+                                                <span class="fileinput-exists">
+                                                    重新选择
+                                                </span>
+                                                <input type="file" name="imageInput" id="imageInput" accept="image/*">
+                                            </span>
+                                            <a href="#" id="clearimage" class="btn default fileinput-exists" data-dismiss="fileinput">
+                                                清除
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix margin-top-10">
+                                        <span class="label label-danger">
+                                            注意
+                                        </span>
+                                        <span>
+                                            &nbsp;这里填写对头像规格大小的建议，后面再进行修改
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10">
+                                    <button type="submit" class="btn green">
+                                        确认修改
+                                    </button>
+                                </div>
+                                <div class="clearfix margin-top-10">
+                                    <span class="error-block">
+                                        @Html.ValidationMessage("PhotoUrl")
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div id="tab_password" class="tab-pane">
+                        @{
+                            Html.RenderAction("_ChangePassword");
+                        }
+                    </div>
+                    <div id="tab_set" class="tab-pane">
+                        <form action="#">
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <td>
+                                        <h5>通过电子邮件接收工作室推送最新的活动消息</h5>
+                                    </td>
+                                    <td>
+                                        <label class="uniform-inline">
+                                            <input type="radio" name="optionsRadios1" value="option1" />
+                                            这个可以
+                                        </label>
+                                        <label class="uniform-inline">
+                                            <input type="radio" name="optionsRadios1" value="option2" checked />
+                                            还是算了
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5>愿意参与针对工作室最近工作表现的建议和评价</h5>
+                                    </td>
+                                    <td>
+                                        <label class="uniform-inline">
+                                            <input type="checkbox" value="" /> 是
+                                        </label>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--end profile-settings-->
+                            <div class="margin-top-10">
+                                <button type="submit" class="btn green" disabled>
+                                    确认修改
+                                </button>
+                                <a href="javascript:;" class="btn default">
+                                    取消修改
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--end col-md-9-->
+        </div>
+    </div>
+    <!-- 结束 主体 -->
+</div>
+
+@section Scripts{
+    <script src="~/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+    @*<script src="~/assets/scripts/bootbox.js"></script>*@
+    <script type="text/javascript">
+            jQuery(document).ready(function () {
+                App.init();
+                App.initUniform();
+
+                var options = {
+                    success: showResponse,
+                    dataType: 'json',
+                    clearForm: true,
+                    resetForm: true,
+                    timeout: 3000
+                };
+
+                $('#img-form').on('submit', function (e) {
+                    e.preventDefault();
+                    $(this).ajaxSubmit(options);
+                });
+
+                function showResponse(evt, statusText, xhr, $form) {
+                    if (evt == null || evt.Success == false) {
+                        var message = evt ? evt.Message : '修改失败，验证不通过';
+                        App.alert({
+                            container: '#tab_img',
+                            place: 'prepent',
+                            type: 'danger',
+                            message: message,
+                            focus: false,
+                            closeInSeconds: 3,
+                            icon: 'warning'
+                        });
+                        App.scrollTo();
+                    } else {
+                        $('div.fileinput-new #clearimage').click();
+                        var value = evt.Message;
+                        $('ul.tabbable .img-responsive').attr("src", value);
+                        App.alert({
+                            container: '#tab_img',
+                            place: 'prepent',
+                            type: 'success',
+                            message: '头像修改成功！',
+                            focus: false,
+                            closeInSeconds: 8,
+                            icon: 'check-circle'
+                        });
+                    }
+
+                }
+            });
+    </script>
+}

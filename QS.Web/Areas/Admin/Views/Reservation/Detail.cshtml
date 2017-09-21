@@ -1,0 +1,206 @@
+﻿@using QS.DTO.ProfessionModule
+@model QS.DTO.ProfessionModule.ReservationDto
+@{
+    ViewBag.Title = @"预约详情";
+    bool option = true;
+}
+
+@section Styles{
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h4 class="page-title">
+            @{@Model.SubscriberName}的预约信息<small>&nbsp;创建于：@Model.Createtime</small>
+        </h4>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","Reservation", new{ Area = "Admin" })">
+                    心理咨询
+                </a>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+    <input type="hidden" value="@ViewData["Message"]" id="mes" />
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row margin-bottom-10">
+            <div class="col-md-8">
+                <div class="space20">
+                </div>
+                <div class="well">
+                    <div class="reservation-descript">
+                        <strong>预约时间：</strong><p>@Model.Dealtime.ToLongDateString()</p>
+                    </div>
+                    <div class="reservation-descript">
+                        <strong>现在情况：</strong><br>
+                        <p>@Model.Situation</p>
+                    </div>
+                    <div class="reservation-descript">
+                        <strong>过往情况：</strong><br>
+                        <p>@Model.Past</p>
+                    </div>
+                    <div class="reservation-descript">
+                        <strong>咨询经历：</strong><br>
+                        <p>@Model.Experience</p>
+                    </div>
+                </div>
+            </div>    
+            <div class="col-md-4">
+                <div class="space20">
+                </div>
+                <!-- BEGIN FORM-->
+                <form action="#" class="horizontal-form">
+                    <div class="row static-info" style="padding-top: 19px;">
+                        <div class="col-md-5 name">
+                            预约者：
+                        </div>
+                        <div class="col-md-7 value">
+                            @Model.SubscriberName
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name">
+                            院系专业班级：
+                        </div>
+                        <div class="col-md-7 value">
+                            @Model.Professional
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name">
+                            学号：
+                        </div>
+                        <div class="col-md-7 value">
+                            @Model.StuNumber
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name">
+                            联系电话：
+                        </div>
+                        <div class="col-md-7 value">
+                            @Model.Phone
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name">
+                            电子邮箱：
+                        </div>
+                        <div class="col-md-7 value">
+                            @Model.Email
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name">
+                            性别：
+                        </div>
+                        <div class="col-md-7 value">
+                            @(Model.Gender == GenderType.Male ? "男" : (Model.Gender == GenderType.Female ? "女" : "保密"))
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name">
+                            年龄：
+                        </div>
+                        <div class="col-md-7 value">
+                            @if (@Model.Age <= 0)
+                            {
+                                const string s = "未知";
+                                @s
+                            }
+                            else
+                            {@Model.Age}
+                        </div>
+                    </div>
+                    <div class="row static-info">
+                        <div class="col-md-5 name">
+                            状态：
+                        </div>
+                        <div class="col-md-7 value">
+                            @if (Model.State == DealState.New)
+                            {
+                                @:<span class="label label-sm label-success">新</span>
+                            }
+                            else if (Model.State == DealState.Pending)
+                            {
+                                @:<span class="label label-sm label-warning">未处理</span>
+                            }
+                            else if (Model.State == DealState.Treated)
+                            {
+                                option = false;
+                                @:<span class="label label-sm label-default">已处理</span>
+                            }
+                            else if (Model.State == DealState.Urgent)
+                            {
+                                @:<span class="label label-sm label-danger">紧急</span>
+                            }
+                            else if (Model.State == DealState.Overtime)
+                            {
+                                option = false;
+                                @:<span class="label label-sm label-info">已超时</span>
+                            }
+                            else if (Model.State == DealState.Faraway)
+                            {
+                                option = false;
+                                @:<span class="label label-sm label-default">过去久远</span>
+                            }
+                        </div>
+                    </div>
+
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <hr />
+        <div class="margin-bottom-20">
+            <div class="pull-right">
+                @if (option)
+                {
+                    <a href="@Url.Action("Finish", new {rid = @Model.RId})" class="btn blue"><i class="fa fa-check"></i> 已处理</a>
+                }
+                else
+                {
+                    <a class="btn blue" href="@Url.Action("Delete", new { @Model.RId })"><i class="fa fa-trash-o"></i> 删除</a>
+                }
+                <a href="javascript:history.go(-1);" class="btn default"><i class="fa fa-share"></i> 返回</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- END PAGE CONTENT-->
+@section Scripts{
+    <script type="text/javascript">
+    jQuery(document).ready(function () {
+        var $header = $('ul.page-sidebar-menu #psy-header');
+        $header.addClass('active');
+        var $a = $header.children(':first');
+        $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+        $('ul.page-sidebar-menu #reservation-link').addClass('active');
+        App.init();
+        if ($('#mes').val()) {
+            bootbox.alert($('#mes').val());
+            $('#mes').val(null);
+        }
+    });
+    </script>
+
+}
+

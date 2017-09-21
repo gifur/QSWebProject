@@ -1,0 +1,122 @@
+﻿@model QS.Web.Models.AcntWithoutPsw
+@using (Ajax.BeginForm("Personal", null,
+    new AjaxOptions { HttpMethod = "Post", OnSuccess = "ajaxsuccess", OnFailure = "ajaxfail" },
+    new{id = "profile"}))
+{
+    <div class="form-group">
+        @Html.HiddenFor(model => model.UserId)
+        <label class="control-label">用户名</label>
+        @Html.TextBoxFor(model => model.UserName, new
+                                {
+                                    @class = "form-control"
+                                })
+        <span class="error-block">
+            @Html.ValidationMessageFor(model => model.UserName)
+        </span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">姓名</label>
+        @Html.TextBoxFor(model => model.RealName, new
+                                {
+                                    @class = "form-control",
+                                    @readonly = "true"
+                                })
+    </div>
+    <div class="form-group">
+        <label class="control-label">学号</label>
+        @Html.TextBoxFor(model => model.StuNumber, new
+                                {
+                                    @class = "form-control",
+                                    @readonly = "true"
+                                })
+    </div>
+    <div class="form-group">
+        <label class="control-label">身份</label>
+        @Html.TextBoxFor(model => model.Identification, new
+                                {
+                                    @class = "form-control",
+                                    @readonly = "true"
+                                })
+    </div>
+    <div class="form-group">
+        <label class="control-label">性别</label>
+        @Html.DropDownListFor(
+                                model => model.Gender, ViewData["gender"] as SelectList,
+                                new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label class="control-label">电子邮箱</label>
+        @Html.TextBoxFor(model => model.Email, new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "sample@support.com"
+                                })
+        <span class="error-block">
+            @Html.ValidationMessageFor(model => model.Email)
+        </span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">联系电话</label>
+        @Html.TextBoxFor(model => model.Phone, new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "长号（短号）"
+                                })
+    </div>
+    <div class="form-group">
+        <label class="control-label">宿舍地址</label>
+        @Html.TextBoxFor(model => model.PersonalPage, new
+                                {
+                                    @class = "form-control",
+                                    @placeholder = "暂无内容"
+                                })
+    </div>
+    <div class="form-group">
+        <label class="control-label">关于</label>
+        @Html.TextAreaFor(model => model.About, 3, 3, new { @class = "form-control" })
+    </div>
+    <div class="margin-top-10">
+        <button class="btn green" type="submit">保存修改</button>
+    </div>
+}
+
+<script type="text/javascript">
+    function ajaxsuccess(evt) {
+        if (evt == null || evt.Success == false) {
+            var value = evt ? evt.Message : '修改失败，数据验证不通过';
+            App.alert({
+                container: '#profile',
+                place: 'prepent',
+                type: 'danger',
+                message: value,
+                focus: false,
+                closeInSeconds: 8,
+                icon: 'warning'
+            });
+        } else {
+            App.alert({
+                container: '#profile',
+                place: 'prepent',
+                type: 'success',
+                message: '信息修改成功！',
+                focus: false,
+                closeInSeconds: 8,
+                icon: 'check-circle'
+            });
+        }
+        App.scrollTo();
+
+    }
+    function ajaxfail() {
+        App.alert({
+            container: '#profile',
+            place: 'prepent',
+            type: 'danger',
+            message: '出现错误，请刷新后再进行填写提交！',
+            focus: false,
+            closeInSeconds: 8,
+            icon: 'warning'
+        });
+        App.scrollTo();
+    }
+</script>

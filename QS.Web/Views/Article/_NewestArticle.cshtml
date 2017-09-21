@@ -1,0 +1,44 @@
+﻿@model IEnumerable<QS.Web.Models.ArticleSummaryModel>
+
+@{
+    var count = 0;
+    var models = Model != null && Model.Any() ? Model.ToList() : null;
+}
+@if (models != null && models.Any())
+{
+    <div id="myCarousel" class="carousel image-carousel slide">
+        <div class="carousel-inner">
+            @for (var index = 0; index < Model.Count(); ++index)
+            {
+                <div class="@(index == 0 ? "active" : "") item">
+                    <img src="@models[index].ViewImage" alt="">
+                    <div class="carousel-caption">
+                        <h4>
+                            <a href="@Url.Action("Item", "Article", new { id = @models[index].ArticleId })">
+                                @models[index].ArticleTitle
+                            </a>
+                        </h4>
+                        @*<p>
+                            @models[index].ArticleContent
+                        </p>*@
+                    </div>
+                </div>
+            }
+        </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+            <i class="m-icon-big-swapleft m-icon-white"></i>
+        </a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">
+            <i class="m-icon-big-swapright m-icon-white"></i>
+        </a>
+        <ol class="carousel-indicators">
+            @for (var index = 0; index < models.Count(); ++index)
+            {
+                <li data-target="#myCarousel" data-slide-to="@index" class="@(index == 0 ? "active" : "")">
+                </li>
+            }
+        </ol>
+    </div>
+}
+

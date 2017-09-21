@@ -1,0 +1,72 @@
+﻿@{
+    var currentPage = ViewBag.CurrentPage as String ?? String.Empty;
+}
+<div class="navbar-collapse collapse">
+    <ul class="nav navbar-nav">
+        <li class="@(ViewBag.CurrentPage == "Home" ? "active" : "")"><a href="@Url.Action("Index", "Home")">主页</a></li>
+        <li class="@(ViewBag.CurrentPage == "News" ? "active" : "")"><a href="@Url.Action("Index", "News")">新闻速递</a></li>
+        <li class="@(ViewBag.CurrentPage == "Article" ? "active" : "")"><a href="@Url.Action("Index", "Article")">心理文章</a></li>
+        <li class="@(ViewBag.CurrentPage == "Gallery" ? "active" : "")"><a href="@Url.Action("Index", "Gallery")">心理图片</a></li>
+        <li class="dropdown @(currentPage.Contains("Shared") ? "active" : "")">
+            <a class=" dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">
+            真心推荐
+            <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="@(currentPage.Contains("Video") ? "active" : "")"><a href="@Url.Action("Index", "Video")">影视心灵</a></li>
+                <li class="@(currentPage.Contains("Book") ? "active" : "")"><a href="@Url.Action("Index", "Book")">书籍人生</a></li>
+            </ul>
+        </li>
+        <li class="dropdown @(currentPage.Contains("Professtion") ? "active" : "")">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">
+                心理服务
+                <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="@(currentPage.Contains("Meet") ? "active" : "")"><a href="@Url.Action("Preregistration", "Profession")">心理预约</a></li>
+                @*<li><a href="page_test.html">心理测试</a></li>*@
+            </ul>
+        </li>
+        <li class="@(currentPage.Contains("Us") ? "active" : "")">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">
+                求索风采
+                <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="@(currentPage.Contains("About") ? "active" : "")"><a href="@Url.Action("About", "Home")">求索简介</a></li>
+                <li class="@(currentPage.Contains("Activity") ? "active" : "")"><a href="@Url.Action("Activity", "Home")">最新活动</a></li>
+            </ul>
+        </li>
+        <li class="dropdown @(currentPage.Contains("Personal") ? "active" : "")">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">
+                个人事务
+                <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="@(currentPage.Contains("Profile") ? "active" : "")"><a href="@Url.Action("ProfileDetail", "Account")">个人信息</a></li>
+                <li class="@(currentPage.Contains("Message") ? "active" : "")">
+                    <a href="@Url.Action("Message", "Account")">最新通知<span id="message_num" class="badge badge-important" style="display:none;"></span></a>
+                    
+                </li>
+                <li class="@(currentPage.Contains("Feedback") ? "active" : "")"><a href="@Url.Action("Feedback", "Task")">心理反馈</a></li>
+            </ul>
+        </li>
+        <li class="menu-search">
+            <span class="sep"></span>
+            @* ReSharper disable once UnknownCssClass *@
+            <i class="fa fa-search search-btn"></i>
+            <!--搜索栏框-->
+            <div class="search-box">
+                <form action="@Url.Action("Index", "Search")" method="post">
+                    <div class="input-group input-large">
+                        <input class="form-control" type="text" id="keyword" name="keyword" placeholder="输入关键字">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn theme-btn">搜索</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <!--结束 搜索栏框-->
+        </li>
+    </ul>
+</div>

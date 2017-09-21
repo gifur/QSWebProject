@@ -1,0 +1,353 @@
+﻿<div class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+        <!-- add "navbar-no-scroll" class to disable the scrolling of the sidebar menu -->
+        <!-- BEGIN SIDEBAR MENU -->
+        <ul class="page-sidebar-menu" data-auto-scroll="true" data-slide-speed="100">
+            <li class="sidebar-toggler-wrapper">
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                <div class="sidebar-toggler hidden-phone"></div>
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+            </li>
+            <li class="sidebar-search-wrapper">
+                <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+                <form class="sidebar-search" action="#" method="get">
+                    <div class="form-container">
+                        <div class="input-box">
+                            <a href="javascript:;" class="remove"></a>
+                            <input type="text" placeholder="输入查找内容……" />
+                            <input type="button" class="submit" value=" " />
+                        </div>
+                    </div>
+                </form>
+                <!-- END RESPONSIVE QUICK SEARCH FORM -->
+            </li>
+            <li class="start" id="index-link">
+                <a href="@Url.Action("Index", "OAuth")">
+                    <i class="fa fa-home"></i>
+                    <span class="title"><span class="muted">主页</span></span>
+                </a>
+            </li>
+            <li id="user-header">
+                <a href="javascript:;">
+                    <i class="fa fa-users"></i>
+                    <span class="title">
+                        用户管理 <span class="muted"></span>
+                    </span>
+                    <span class="arrow">
+                    </span>
+                </a>
+                <ul class="sub-menu">
+                    <li id="sub-user-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-user"></i>
+                            人员管理 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="user-list-link">
+                                <a href="@Url.Action("Index", "UserManage")">
+                                    <i class="fa fa-list"></i>
+                                    用户列表 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="user-add-link">
+                                <a href="@Url.Action("Create", "UserManage")">
+                                    <i class="fa fa-plus-square"></i>
+                                    添加用户 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-ticket"></i>
+                            角色管理 <span class="muted"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li id="media-header">
+                <a href="javascript:;">
+                    <i class="fa fa-desktop"></i>
+                    <span class="title">
+                        媒介管理 <span class="muted"></span>
+                    </span>
+                    <span class="arrow">
+                    </span>
+                </a>
+                <ul class="sub-menu">
+                    <li id="news-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-info-circle"></i>
+                            新闻管理 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="news-list-link">
+                                <a href="@Url.Action("Index", "NewsManage")">
+                                    <i class="fa fa-list"></i>
+                                    新闻列表 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="news-create-link">
+                                <a href="@Url.Action("Create", "NewsManage")">
+                                    <i class="fa fa-plus-square"></i>
+                                    添加新闻 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="article-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-file-text-o"></i>
+                            文章管理 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="article-list-link">
+                                <a href="@Url.Action("Index", "ArticleManage")">
+                                    <i class="fa fa-list"></i>
+                                    文章列表 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="article-create-link">
+                                <a href="@Url.Action("Create", "ArticleManage")">
+                                    <i class="fa fa-plus-square"></i>
+                                    添加文章 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="atlas-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-camera-retro"></i>
+                            图册管理 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="atlas-list-link">
+                                <a href="@Url.Action("Index", "AtlasManage")">
+                                    <i class="fa fa-list"></i>
+                                    图册列表 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="atlas-create-link">
+                                <a href="@Url.Action("Create", "AtlasManage")">
+                                    <i class="fa fa-plus-square"></i>
+                                    添加图册 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="video-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-video-camera"></i>
+                            视频管理 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="video-list-link">
+                                <a href="@Url.Action("Index", "VideoManage")">
+                                    <i class="fa fa-list"></i>
+                                    视频列表 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="video-create-link">
+                                <a href="@Url.Action("Create", "VideoManage")">
+                                    <i class="fa fa-plus-square"></i>
+                                    添加视频 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="book-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-book"></i>
+                            书籍管理 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="book-list-link">
+                                <a href="@Url.Action("Index", "BookManage")">
+                                    <i class="fa fa-list"></i>
+                                    书籍列表 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="book-create-link">
+                                <a href="@Url.Action("Create", "BookManage")">
+                                    <i class="fa fa-plus-square"></i>
+                                    添加书籍 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="tag-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-tag"></i>
+                            标签管理 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="tag-list-link">
+                                <a href="@Url.Action("Index", "TagManage")">
+                                    <i class="fa fa-tags"></i>
+                                    所有标签 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="tag-create-link">
+                                <a href="@Url.Action("Create", "TagManage")">
+                                    <i class="fa fa-plus-square"></i>
+                                    新建标签 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li id="psy-header">
+                <a href="javascript:;">
+                    <i class="fa fa-cutlery"></i>
+                    <span class="title">
+                        心理服务 <span class="muted"></span>
+                    </span>
+                    <span class="arrow ">
+                    </span>
+                </a>
+                <ul class="sub-menu">
+                    <li id="feedback-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-bar-chart-o"></i>
+                            心理反馈 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="feedback-current-link">
+                                <a href="@Url.Action("Index", "Feedback")">
+                                    <i class="fa fa-list"></i>
+                                    当前反馈 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="feedback-create-link">
+                                <a href="@Url.Action("Create", "Feedback")">
+                                    <i class="fa fa-plus-square"></i>
+                                    开启反馈 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id ="feedback-history-link">
+                                <a href="@Url.Action("History", "Feedback")">
+                                    <i class="fa fa-random"></i>
+                                    历史记录 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="reservation-link">
+                        <a href="@Url.Action("Index", "Reservation")">
+                            <i class="fa fa-stethoscope"></i>
+                            心理咨询 <span class="muted"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li id="about-header">
+                <a href="javascript:;">
+                    <i class="fa fa-tint"></i>
+                    <span class="title">
+                        求索相关 <span class="muted"></span>
+                    </span>
+                    <span class="arrow ">
+                    </span>
+                </a>
+                <ul class="sub-menu">
+                    <li id="suggestion-link">
+                        <a href="@Url.Action("Index", "Suggestion")">
+                            <i class="fa fa-bell"></i>
+                            评价建议 <span class="muted"></span>
+                        </a>
+                    </li>
+                    <li id="activity-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-bullhorn"></i>
+                            活动预告 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="activity-list-link">
+                                <a href="@Url.Action("Index", "ActivityManage")">
+                                    <i class="fa fa-list"></i>
+                                    活动列表 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="activity-create-link">
+                                <a href="@Url.Action("Create", "ActivityManage")">
+                                    <i class="fa fa-edit"></i>
+                                    创建活动 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li id="information-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-comments-o"></i>
+                            通知管理 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="information-list-link">
+                                <a href="@Url.Action("Index", "InforManage")">
+                                    <i class="fa fa-list"></i>
+                                    通知列表 <span class="muted"></span>
+                                </a>
+                            </li>
+                            <li id="information-create-link">
+                                <a href="@Url.Action("Create", "InforManage")">
+                                    <i class="fa fa-edit"></i>
+                                    添加通知 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="last" id="system-header">
+                <a href="javascript:;">
+                    <i class="fa fa-wrench"></i>
+                    <span class="title">
+                        系统管理 <span class="muted"></span>
+                    </span>
+                    <span class="arrow ">
+                    </span>
+                </a>
+                <ul class="sub-menu">
+                    <li id="log-header">
+                        <a href="javascript:;">
+                            <i class="fa fa-folder-open"></i>
+                                日志管理 <span class="muted"></span>
+                            <span class="arrow">
+                            </span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li id="login-list-link">
+                                <a href="@Url.Action("UserLogin", "LogManage")">
+                                    <i class="fa fa-list"></i>
+                                    登录日志 <span class="muted"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- END SIDEBAR MENU -->
+    </div>
+</div>

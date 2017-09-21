@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>@ViewBag.Title | Beautiful mind Happy life</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta content="QiuSuo Studio Psychology Website" name="description" />
+        <meta content="scau_Joseph" name="author" />
+        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="viewport" content="width=device-width" />
+        @Styles.Render("~/assets/plugins/css")
+        <link href="~/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" />
+        <link href="~/assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet" />
+        @Styles.Render("~/assets/themes/css")
+        @RenderSection("Styles", required: false)
+        @Scripts.Render("~/bundles/modernizr")
+        <link href="~/assets/css/themes/green.css" rel="stylesheet" type="text/css" id="style_color" />
+    </head>
+    <body>
+        <!-- 改制样式 -->
+        <div class="color-panel hidden-sm">
+            <div class="color-mode-icons icon-color"></div>
+            <div class="color-mode-icons icon-color-close"></div>
+            <div class="color-mode">
+                <p>更换主题颜色</p>
+                <ul class="inline">
+                    <li class="color-green current color-default" data-style="green"></li>
+                    <li class="color-blue" data-style="blue"></li>
+                    <li class="color-red" data-style="red"></li>
+                    <li class="color-orange" data-style="orange"></li>
+                </ul>
+                <label>
+                    <span>导航栏设置</span>
+                    <select class="header-option form-control input-small">
+                        <option value="default" selected>默认</option>
+                        <option value="fixed">固定</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+        <!-- 结束  -->
+        <div class="header navbar navbar-default navbar-static-top">
+            <!-- 顶端栏 -->
+            @Html.Partial("_HeaderPartial")
+            <!-- 结束 顶端栏 -->
+            <div class="container">
+                <div class="navbar-header">
+                    <!-- 用于适应不同大小的浏览器 -->
+                    <button class="navbar-toggle btn navbar-btn" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- 结束 效果在改变浏览器的框体大小就可知道 -->
+                    <!-- 求索工作室logo -->
+                    <a class="navbar-brand logo-v1" href="@Url.Action("Index", "Home")">
+                        <img src="~/assets/img/logo_green.png" id="logoimg" alt="求索工作室">
+                    </a>
+                    <!-- 结束 logo -->
+                </div>
+
+                <!-- 主菜单栏 -->
+                @Html.Partial("_TopMenuBar")
+                <!-- 结束 主菜单栏 -->
+            </div>
+        </div>
+        <!-- 结束 HEAD -->
+        <!-- 页面内容 -->
+        <div id="body" @*class="container"*@>
+            @RenderSection("featured", required: false)
+            @RenderBody()
+        </div>
+        <!-- 页脚 -->
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 space-mobile">
+                        <!-- 关于 -->
+                        <h2 class="footer-hlabel">关于</h2>
+                        <p class="margin-bottom-30">信息 软件学院<a href="@Url.Action("About", "Home")"><strong>求索工作室</strong></a>成立于2008年3月，是由学院党委领导下的二级心理辅导站，工作室通过对学生开展心理健康教育与心理咨询工作，帮助学生认识了解自我，挖掘自身潜能，提高身心素质，成为身心健康的人</p>
+                        <div class="clearfix"></div>
+                        <!-- 结束 关于 -->
+                    </div>
+                    <div class="col-md-4 col-sm-4 space-mobile">
+                        <!-- 联系方式 -->
+                        <h2 class="footer-hlabel">联系我们</h2>
+                        <address class="margin-bottom-40">
+                            广州市天河区五山路483号华南农业大学 <br />
+                            信息学院 软件学院 院楼213室<br />
+                            求索心理工作室<br />
+                            Email: <a href="mailto:xrqiusuogongzuoshi@163.com">xrqiusuogongzuoshi@163.com</a>
+                        </address>
+                        <!-- 结束 联系方式 -->
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <!-- 友情链接 -->
+                        <h2 class="footer-hlabel">友情链接</h2>
+                        <dl class="dl-horizontal f-twitter">
+                            <dd>
+                                <a href="http://info.scau.edu.cn/index.asp" target="_blank">学院主页</a>
+                                <span class="sep">|</span>
+                                <a href="http://jwc.scau.edu.cn/" target="_blank">教务处</a>
+                                <span class="sep">|</span>
+                                <a href="http://www.xinli001.com/" target="_blank">壹心理</a>
+                                <span class="sep">|</span>
+                                <a href="http://www.psycofe.com/" target="_blank">心灵咖啡</a>
+                            </dd>
+                        </dl>
+                        <!-- 结束 友情链接 -->
+                        <form action="#" class="form-subscribe">
+                            <div class="input-group input-large">
+                                <input class="form-control" type="text" placeholder="输入邮箱订阅最新资讯">
+                                <span class="input-group-btn">
+                                    <button class="btn theme-btn" type="button" disabled>订阅</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 结束 页脚 -->
+        <!-- 版本 -->
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <p>
+                            <span class="margin-right-10">2015 © Qiusuo Studio. All Rights Reserved.</span>
+                            | <a href="http://keenthemes.com/preview/" target="_blank">Theme by the KEENTHEMES</a>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="social-footer">
+                            <li><a href="http://weibo.com/qiusuostudio"><i class="fa  fa-weibo"></i></a></li>
+                            <li><a href="http://xrqiusuogongzuoshi.blog.163.com/"><i class="fa fa-renren"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 结束 版权 -->
+        <!-- 所有页面都要用到的核心脚本 -->
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryval")
+        @*@Scripts.Render("~/bundles/modernizr")*@
+        @Scripts.Render("~/bundles/script")
+        <script src="~/assets/plugins/uniform/jquery.uniform.min.js"></script>
+        <script src="~/assets/plugins/jquery.cookie.min.js"></script>
+        @Scripts.Render("~/bundles/core")
+        @RenderSection("Scripts", required: false)
+    </body>
+</html>

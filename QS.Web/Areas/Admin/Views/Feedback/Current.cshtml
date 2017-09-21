@@ -1,0 +1,170 @@
+﻿@using System.Diagnostics
+@using QS.DTO.FeedbackModule
+@using Webdiyer.WebControls.Mvc
+@model FeedbackDto
+@{
+    ViewBag.Title = Model.FeedbackName;
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/Areas/assets/plugins/bootstrap-datepicker/css/datepicker.css" />
+}
+
+<!-- BEGIN PAGE HEADER-->
+<div class="row">
+    <div class="col-md-12">
+        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+        <h4 class="page-title">
+            @Model.FeedbackName
+        </h4>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-edit"></i>
+                <a href="@Url.Action("Index", "Feedback")">
+                    心理反馈
+                </a>
+            </li>
+        </ul>
+        <!-- END PAGE TITLE & BREADCRUMB-->
+    </div>
+    <input type="hidden" value="@ViewData["Message"]" id="mes" />
+</div>
+<!-- END PAGE HEADER-->
+<!-- BEGIN PAGE CONTENT-->
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- Begin: life time stats -->
+        <div class="portlet">
+            <div class="portlet-title" style="margin-bottom: 0px;">
+                <div class="caption">
+                    <i class="fa fa-bar-chart-o"></i>
+                    @switch (Model.Status)
+                    {
+                        case EnumFbStatus.Await:
+                            <span class="label label label-success">等待就绪</span>
+                            break;
+                        case EnumFbStatus.Underway:
+                            <span class="label label-danger">正在进行</span>
+                            break;
+                        default:
+                            <span class="label label-default">已经关闭</span>
+                            break;
+                    }
+                    开始于 @Model.StartTime.ToLongDateString() 结束于 @Model.EndTime.ToLongDateString()
+                </div>
+                <div class="pull-right">
+                    <span class="text-muted">
+                        创建于 @Model.CreateTime
+                    </span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="form-actions fluid" style="margin-bottom: 15px; margin-top: 0px;">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <a href="@Url.Action("History")" class="btn yellow col-md-12">
+                                查看以往记录 <i class="fa fa-external-link-square"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <a class="btn blue col-md-12" href="javascript:;">
+                                提醒未上交心理反馈的心委 <i class="fa fa-envelope"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="button" class="btn green col-md-12 coapse" id="select2">
+                                <i class="fa fa-search"></i> 查看未上交心理反馈的心委
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <form action="@Url.RouteUrl("Close")" method="post">
+                                @Html.Hidden("feedbackId", @Model.FeedbackId)
+                                <button type="submit" class="btn red popovers col-md-12" data-trigger="hover"
+                                        data-container="body"
+                                        data-placement="left"
+                                        data-content="停止后将不可恢复，请谨慎处理"
+                                        data-original-title="温馨提示：">
+                                    <i class="fa fa-warning"></i> 停止接收心理反馈表
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--
+                    设置了一个ID属性，new RouteValueDictionary { { "id", "searchForm" } }，在分部视图页面的分页控件中我们也设置了一个属性 DataFormId = "searchForm"，
+                    这样当我们点击下一页时搜索的参数也就可以自动带过去了。
+                    -->
+                <div class="col-md-12">
+                    @using (Ajax.BeginForm("CurrentSearch", new RouteValueDictionary { { "pageIndex", "" } }, 
+                        new AjaxOptions { UpdateTargetId = "documents", InsertionMode = InsertionMode.Replace }, 
+                        new RouteValueDictionary { { "id", "searchForm" } }))
+                    {
+                        <div class="form-inline pull-right">
+                            <div>
+                                <div class="input-group input-medium">
+                                    <input class="form-control" placeholder="输入查询关键字" type="text" id="filter" name="filter">
+                                    <input type="hidden" id="parentId" name="parentId" value="@Model.FeedbackId" />
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn green"><i class="fa fa-search"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div id="documents" class="col-md-12">
+                    @{
+                        Html.RenderAction("CurrentSearch", new { parentId = @Model.FeedbackId });
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END PAGE CONTENT-->
+@section Scripts{
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    @{Html.RegisterMvcPagerScriptResource();};
+    <script type="text/javascript" src="~/Areas/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/Areas/assets/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+    jQuery(document).ready(function () {
+        // initiate layout and plugins
+        var $header = $('ul.page-sidebar-menu #psy-header');
+        $header.addClass('active');
+        var $a = $header.children(':first');
+        $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+        $('ul.page-sidebar-menu #feedback-header').children(':first').children('span.arrow').addClass('open');
+        $('ul.page-sidebar-menu #feedback-current-link').addClass('active').closest('ul').attr('style', 'display:block');
+        App.init();
+        handleDatePickers();
+        if ($('#mes').val()) {
+            bootbox.alert($('#mes').val());
+            $('#mes').val(null);
+        }
+    });
+
+    var handleDatePickers = function () {
+
+        if (jQuery().datepicker) {
+            $('.date-picker').datepicker({
+                rtl: App.isRTL(),
+                autoclose: true
+            });
+            // fix bug when inline picker is used in modal
+            $('body').removeClass("modal-open");
+        }
+    }
+    </script>
+
+}

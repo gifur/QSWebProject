@@ -1,0 +1,200 @@
+﻿@using Microsoft.Web.Helpers
+@model QS.DTO.SharedModule.VideoDto
+@{
+    ViewBag.Title = Model.VideoName;
+    ViewBag.CurrentPage = "Shared-Video";
+}
+
+@section Styles{
+    <link href="/assets/css/pages/blog.css" rel="stylesheet" />
+    <link href="~/assets/plugins/video-js/video-js.css" rel="stylesheet" />
+    <link href="~/assets/css/pages/video.css" rel="stylesheet" />
+    <style type="text/css">
+        .vjs-default-skin .vjs-control-bar {
+            font-size: 100%;
+        }
+    </style>
+}
+
+    <!-- 页面内容 -->
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-20">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
+                    <li>@Html.ActionLink("真心推荐", "Index", "Video")</li>
+                    <li class="active">影视心灵</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container min-hight">
+        <!-- 新闻内容 -->
+        <div class="row">
+            <!-- 左边视频块 -->
+            <div class="col-md-8 col-sm-8 show_contents blog-item margin-top-10">
+                @*<div class="videoUiWrapper thumbnail">
+                    <video id="demo1" width="760" height="440">
+                        <source src="/resources/video.mp4" type="video/mp4">
+                        <source src="/resources/test.mp4" type="video/mp4">
+                        你的浏览器不支持此插件
+                    </video>
+                </div>*@
+                @if (!Model.IsLocal)
+                {
+                    @Video.Flash(
+                        path: Model.VideoPath,
+                        width: "760",
+                        height: "440",
+                        play: true,
+                        loop: true,
+                        menu: true,
+                        bgColor: "red",
+                        quality: "medium",
+                        scale: "exactfit",
+                        windowMode: "transparent"
+                    );
+                }
+                else
+                {
+                    <video id="MY_VIDEO_1" class="video-js vjs-default-skin" controls
+                       preload="auto" width="760" height="440" poster="MY_VIDEO_POSTER.jpg"
+                       data-setup="{}">
+                       <source src="/resources/test.mp4" type='video/mp4'>
+                    </video>
+                }
+
+                <div class="row">
+                    <div class="col-md-6">
+                        @*<ul class="list-inline blog-tags">*@
+                            @*<li>
+                                <i class="fa fa-tags"></i>
+                                <a href="#">
+                                    技术创新
+                                </a>
+                                <a href="#">
+                                    教育
+                                </a>
+                                <a href="#">
+                                    人生
+                                </a>
+                            </li>
+                        </ul>*@
+                    </div>
+                    <div class="col-md-6 blog-tag-data-inner">
+                        <ul class="list-inline news-timeview" style="float:right">
+                            <li>
+                                <i class="fa fa-calendar"></i>
+                                @Html.DateFormat(@Model.CreateTime)
+                            </li>
+                            <li><i class="fa fa-eye"></i> @Html.ViewTimesFormat(@Model.Hits)</li>
+                            <li>
+                                <i class="fa fa-comments"></i>
+                                @Html.CommentsFormat(@Model.CommentNum)
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="comments">
+                    @{
+                        Html.RenderAction("_VideoPartial", "Comment", new { id = @Model.VideoId });
+                    }
+                </div>
+                @{
+                    Html.RenderAction("_VideoFormPartial", "Comment", new { id = @Model.VideoId });
+                }
+            </div>
+            <!-- 结束  左边播放-->
+            <!-- 右边导航块 -->
+            <div class="col-md-4 col-sm-4 blog-sidebar">
+                <!-- 分类 -->
+                <h4 class="titlemore"><span class="slash-colored">//</span>求索推荐</h4>
+                @{
+                    Html.RenderAction("_VideoCommendPartial");
+                }
+                <!-- 结束 分类 -->
+                <!-- 热点新闻 -->
+                <div class="widgetheading">
+                    <h4>点击排行热榜</h4>
+                </div>
+                @{
+                    Html.RenderAction("_VideoClickMostPartial", "Video");
+                }
+
+                <!-- 新闻标签 -->
+                <div class="blog-tags margin-bottom-20">
+                    <h2>热门标签</h2>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-tags"></i>爱情</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>职场</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>心灵</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>原创</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>心灵感悟</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>情绪管理</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>治愈系</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>恋爱心理</a></li>
+                        <li><a href="#"><i class="fa fa-tags"></i>求索</a></li>
+                    </ul>
+                </div>
+                <!-- 结束 新闻标签 -->
+            </div>
+            <!-- 结束 右边导航块 -->
+        </div>
+        <!-- 结束 新闻内容 -->
+    </div>
+    <!-- 结束 主体 -->
+
+</div>
+<!-- 结束页面内容 -->
+
+
+@section Scripts{
+    <script src="~/assets/plugins/video-js/video.js"></script>
+    <script type="text/javascript">
+            jQuery(document).ready(function () {
+                App.init();
+                var options = {
+                    success: showResponse,
+                    clearForm: false,
+                    resetForm: false,
+                    timeout: 3000
+                };
+
+                $('#comment-form').on('submit', function (e) {
+                    e.preventDefault();
+                    $(this).ajaxSubmit(options);
+                });
+
+                function showResponse(responseText, statusText, xhr, $form) {
+
+                    if (responseText.Success != null) {
+                        return;
+                    }
+                    var result = responseText;
+                    var value = parseInt($('#comments #comments-count').text());
+                    $('#comments-count').text(value + 1);
+                    var $comments = $('#comments').children('div.media');
+                    if ($comments.length >= 5) {
+                        $comments[4].remove();
+                    }
+                    $('#comments > h6').after(result);
+                    App.scrollTo($('#comments'));
+
+                    var $email = $('#comment-form #Email');
+                    if (!$email.is(":hidden")) {
+                        $email.val("");
+                        $('#comment-form #NickName').val("");
+                    }
+                    $('#comment-form #Content').val("");
+                }
+            });
+    </script>
+}

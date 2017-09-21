@@ -1,0 +1,173 @@
+﻿@{
+    ViewBag.Title = "求索主页";
+    ViewBag.CurrentPage = "Home";
+}
+
+@section Styles {
+    <link href="~/assets/plugins/bxslider/jquery.bxslider.css" rel="stylesheet" />
+    <style type="text/css">
+    a:hover, a:focus {
+        color: #444;
+        text-decoration: none;
+    }
+</style>
+}
+
+<div class="page-container" style="margin-top:40px">
+    <!-- 页面主体 -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-7">
+                        @{
+                            Html.RenderAction("_NewestArticle", "Article");
+                        }
+                    </div>
+                    <div class="col-md-5">
+                        @{
+                            Html.RenderAction("_RecentestNews", "News");
+                        }
+                    </div>
+                </div>
+                <h4 class="titlemore"><span class="slash-colored"><i class="fa fa-camera"></i></span>图片欣赏</h4>
+                @{
+                    Html.RenderAction("_NewestGallery", "Gallery");
+                }
+                <!-- 心理画廊 -->
+                <hr />
+                <div class="clearfix"></div>
+                <!-- 结束 心理画廊 -->
+                <!-- 工作室相关内容 -->
+                <div class="row mix-block">
+                    <!-- 工作室介绍 -->
+                    <div class="col-md-12 tab-style-1 margin-bottom-20">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab-logo" data-toggle="tab">工作室概况</a></li>
+                            <li><a href="#tab-home" data-toggle="tab">索子风采</a></li>
+                            <li><a href="#tab-people" data-toggle="tab">活动介绍</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane row fade in active" id="tab-logo">
+                                <div class="col-md-3">
+                                    <img class="img-responsive" src="~/assets/img/qiusuo/home.jpg" alt=""/>
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="margin-bottom-10">华南农业大学信息、软件学院“求索”工作室是在华南农业大学信息、软件学院党委领导下，由专业老师毛丹鹃指导，负责全院学生心理健康教育工作的机构。由“求索”学生组织和“求索”咨询室两部分组成，下设四个部门，分别是：秘书部、学术部、网编部以及外联部</p>
+                                    <p><a class="more" href="@Url.Action("About", "Home")">阅读更多</a></p>
+                                </div>
+                            </div>
+                            <div class="tab-pane row fade" id="tab-home">
+                                <div class="col-md-3">
+                                    <img class="img-responsive" src="~/assets/img/qiusuo/all.jpg" alt="" />
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="margin-bottom-10">求索工作室下设四个部门，分别是：秘书部、学术部、网编部以及外联部，每个部门设两至三名部长以及若干位干事，全工作室共有40位成员，每年新学年开始，工作室都会招进一批新索子</p>
+                                    <p><a class="more" href="@Url.Action("About", "Home")">阅读更多</a></p>
+                                </div>
+                            </div>
+                            <div class="tab-pane row fade" id="tab-people">
+                                <div class="col-md-9">
+                                    <p>每学期工作室都将定期举办一系列有益学生身心健康的活动，包括心理委员会议、心理征文比赛、心理电影播放、我爱我心理健康日活动、心理DV剧大赛等，同时工作室联合各个班级的心委全面及时监管学生心理状况的工作室，通过心委及时上交的心理反馈本，第一时间了解学生的心理健康状态</p>
+                                    <p><a class="more" href="@Url.Action("Activity", "Home")">阅读更多</a></p>
+                                </div>
+                                <div class="col-md-3">
+                                    <img class="img-responsive" src="~/assets/img/qiusuo/post.jpg" alt="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 结束 工作室介绍 -->
+                </div>
+                <!-- 结束 工作室相关内容 -->
+            </div>
+
+            <!--end col-md-5-->
+
+            
+            <!--end col-md-4-->
+            <div class="col-md-3">
+                <!-- 心理专栏 -->
+                <div class="widgetheading margin-bottom-10">
+                    <h4>书籍推荐</h4>
+                </div>
+                @{
+                    Html.RenderAction("_HighGradeBookPartial", "Book");
+                }
+                <!-- 结束 心理专栏 -->
+                <!-- 热门话题 -->
+                <h4 class="titlemore">
+                    <span class="slash-colored">
+                        <i class="fa fa-quote-right"></i>
+                    </span>
+                    心理预约<a class="more" href="@Url.Action("Preregistration", "Profession")" style="margin-left: 4px;">预约入口》</a>
+                </h4>
+                <!-- 心理预约 -->
+                <div class="blog-photo-stream margin-bottom-20">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="~/assets/img/people/jinyihua.jpg" class="fancybox-button"
+                               title="负责信息软件学院学生心理健康工作的老师——金艺花老师" data-rel="fancybox-button">
+                                <img class="img-responsive" src="~/assets/img/people/jinyihua.jpg" alt="" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/assets/img/people/zhongxiangyang.jpg" class="fancybox-button"
+                               title="华南农业大学心理健康中心主任——钟向阳老师" data-rel="fancybox-button">
+                                <img class="img-responsive" src="~/assets/img/people/zhongxiangyang.jpg" alt="" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/assets/img/people/caijin.jpg" class="fancybox-button"
+                               title="蔡瑾老师" data-rel="fancybox-button">
+                                <img class="img-responsive" src="~/assets/img/people/caijin.jpg" alt="" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/assets/img/people/songyinqiu.jpg" class="fancybox-button"
+                               title="宋迎秋老师" data-rel="fancybox-button">
+                                <img class="img-responsive" src="~/assets/img/people/songyinqiu.jpg" alt="" />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="~/assets/img/people/linyuan.jpg" class="fancybox-button"
+                               title="校阳光团队负责老师——林媛老师" data-rel="fancybox-button">
+                                <img class="img-responsive" src="~/assets/img/people/linyuan.jpg" alt="" />
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 结束 心理预约 -->
+                <!-- 热门标签 -->
+                <div class="wechat col-md-12">
+                    <div class="col-md-5">
+                        <img src="~/assets/img/qrcode_for_weixin.jpg" alt="" class="img-responsive" />
+                    </div>
+                    <div class="col-md-7" style="padding: 20px 10px;">
+                        <span>关注微信公众号</span><br />
+                        <span class="title">及时获取更多资讯</span>
+                    </div>
+                </div>
+                <!-- 结束 热门标签 -->
+            </div>
+            <!--end col-md-3-->
+        </div>
+    </div>
+    <!-- 结束 主体 -->
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript" src="~/assets/plugins/bxslider/jquery.bxslider.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            App.initUniform();
+            jQuery('#myCarousel').carousel({
+                interval: 8000,
+                pause: 'hover'
+            });
+        });
+    </script>
+
+}

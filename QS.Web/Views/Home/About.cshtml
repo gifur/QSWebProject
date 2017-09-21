@@ -1,0 +1,352 @@
+﻿@{
+    ViewBag.Title = "关于我们";
+    ViewBag.CurrentPage = "Us-About";
+}
+
+@section Styles{
+    <link href="~/assets/plugins/flexslider/flexslider.css" rel="stylesheet" />
+    <link href="~/assets/css/pages/about.css" rel="stylesheet" />
+    <link href="~/assets/css/animate.css" rel="stylesheet" />
+}
+
+    <!-- 页面内容 -->
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-20">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li><a href="@Url.Action("About", "Home")">求索风采</a></li>
+                    <li class="active">关于我们</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <section id="featured">
+        <!-- start slider -->
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- Slider -->
+                    <div id="main-slider" class="flexslider">
+                        <ul class="slides">
+                            <li>
+                                <img src="~/assets/img/qiusuo/qiusuo_01_1024_412.png" alt="" />
+                                <div class="flex-caption">
+                                    <p>索子合影</p>
+                                </div>
+                            </li>
+                            <li>
+                                <img src="~/assets/img/qiusuo/qiusuo_02_1024_412.png" alt=""/>
+                                <div class="flex-caption">
+                                    <p>户外活动</p>
+                                    @*<a href="@Url.Action("Activity", "Home")" class="btn btn-theme">更多</a>*@
+                                </div>
+                            </li>
+                            <li>
+                                <img src="~/assets/img/qiusuo/qiusuo_03_1024_412.png" alt=""/>
+                                <div class="flex-caption">
+                                    <p>选择你喜欢的，喜欢你选择的</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end slider -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="callaction">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="big-cta">
+                        <div class="cta-text">
+                            <h2>关于 <span>工作室</span></h2>
+                            <p>信息（软件）学院求索工作室是由学院党委领导的二级心理辅导站，通过面向学生举办心理健康教育活动和开展针对个体学生的心理咨询工作，帮助学生认识了解自我，挖掘自身潜能，提高身心素质。</p>
+                            <p>工作室由专业指导老师带领，负责全院学生心理健康教育工作，下设四个部门，分别是：秘书部、学术部、网络编辑部以及外联部。工作室约至四十位成员，由工作室室长、副室长、各部门正副部长以及各部门干事组成。</p>
+                            <p>同时，工作室负责学院学生班级心理委员的管理和工作的安排，努力做好心理反馈和心理监察的工作外，还对学生开展一系列有益于学生身心健康的活动</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="heading-section">
+        <h4>部门介绍</h4>
+        <img src="~/assets/img/qs-line.png" alt=""/>
+    </div>
+    <section id="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="box">
+                                <div class="box-gray">
+                                    <h4 class="aligncenter">秘书部</h4>
+                                    <ul>
+                                        <li>
+                                            负责求索相关活动的人员安排和调整
+                                        </li>
+                                        <li>
+                                            负责撰写每次活动的通讯稿
+                                        </li>
+                                        <li>
+                                            通讯录、相片、策划书收集等
+                                        </li>
+                                        <li>
+                                            心理委员的日常管理
+                                        </li>
+                                        <li>
+                                            收集、管理与工作室有关的各种资料
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="box">
+                                <div class="box-gray">
+                                    <h4 class="aligncenter">学术部</h4>
+                                    <ul>
+                                        <li>
+                                            每月收集各班级心理动态情况。
+                                        </li>
+                                        <li>
+                                            负责策划、监管心理委员会议和征文比赛。
+                                        </li>
+                                        <li>
+                                            负责心理知识普及培训和健康教育等方面的讲座。
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="box">
+                                <div class="box-gray">
+                                    <h4 class="aligncenter">网络编辑部</h4>
+                                    <ul>
+                                        <li>
+                                            负责心理电影的播放
+                                        </li>
+                                        <li>
+                                            工作室博客、微博的维护、管理和更新
+                                        </li>
+                                        <li>
+                                            活动海报、视频制作
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="box">
+                                <div class="box-gray">
+                                    <h4 class="aligncenter">外联部</h4>
+                                    <ul>
+                                        <li>
+                                            负责组织联系本学院与校内其他院系的活动
+                                        </li>
+                                        <li>
+                                            负责活动场地的申请
+                                        </li>
+                                        <li>
+                                            举办有特色心理游戏，包含团体讨论、互动练习、情景模拟等
+                                        </li>
+                                        <li>
+                                            负责工作室主持人的培训
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- divider -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="solidline">
+                    </div>
+                </div>
+            </div>
+            <!-- end divider -->
+        </div>
+    </section>
+    <div class="heading-section">
+        <h4>我们的口号</h4>
+        <img src="~/assets/img/qs-word.png" alt="" style="height:40px"/>
+    </div>
+    <!--一些内容-->
+    <div class="container">
+        <div class="row front-team">
+            <ul class="list-unstyled">
+                <li class="col-md-3 space-mobile">
+                    <div class="thumbnail">
+                        <img src="~/assets/img/people/img1-large.jpg" alt="">
+                        <h3>
+                            <a>毛丹鹃</a>
+                            <small>工作室指导老师 / 2012级年级辅导员</small>
+                        </h3>
+                        <address>
+                            <strong>联系电话</strong><br>
+                            <i class="fa fa-phone"></i> 136-1146-5243(695243)<br>
+                            <strong>电子邮箱</strong><br>
+                            <a href="mailto:#">
+                                <i class="fa fa-envelope"></i> first.last@email.com
+                            </a>
+                        </address>
+                    </div>
+                </li>
+                <li class="col-md-3 space-mobile">
+                    <div class="thumbnail">
+                        <img src="~/assets/img/people/img4-large.jpg" alt="">
+                        <h3>
+                            <a>马学伟</a>
+                            <small>求索工作室现任正室长</small>
+                        </h3>
+                        <address>
+                            <strong>联系电话</strong><br>
+                            <i class="fa fa-phone"></i> 136-1146-5243(695243)<br>
+                            <strong>电子邮箱</strong><br>
+                            <a href="mailto:#">
+                                <i class="fa fa-envelope"></i> first.last@email.com
+                            </a>
+                        </address>
+                    </div>
+                </li>
+                <li class="col-md-3 space-mobile">
+                    <div class="thumbnail">
+                        <img src="~/assets/img/people/img2-large.jpg" alt="">
+                        <h3>
+                            <a>徐晓婷</a>
+                            <small>求索工作室现任副室长</small>
+                        </h3>
+                        <address>
+                            <strong>联系电话</strong><br>
+                            <i class="fa fa-phone"></i> 136-1146-5243(695243)<br>
+                            <strong>电子邮箱</strong><br>
+                            <a href="mailto:#">
+                                <i class="fa fa-envelope"></i> first.last@email.com
+                            </a>
+                        </address>
+                    </div>
+                </li>
+                <li class="col-md-3">
+                    <div class="thumbnail">
+                        <img src="~/assets/img/people/img5-large.jpg" alt="">
+                        <h3>
+                            <a>罗伟林</a>
+                            <small>求索工作室现任副室长</small>
+                        </h3>
+                        <address>
+                            <strong>联系电话</strong><br>
+                            <i class="fa fa-phone"></i> 136-1146-5243(695243)<br>
+                            <strong>电子邮箱</strong><br>
+                            <a href="mailto:#">
+                                <i class="fa fa-envelope"></i> first.last@email.com
+                            </a>
+                        </address>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 结束 一些内容 -->
+    <div class="heading-section" id="scrollitem">
+        <h4>评价和建议</h4>
+        <img src="~/assets/img/qs-comment.png" alt="" style="height:40px" />
+    </div>
+    <div class="container" id="suggestion-container">
+        <!--介绍部门-->
+        <div class="row margin-bottom-40">
+            <!-- 对工作室的评价和建议 -->
+            @*<div class="show" id="sendmessage">
+                您的评价或建议已经提交，感谢您的支持！
+            </div>*@
+            <div id="suggestion" class="col-md-12 space-mobile">
+                <!-- 表单开始-->          
+                @{ Html.RenderAction("_SuggestionFormPartial");}
+                <!-- 结束 表单-->
+            </div>
+        </div>
+        <!--结束 部门介绍-->
+
+    </div>
+    <!-- 结束 主体 -->
+</div>
+<!-- 结束页面内容 -->
+
+
+@section Scripts{
+    <script src="~/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            App.init();
+            $('#main-slider').flexslider({
+                namespace: "flex-",           //{NEW} String: Prefix string attached to the class of every element generated by the plugin
+                selector: ".slides > li",    //{NEW} Selector: Must match a simple pattern. '{container} > {slide}' -- Ignore pattern at your own peril
+                animation: "fade",            //String: Select your animation type, "fade" or "slide"
+                easing: "swing",           //{NEW} String: Determines the easing method used in jQuery transitions. jQuery easing plugin is supported!
+                direction: "horizontal",      //String: Select the sliding direction, "horizontal" or "vertical"
+                reverse: false,             //{NEW} Boolean: Reverse the animation direction
+                animationLoop: true,              //Boolean: Should the animation loop? If false, directionNav will received "disable" classes at either end
+                smoothHeight: false,             //{NEW} Boolean: Allow height of the slider to animate smoothly in horizontal mode
+                startAt: 0,                 //Integer: The slide that the slider should start on. Array notation (0 = first slide)
+                slideshow: true ,              //Boolean: Animate slider automatically
+                slideshowSpeed: 7000,              //Integer: Set the speed of the slideshow cycling, in milliseconds
+                animationSpeed: 600,               //Integer: Set the speed of animations, in milliseconds
+                initDelay: 0,                 //{NEW} Integer: Set an initialization delay, in milliseconds
+                randomize: false,             //Boolean: Randomize slide order
+
+                // Usability features
+                pauseOnAction: true,              //Boolean: Pause the slideshow when interacting with control elements, highly recommended.
+                pauseOnHover: false,             //Boolean: Pause the slideshow when hovering over slider, then resume when no longer hovering
+                useCSS: true,              //{NEW} Boolean: Slider will use CSS3 transitions if available
+                touch: true,              //{NEW} Boolean: Allow touch swipe navigation of the slider on touch-enabled devices
+                video: false,             //{NEW} Boolean: If using video in the slider, will prevent CSS3 3D Transforms to avoid graphical glitches
+
+                // Primary Controls
+                controlNav: true,              //Boolean: Create navigation for paging control of each clide? Note: Leave true for manualControls usage
+                directionNav: true,              //Boolean: Create navigation for previous/next navigation? (true/false)
+                prevText: "Previous",        //String: Set the text for the "previous" directionNav item
+                nextText: "Next",            //String: Set the text for the "next" directionNav item
+
+                // Secondary Navigation
+                keyboard: true,              //Boolean: Allow slider navigating via keyboard left/right keys
+                multipleKeyboard: false,             //{NEW} Boolean: Allow keyboard navigation to affect multiple sliders. Default behavior cuts out keyboard navigation with more than one slider present.
+                mousewheel: false,             //{UPDATED} Boolean: Requires jquery.mousewheel.js (https://github.com/brandonaaron/jquery-mousewheel) - Allows slider navigating via mousewheel
+                pausePlay: false,             //Boolean: Create pause/play dynamic element
+                pauseText: 'Pause',           //String: Set the text for the "pause" pausePlay item
+                playText: 'Play',            //String: Set the text for the "play" pausePlay item
+
+                // Special properties
+                controlsContainer: "",                //{UPDATED} Selector: USE CLASS SELECTOR. Declare which container the navigation elements should be appended too. Default container is the FlexSlider element. Example use would be ".flexslider-container". Property is ignored if given element is not found.
+                manualControls: "",                //Selector: Declare custom control navigation. Examples would be ".flex-control-nav li" or "#tabs-nav li img", etc. The number of elements in your controlNav should match the number of slides/tabs.
+                sync: "",                //{NEW} Selector: Mirror the actions performed on this slider with another slider. Use with care.
+                asNavFor: "",                //{NEW} Selector: Internal property exposed for turning the slider into a thumbnail navigation for another slider
+            });
+
+            $(".box").hover(
+                function () {
+                    $(this).find('h4').addClass("animated fadeInDown");
+                    $(this).find('ul').addClass("animated fadeInUp");
+                },
+                function () {
+                    $(this).find('h4').removeClass("animated fadeInDown");
+                    $(this).find('ul').removeClass("animated fadeInUp");
+                }
+            );
+        });
+
+    </script>
+}

@@ -1,0 +1,26 @@
+﻿@using Microsoft.Web.Helpers
+@using QS.Web.Common
+@model QS.DTO.CommentModule.CommentDto
+
+<div class="media" id="@Model.CommentId">
+    @if (Model.IsMember > 0)
+    {
+        <a href="#" class="pull-left">
+            <img src="~/Profiles/HeadImage/@Model.PhotoUrl" alt="" class="media-object">
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">@Model.NickName <span>@Html.DateFormat(@Model.CreateTime) @*/ <a href="#">回复</a>*@</span></h4>
+            <p>@Model.Content</p>
+        </div>
+    }
+    else
+    {
+        <a href="#" class="pull-left">
+            @Gravatar.GetHtml(@Model.Email, attributes: new { @class = "media-object" })
+        </a>
+        <div class="media-body">
+            <h4 class="media-heading">@Model.NickName <span>@Html.DateFormat(@Model.CreateTime) @*/ <a href="#">回复</a>*@</span></h4>
+            <p>@Model.Content</p>
+        </div>
+    }
+</div>

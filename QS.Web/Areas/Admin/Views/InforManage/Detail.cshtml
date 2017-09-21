@@ -1,0 +1,201 @@
+﻿@model QS.DTO.Module.MessageDto
+@{
+    ViewBag.Title = @Model.Title;
+}
+
+@section Styles{
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            @Model.Title
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-list"></i>
+                <a href="@Url.Action("Index","InforManage", new{ Area = "Admin" })">
+                    通知列表
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box">
+            <div class="portlet-title">
+                <div class="tools">
+                    <a href="javascript:;" class="collapse">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+
+                <div class="form-body">
+                    @Html.HiddenFor(model => model.MId)
+                    @Html.HiddenFor(model => model.CreateTime)
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">通知标题：</label>
+                                <div class="col-md-10">
+                                    <p class="form-control-static" style="padding-top:2px;">
+                                        @Model.Title
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">通知内容：</label>
+                                <div class="col-md-10">
+                                    <p class="form-control-static" style="padding-top:2px;">
+                                        @Html.Raw(Model.Context)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/span-->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">附加内容：</label>
+                                <div class="col-md-10">
+                                    <p class="form-control-static" style="padding-top:2px;">
+                                        @Model.Appendix
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">消息类型：</label>
+                                <div class="col-md-10">
+                                    <p class="form-control-static" style="padding-top:2px;">
+                                        @Model.Type
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label col-md-2">通知情况：</label>
+                                <div class="col-md-10">
+                                    @if (Model.MyMessageDtos != null && Model.MyMessageDtos.Any())
+                                    {
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            First Name
+                                                        </th>
+                                                        <th>
+                                                            Last Name
+                                                        </th>
+                                                        <th>
+                                                            Username
+                                                        </th>
+                                                        <th>
+                                                            Status
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.MyMessageDtos)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                @item.UserId
+                                                            </td>
+                                                            <td>
+                                                                @item.MId
+                                                            </td>
+                                                            <td>
+                                                                @item.Status
+                                                            </td>
+                                                            <td>
+                                                                @item.RecentTime
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="form-actions right">
+                    <button id="deleteBtn" class="btn red" value="@Model.MId">
+                        <i class="fa fa-warning"></i> 撤消此条通知
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #about-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #information-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #information-create-link').closest('ul').attr('style', 'display:block');
+            App.init();
+        });
+
+        $('#deleteBtn').on('click', function () {
+            var $this = $(this);
+            bootbox.confirm("您确定撤消[删除]此条通知", function (result) {
+                if (result) {
+                    $.ajax({
+                        type: 'post',
+                        data: { id: $this.val() },
+                        url: '/Admin/InforManage/Delete',
+                        success: function (evt) {
+                            if (evt == "true") {
+                                bootbox.alert("撤消成功，点击跳转到通知管理主页面", function() {
+                                    window.location.href = "@Url.Action("Index")";
+                                });
+                            } else {
+                                App.alert({ type: 'danger', message: '抱歉，出现未知错误，请刷新后再重试...', closeInSeconds: 8, icon: 'warning' });
+                            }
+                        },
+                        error: function (scrip) {
+                            App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+
+}

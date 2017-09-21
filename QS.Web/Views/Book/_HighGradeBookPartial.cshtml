@@ -1,0 +1,33 @@
+﻿@model IEnumerable<QS.DTO.SharedModule.BookDto>
+
+
+<div class="recent-news margin-bottom-10">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="row margin-bottom-10">
+                <div class="col-md-3">
+                    <img src="@item.ThumbPath" alt="" class="img-responsive">
+                </div>
+                <div class="col-md-9 recent-news-inner">
+                    <h3><a href="@Url.Action("Item", new{id = @item.BookId})" title="@item.BookName">@item.BookName</a></h3>
+                    <p>作者：@item.Author</p>
+                    <p>@Html.GetHeadSentence(@item.Remark, 60)</p>
+                </div>
+            </div>
+        }
+    }
+    
+    
+    @*<div class="row margin-bottom-10">
+        <div class="col-md-3">
+            <img src="/assets/img/books/book8.jpg" alt="" class="img-responsive">
+        </div>
+        <div class="col-md-9 recent-news-inner">
+            <h3><a href="#">可怕的心理学</a></h3>
+            <p>作者：梁朝伟</p>
+            <p>这就是充满自信的拉美文学的领军人物以自己的气势与风格对我们的轰炸。</p>
+        </div>
+    </div>*@
+</div>

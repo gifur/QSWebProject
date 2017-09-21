@@ -1,0 +1,50 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.FeedbackModule.FbDocumentDto>
+<table class="table table-striped table-advance table-hover">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                文件名
+            </th>
+            <th>
+                心委
+            </th>
+            <th>
+                附件
+            </th>
+            <th class="text-right">
+                提交时间
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="unread" data-messageid="1">
+                <td class="inbox-small-cells">
+                    <i class="fa fa-star"></i>
+                </td>
+                <td class="view-message hidden-xs">
+                    @Html.DisplayFor(it => item.DocumentName)
+                </td>
+                <td class="view-message ">
+                    @Html.ActionLink(item.UploaderName, "DetailEdit", "UserManage", new {uid = item.UploaderId }, null)
+                </td>
+                <td class="view-message inbox-small-cells">
+                    <a href="@Url.Action("DownLoad", "Feedback", new { id = item.DocumentId })" title="点击进行下载"><i class="fa fa-paperclip"></i></a>
+                    
+                </td>
+                <td class="view-message text-right">
+                    @Html.DisplayFor(it => item.UploadDate)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
+<div>
+    <div style="float:left;width:50%">共 @Model.TotalPageCount 页 @Model.TotalItemCount 条记录，当前为第 @Model.CurrentPageIndex 页</div>
+    @Ajax.Pager(Model, new PagerOptions { PageIndexParameterName = "pageIndex", ShowPageIndexBox = true, PageIndexBoxType = PageIndexBoxType.DropDownList, ShowGoButton = false }, new MvcAjaxOptions { UpdateTargetId = "documents", HttpMethod = "Post", DataFormId = "searchForm" }, new { style = "float:right" })
+</div>

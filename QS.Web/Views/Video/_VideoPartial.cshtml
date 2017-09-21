@@ -1,0 +1,58 @@
+﻿
+@model QS.Web.Models.VideoViewModel
+@{
+    var count = 0;
+    var total = Model.Contents.Count();
+}
+
+<div id="@Model.DivId" class="col-md-12 testimonials-v1">
+    <h6>@Model.Category<small>&nbsp;<a href="@Url.Action("Category", "Video", new{category = @Model.Category})">更多<em>></em></a></small></h6>
+    <div style="margin-top:25px; position: relative;">
+        <a class="left-btn" href="@("#" + Model.DivId + "-carousel")" data-slide="prev"></a>
+        <a class="right-btn" href="@("#" + Model.DivId + "-carousel")" data-slide="next"></a>
+    </div>
+    <div id="@(Model.DivId + "-carousel")" class="carousel slide" data-interval="false">
+        <div class="carousel-inner">
+            <div class="active item">
+                @if (Model.Contents.Any())
+                {
+                    var maxCount = total >= 6 ? 6 : total;
+                    for (; count < maxCount; ++count)
+                    {
+                        var temp = Model.Contents.ElementAt(count);
+                        <div class="col-md-2">
+                            <div class="thumbnail">
+                                <a href="@Url.Action("Item", "Video", new {id = @temp.VideoId})">
+                                    <img src="@temp.ThumbPath" alt="@temp.VideoName" class="img-responsive img-thumbnail">
+                                </a>
+                                <h5 class="text-center">
+                                    <a href="@Url.Action("Item", "Video", new {id = @temp.VideoId})" title="@temp.VideoName">@temp.VideoName</a>
+                                </h5>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            @if (total > 6)
+            {
+                
+                <div class="item">
+                    @for (; count < total; ++count)
+                    {
+                    var temp = Model.Contents.ElementAt(count);
+                    <div class="col-md-2">
+                        <div class="thumbnail">
+                            <a href="@Url.Action("Item", "Video", new {id = @temp.VideoId})">
+                                <img src="@temp.ThumbPath" alt="@temp.VideoName" class="img-responsive">
+                            </a>
+                            <h5 class="text-center">
+                                <a href="@Url.Action("Item", "Video", new {id = @temp.VideoId})" title="@temp.VideoName">@temp.VideoName</a>
+                            </h5>
+                        </div>
+                    </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

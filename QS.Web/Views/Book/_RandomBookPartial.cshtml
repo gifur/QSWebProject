@@ -1,0 +1,67 @@
+﻿@model IEnumerable<QS.DTO.SharedModule.BookDto>
+@{
+    var Len = Model != null ? Model.Count() : 0;
+    
+}
+
+<div class="front-carousel">
+    <div id="myCarousel" class="carousel image-carousel slide">
+        <!-- 幻灯片 -->
+        <div class="carousel-inner">
+                @if (Model != null && Model.Any())
+                {
+                    var cur = 0;
+                    foreach (var item in Model)
+                    {
+                        if (cur % 2 == 0)
+                        {
+                            if (cur < 2)
+                            {
+                                @:<div class="item active"><div class="row">
+                            }
+                            else
+                            {
+                                @:<div class="item"><div class="row">
+                            }
+                        }
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3">
+                                    <img src="@item.ThumbPath" alt="" class="img-thumbnail">
+                                </div>
+                                <div class="col-md-9 col-sm-9" style="padding-left: 0;">
+                                    <h5><a href="@Url.Action("Item", new {id = @item.BookId})">@item.BookName</a></h5>
+                                    <p>@item.Remark</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        if (cur % 2 == 1)
+                        {
+                            @:</div></div>
+                        }
+
+                        cur = cur + 1;
+                    }
+                }
+        </div>
+        <!-- <>图标 -->
+        @if (Len > 0)
+        {
+            <ol class="carousel-indicators">
+                @for (var index = 0; index*2 < Len; ++index)
+                {
+                    <li data-target="#myCarousel" data-slide-to="@index" class="@( index == 0 ? "active" : "")">
+                    </li>
+                }
+                @*<li data-target="#myCarousel" data-slide-to="0" class="active">
+                </li>
+                <li data-target="#myCarousel" data-slide-to="1">
+                </li>
+                <li data-target="#myCarousel" data-slide-to="2">
+                </li>*@
+            </ol>
+        }
+
+    </div>
+</div>

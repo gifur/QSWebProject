@@ -1,0 +1,15 @@
+﻿@model IEnumerable<QS.Web.Models.NewsSummaryModel>
+
+<div class="row service-box" style="margin-top:0">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+         {
+            <div class="service-box-heading">
+                <a href="@Url.Action("Item", "News", new{id = @item.NewsId})"><span>@item.NewsTitle</span></a>
+            </div>
+            <p>@item.NewsContent</p>
+            <hr />
+         }
+    }
+</div>

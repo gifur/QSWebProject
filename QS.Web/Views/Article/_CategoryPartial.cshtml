@@ -1,0 +1,47 @@
+﻿@model IEnumerable<QS.Web.Models.ArticleCategoryModel>          
+<div class="top-news">
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <a href="@Url.Action("Category", "Article", new {category = @item.CategoryTitle})" class="btn @item.ThemeClass">
+                <span>@Html.ArticleCategoryFormat(@item.CategoryTitle)</span>
+                <em>
+                    <i class="fa  fa-thumb-tack"></i>
+                    @(item.Count)篇
+                </em>
+                <i class="fa @item.ThemeIcon top-news-icon"></i>
+            </a>
+        }
+    }   
+    @*<a href="#" class="btn blue">
+        <span>
+            身边记事
+        </span>
+        <em>
+            <i class="fa fa-thumb-tack"></i>
+            治愈系
+        </em>
+        <i class="fa fa-camera-retro top-news-icon"></i>
+    </a>
+    <a href="#" class="btn yellow">
+        <span>
+            心理相关
+        </span>
+        <em>
+            <i class="fa fa-thumb-tack"></i>
+            职业生涯
+        </em>
+        <i class="fa fa-headphones top-news-icon"></i>
+    </a>
+    <a href="#" class="btn red">
+        <span>
+            求索征文
+        </span>
+        <em>
+            <i class="fa fa-thumb-tack"></i>
+            IT
+        </em>
+        <i class="fa fa-fire top-news-icon"></i>
+    </a>*@
+</div>

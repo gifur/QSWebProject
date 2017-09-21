@@ -1,0 +1,37 @@
+﻿@model IEnumerable<QS.DTO.SharedModule.AtlasDto>
+           
+@{
+    //var count = 0;
+    var models = Model != null && Model.Any() ? Model.ToList() : null;
+    //var first = models.ElementAt(0);
+}
+@if (models != null && models.Any())
+{
+    
+    <div class="row show_contents" style="background: none repeat scroll 0% 0% #FAFAFA;">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="@models[0].ThumbPath" alt="" class="img-responsive">
+                </div>
+                <div id="first-gallery" class="col-md-8">
+                    <h4>
+                        <a href="@Url.Action("Detail", "Gallery", new{id = @models[0].AtlasId})">@models[0].AtlasName</a>
+                    </h4>
+                    <p>@models[0].Remark</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <ul id="moregallery">
+                @for (var index = 1; index < models.Count(); index++)
+                {
+                    <li class="item">
+                        <a href="@Url.Action("Detail", "Gallery", new{id = @models[index].AtlasId})">@models[index].AtlasName</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+

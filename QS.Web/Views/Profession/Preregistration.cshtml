@@ -1,0 +1,276 @@
+﻿@model QS.Web.Models.ReserveModel
+@{
+    ViewBag.Title = "心理咨询预约";
+    ViewBag.CurrentPage = "Profession-Meet";
+}
+
+@section Styles{
+    <!-- 页面插件样式 -->
+<link href="~/assets/css/print.css" rel="stylesheet" type="text/css" media="print" />
+<link href="~/assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+<link href="~/assets/css/pages/preregistration.css" rel="stylesheet" type="text/css" />
+}
+
+    <!-- 页面内容 -->
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li class="hidden-print"><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li class="hidden-print"><a href="@Url.Action("Preregistration", "Profession")">心理服务</a></li>
+                    <li class="active">心理预约</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container margin-bottom-40">
+        <div class="row">
+            <div class="row col-md-10 col-md-offset-1 col-sm-6 col-sm-offset-3 login-signup-page">
+                <form role="form" action="@Url.Action("Preregistration")" method="post" id="pre-form">
+                    <h2>预约咨询必填信息</h2>
+                    <hr />
+                    <input type="hidden" value="@TempData["Message"]" id="mes" />
+                    <div class="col-md-6">
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            @Html.TextBoxFor(model => model.SubscriberName, new
+                            {
+                                @class="form-control", @placeholder="姓名"
+                            })
+                        </div>
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                            @Html.TextBoxFor(model => model.StuNumber, new
+                            {
+                                @class = "form-control",
+                                @placeholder = "学号"
+                            })
+                        </div>
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-info-circle"></i></span>
+                            @Html.TextBoxFor(model => model.Professional, new
+                            {
+                                @class = "form-control",
+                                @placeholder = "院系专业班级"
+                            })
+                        </div>
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                            @Html.TextBoxFor(model => model.Phone, new
+                            {
+                                @class = "form-control",
+                                @placeholder = "联系电话（长短号）"
+                            })
+                        </div>
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            @Html.TextBoxFor(model => model.Email, new
+                            {
+                                @class = "form-control",
+                                @placeholder = "邮箱地址"
+                            })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group" style="margin-top:5px; margin-bottom:28px">
+                            <div class="radio-list">
+                                <label class="radio-inline">
+                                    @Html.RadioButtonFor(model => model.Gender, "Male") 男
+                                </label>
+                                <label class="radio-inline">
+                                    @Html.RadioButtonFor(model => model.Gender, "Female") 女
+                                </label>
+                                <label class="radio-inline">
+                                    @Html.RadioButtonFor(model => model.Gender, "Security") 保密
+                                </label>
+                            </div>
+                        </div>
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-terminal"></i></span>
+                            @Html.TextBoxFor(model => model.Age, new
+                            {
+                                @class = "form-control",
+                                @placeholder = "年龄"
+                            })
+                        </div>
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-exchange"></i></span>
+                            @Html.TextBoxFor(model => model.Past, new
+                            {
+                                @class = "form-control",
+                                @placeholder = "简述有无过往情况"
+                            })
+                        </div>
+                        <div class="input-group margin-bottom-20">
+                            <span class="input-group-addon"><i class="fa fa-stethoscope"></i></span>
+                            @Html.TextBoxFor(model => model.Experience, new
+                            {
+                                @class = "form-control",
+                                @placeholder = "简述有无咨询经历"
+                            })
+                        </div>
+                        <div class="input-group date date-picker margin-bottom-20"
+                             data-date-format="yyyy-mm-dd" data-date-start-date="+1d">
+                            <span class="input-group-btn">
+                                <button class="btn default" type="button">
+                                    <i class="fa fa-calendar" style="color: #999;"></i>
+                                </button>
+                            </span>
+                            @Html.TextBoxFor(model => model.Dealtime, new
+                            {
+                                @class = "form-control",
+                                @placeholder = "预约时间",
+                                @readonly = "true"
+                            })
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12 margin-bottom-20">
+                        <div class="input-group-addon">
+                            <label class="pull-left" style="color: #999;">现在情况</label>
+                        </div>
+                        @Html.TextAreaFor(model => model.Situation, 5, 3, new {@class = "form-control"})
+                    </div>
+                    <div class="form-group col-md-12">
+                        <div class="input-group">
+                            <label class="pull-left">
+                                @Html.ValidationSummary(false)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <label>&nbsp;</label>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn green hidden-print" style="padding-left: 15px;">提交预约</button>
+                            <button type="button"
+                                    class="btn default hidden-print"
+                                    style="padding-left: 15px; color: #999;"
+                                    onclick="javascript:window.print();">
+                                打印此页
+                            </button>
+                        </div>
+                        <div class="pull-right hidden-print" style="margin-top:20px">
+                            <p class="text-muted" style="padding-right: 15px;">
+                                有疑惑？点击查看
+                                <a id="identity-distance" data-toggle="modal" href="#infor">
+                                    注意事项和常见问题
+                                </a>
+                            </p>
+                        </div>
+                        <label>&nbsp;</label>
+                        <label>&nbsp;</label>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade bs-modal-lg show_contents" id="infor"
+             tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">注意事项和常见问题</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="accordion1" class="panel-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_1">
+                                            预约须知
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="accordion1_1" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <ul>
+                                            <li>请放心如实地填写您的资料资料，我们将会做好周全保密工作</li>
+                                            <li>请在预约时详细提供真实姓名、预约时间、联系电话、院系专业班级、邮箱等必要信息</li>
+                                            <li>提交成功后，工作室会尽快通过您提供的联系方式进行预约反馈，请耐心等候</li>
+                                            <li>工作室指导老师和年级辅导员或有可能看到您的预约咨询信息</li>
+                                            <li>在[处理预约工作流程]您将会看到更详细的信息</li>
+                                            <li>校心理健康指导中心网上预约地址&nbsp;<a href="http://web.scau.edu.cn/xlzx/zxyy/">http://web.scau.edu.cn/xlzx/zxyy/</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#accordion1_2">
+                                            预约工作流程
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="accordion1_2" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <img src="~/assets/img/steps/process.png" class="img-responsive" alt=""/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn blue" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+    <!-- END CONTAINER -->
+</div>
+<!-- 结束页面内容 -->
+
+@section Scripts{
+    <script src="~/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="~/assets/scripts/preregistration-datepicker.zh-CN.js"></script>
+    <script src="~/assets/scripts/bootbox.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            App.initUniform();
+            handleDatePickers();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+        });
+
+        var handleDatePickers = function () {
+
+            if (jQuery().datepicker) {
+                $('.date-picker').datepicker({
+                    rtl: App.isRTL(),
+                    autoclose: true,
+                    language: 'zh-CN',
+                    clearBtn: true
+                });
+                $('body').removeClass("modal-open");
+            }
+        }
+        function tipAfterFail() {
+            App.alert({
+                container: '#pre-form',
+                place: 'prepent',
+                type: 'danger',
+                message: '请先将必要的信息填写完整再尝试提交，谢谢',
+                focus: false,
+                closeInSeconds: 5,
+                icon: 'warning'
+            });
+            App.scrollTo($('.breadcrumbs'));
+        }
+    </script>
+}
+
+

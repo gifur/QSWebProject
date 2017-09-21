@@ -1,0 +1,217 @@
+﻿@using System.Diagnostics
+@using QS.DTO.ProfessionModule
+@using QS.Web.Areas.Admin.Models
+@using Webdiyer.WebControls.Mvc
+@model PagedList<ReservationViewModel>
+@{
+    ViewBag.Title = "心理咨询预约";
+    var rvStateNum = ViewBag.StateNum as ReservationStateNumModel;
+}
+
+@section Styles{
+    <link href="~/Areas/assets/css/pages/reservation.css" rel="stylesheet" type="text/css" />
+}
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            心理咨询
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li class="btn-group">
+                <button type="button" class="btn blue dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                    <i class="fa fa-filter"></i>
+                    <span>
+                        筛选条件
+                    </span>
+                    <i class="fa fa-angle-down"></i>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li>
+                        <a href="@Url.Action("Index", "Reservation")">
+                            所有条目
+                        </a>
+                    </li>
+                    <li class="divider">
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","Reservation", new{plit = (int)DealState.New})">
+                            新
+                            <span class="badge badge-success">
+                                
+                                @{
+                                    Debug.Assert(rvStateNum != null, "rvStateNum != null");
+                                }
+                                @rvStateNum.NumOfNew
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","Reservation", new{plit = (int)DealState.Urgent})">
+                            紧急
+                            <span class="badge badge-danger">
+                                @rvStateNum.NumOfUrgent
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","Reservation", new{plit = (int)DealState.Pending})">
+                            未处理
+                            <span class="badge badge-warning">
+                                @rvStateNum.NumOfPending
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","Reservation", new{plit = (int)DealState.Overtime})">
+                            已超时
+                            <span class="badge badge-info">
+                                @rvStateNum.NumOfOvertime
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index","Reservation", new{plit = (int)DealState.Treated})">
+                            已处理
+                            <span class="badge badge-default">
+                                @rvStateNum.NumOfTreated
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","Reservation", new{ Area = "Admin" })">
+                    心理咨询
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+                @using (Html.BeginForm("Index", "Reservation", new RouteValueDictionary { { "id", "" } }, FormMethod.Get))
+                {
+                    <div class="actions btn-set pull-right">
+                        <input type="text" class="form-control input-inline" name="keyWord" value="@Request.QueryString["keyWord"]" placeholder="关键字（姓名或学号）"/>
+                        <button class="btn green" type="submit" accesskey="S"><i class="fa fa-check-circle"></i> 查询</button>
+                    </div>
+                }
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-advance table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="fa fa-coffee"></i> 预约时间
+                                </th>
+                                <th>
+                                    <i class="fa  fa-user"></i> 姓名
+                                </th>
+                                <th>
+                                    <i class="fa  fa-bookmark"></i> 专业班级
+                                </th>
+                                <th>
+                                    <i class="fa  fa-phone"></i> 联系电话
+                                </th>
+                                <th>
+                                    <i class="fa fa-tint"></i> 状态
+                                </th>
+                                <th>
+                                    <i class="fa fa-calendar-o"></i> 创建时间
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="highlight">
+                                        <div class="success">
+                                        </div>
+                                        <label style="margin-left: 15px;">@item.Dealtime.ToLongDateString()</label>
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(it => item.SubscriberName)
+                                    </td>
+                                    <td class="hidden-xs">
+                                        @Html.DisplayFor(it => item.Professional)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(it => item.Phone)
+                                    </td>
+                                    <td>
+                                        @if (item.State == DealState.New)
+                                        {
+                                            @:<span class="label label-sm label-success">新</span>
+                                        }
+                                        else if (item.State == DealState.Pending)
+                                        {
+                                            @:<span class="label label-sm label-warning">未处理</span>
+                                        }
+                                        else if (item.State == DealState.Treated)
+                                        {
+                                            @:<span class="label label-sm label-default">已处理</span>
+                                        }
+                                        else if (item.State == DealState.Urgent)
+                                        {
+                                            @:<span class="label label-sm label-danger">紧急</span>
+                                        }
+                                        else if (item.State == DealState.Overtime)
+                                        {
+                                            @:<span class="label label-sm label-info">已超时</span>
+                                        }
+                                        else if (item.State == DealState.Faraway)
+                                        {
+                                            @:<span class="label label-sm label-default">过去久远</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(it => item.Createtime)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Detail", new{@item.RId})" class="btn default btn-xs green-stripe">
+                                            查看详情
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    @Html.Pager(Model, new PagerOptions{PageIndexParameterName = "id"})
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #psy-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #reservation-link').addClass('active');
+            App.init();
+        });
+    </script>
+}
+
+

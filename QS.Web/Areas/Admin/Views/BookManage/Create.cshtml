@@ -1,0 +1,257 @@
+﻿@model QS.DTO.SharedModule.BookDto
+@{
+    ViewBag.Title = "添加书籍";
+    var bookCategories = ViewData["Category"] as SelectList;
+}
+
+@section Styles{
+    <link href="~/Areas/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" />
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            添加书籍
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-list"></i>
+                <a href="@Url.Action("Index","BookManage", new{ Area = "Admin" })">
+                    书籍列表
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-book"></i>添加书籍
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form action="@Url.Action("Create")" id="book-form" name="book-form" method="post" enctype="multipart/form-data">
+                    <div class="form-body">
+                        <h3 class="form-section">基本信息</h3>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">书籍名称</label>
+                                    @Html.TextBoxFor(model => Model.BookName, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.BookName)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">选择类别</label>
+                                    @Html.DropDownList("Category", bookCategories, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Category)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">作者</label>
+                                    @Html.TextBoxFor(model => Model.Author, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Author)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">出版社</label>
+                                    @Html.TextBoxFor(model => Model.Press, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Press)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">出版时间</label>
+                                    @Html.TextBoxFor(model => Model.PublishedTime, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.PublishedTime)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">页数</label>
+                                    @Html.TextBoxFor(model => Model.PageNum, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.PageNum)
+                                    </span>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">有无资源</label>
+                                    <div class="clearfix">
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn blue @(Model.HasResource? "active" : "" )">
+                                                @Html.RadioButtonFor(model => model.HasResource, true, new { @class = "toggle" }) 有
+                                            </label>
+                                            <label class="btn blue @(Model.HasResource ? "" : "active")">
+                                                @Html.RadioButtonFor(model => model.HasResource, false, new { @class = "toggle" }) 无
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.HasResource)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">下载地址</label>
+                                    @Html.TextBoxFor(model => Model.ResourcePath, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.ResourcePath)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/row-->
+                        <h3 class="form-section">详细信息</h3>
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <div class="form-group">
+                                    <label class="control-label">简要描述</label>
+                                    @Html.TextAreaFor(model => Model.Remark, new { @class = "form-control", rows = 3 })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Remark)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <div class="form-group">
+                                    <label class="control-label">书籍描述</label>
+                                    @Html.TextAreaFor(model => Model.BookDescribing, new { @class = "form-control", rows = 10 })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.BookDescribing)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <div class="form-group">
+                                    <label class="control-label">作者简介</label>
+                                    @Html.TextAreaFor(model => Model.AuthorDepict, new { @class = "form-control", rows = 10 })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.AuthorDepict)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-15">
+                            <div class="col-md-12">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="fileinput-new thumbnail" style="width: 180px; height: 235px;">
+                                        <img src="http://www.placehold.it/180x235/EFEFEF/AAAAAA&amp;text=SET+COVER-IMAGE" alt="" />
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 180px; max-height: 235px;">
+                                    </div>
+                                    <div>
+                                        <span class="btn default btn-file">
+                                            <span class="fileinput-new">
+                                                选择图片
+                                            </span>
+                                            <span class="fileinput-exists">
+                                                更换
+                                            </span>
+                                            <input type="file" name="imageInput" id="imageInput" accept="image/*">
+                                        </span>
+                                        <a href="#" class="btn default fileinput-exists" data-dismiss="fileinput">
+                                            清除
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="clearfix margin-top-10">
+                                    <span class="label label-danger">
+                                        提示
+                                    </span>
+                                    &nbsp;
+                                    <span class="text-muted">
+                                        封面规格大概上传250*340的尺寸大小
+                                    </span>
+                                </div>
+                                <span class="error-block">@Html.ValidationMessage("UploadError")</span>
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="form-actions right">
+                        <button id="cancel" class=" btn default" type="button">
+                            取消
+                        </button>
+                        <button name="confirm" type="submit" class="btn blue"><i class="fa fa-check"></i> 确认</button>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Areas/assets/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/kindeditor-min.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/lang/zh_CN.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #book-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #book-create-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+        });
+        var authorEditor;
+        var bookEditor;
+        var options = {
+            allowPreviewEmoticons: false,
+            allowImageUpload: false,
+            items: [
+                'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist', '|', 'emoticons', 'image', 'link'
+            ]
+        };
+        KindEditor.ready(function (k) {
+            bookEditor = k.create('textarea[name="BookDescribing"]', options);
+            authorEditor = k.create('textarea[name="AuthorDepict"]', options);
+        });
+    </script>
+
+}

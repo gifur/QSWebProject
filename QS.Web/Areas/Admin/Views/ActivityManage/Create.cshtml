@@ -1,0 +1,175 @@
+﻿@model QS.DTO.Module.RecentActivityDto
+@{
+    ViewBag.Title = "添加活动安排";
+}
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="/Areas/assets/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            添加活动安排
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-list"></i>
+                <a href="@Url.Action("Index","ActivityManage", new{ Area = "Admin" })">
+                    活动列表
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-bullhorn"></i>新活动安排
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse">
+                    </a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <form action="@Url.Action("Create")" id="activitycreate-form" name="activitycreate-form" method="post" enctype="multipart/form-data">
+                    <div class="form-body">
+                        <h3 class="form-section">基本信息</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">活动标题</label>
+                                    @Html.TextBoxFor(model => Model.Title, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Title)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">活动时间</label>
+
+                                    <div class="input-group date form_datetime" data-date="2012-12-21T15:25:00Z">
+                                        <input type="text" readonly id="StartTime" name="StartTime" class="form-control" />
+                                        
+                                        <span class="input-group-btn">
+                                            <button class="btn default date-reset" type="button"><i class="fa fa-times"></i></button>
+                                        </span>
+                                        <span class="input-group-btn">
+                                            <button class="btn default date-set" type="button"><i class="fa fa-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.StartTime)
+                                    </span>
+                                        <!-- /input-group -->
+                                </div>
+                            </div>
+                            <!--/span-->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">活动地点</label>
+                                    @Html.TextBoxFor(model => Model.Address, new { @class = "form-control" })
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Address)
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">状态</label>
+                                    <div class="clearfix">
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label class="btn blue @(Model.Status? "active" : "" )">
+                                                @Html.RadioButtonFor(model => model.Status, true, new { @class = "toggle" }) 激活
+                                            </label>
+                                            <label class="btn blue @(Model.Status ? "" : "active")">
+                                                @Html.RadioButtonFor(model => model.Status, false, new { @class = "toggle" }) 过去
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div> 
+                        <!--/row-->
+                        <h3 class="form-section">内容</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <span class="error-block">
+                                        @Html.ValidationMessageFor(model => Model.Content)
+                                    </span>
+                                    @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows=15 })
+                                </div>
+                            </div>
+                            <!--/span-->
+                        </div>
+                        <!--/row-->
+                    </div>
+                    <div class="form-actions right">
+                        <button type="submit" class="btn blue"><i class="fa fa-check"></i> 确认</button>
+                    </div>
+                </form>
+                <!-- END FORM-->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/Areas/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Areas/assets/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/kindeditor-min.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/lang/zh_CN.js"></script>
+    <script src="~/Areas/assets/plugins/kindeditor-4.1.10/plugins/code/prettify.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #about-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #activity-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #activity-create-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+            $(".form_datetime").datetimepicker({
+                language: 'zh-CN',
+                autoclose: true,
+                isRTL: App.isRTL(),
+                format: "yyyy-mm-dd hh:ii",
+                pickerPosition: (App.isRTL() ? "bottom-right" : "bottom-left")
+            });
+        });
+        var options = {
+            allowPreviewEmoticons: false,
+            allowImageUpload: false,
+            items: [
+                'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist', '|', 'emoticons', 'image', 'link'
+            ]
+        };
+
+        KindEditor.ready(function (K) {
+            window.editor = K.create('#Content', options);
+        });
+    </script>
+
+}

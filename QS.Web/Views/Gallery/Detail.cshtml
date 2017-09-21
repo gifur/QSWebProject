@@ -1,0 +1,165 @@
+﻿@using QS.DTO.SharedModule
+@model AtlasDto
+@{
+    ViewBag.Title = Model.AtlasName;
+    var childrenPhotos = ViewBag.Photos as List<PhotoDto>;
+    
+}
+
+@section Styles{
+    @*<link href="/assets/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" />*@
+    <link href="/assets/plugins/bxslider/jquery.bxslider.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/plugins/thumbnails/css/thumbnails.css" rel="stylesheet" />
+    <link href="/assets/css/pages/photo.css" rel="stylesheet" type="text/css" />
+
+}
+
+        <!-- 导航面包屑 -->
+<div class="row breadcrumbs margin-bottom-40">
+    <div class="container">
+        <div class="col-md-4 col-sm-4">
+            <h1>&nbsp;</h1>
+        </div>
+        <div class="col-md-8 col-sm-8">
+            <ul class="pull-right breadcrumb">
+                <li><a href="@Url.Action("Index", "Home")">主页</a></li>
+                <li><a href="@Url.Action("Index","Gallery")">心理图片</a></li>
+                <li class="active">图片内容</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- 结束 面包屑 -->
+<!-- 主体 -->
+<div class="container min-hight margin-bottom-30">
+    <!-- 开始图片内容 -->
+    <p><a id="awOnePageButton" href="#slider-thumbnails"><span class="view-page" title="点击试试~">全部显示</span><span class="view-slide" title="https://bitbucket.org/awkwardgroup/awkward-showcase/wiki/Home">还是用回幻灯片吧</span></a></p>
+    <div class="row col-md-10 col-md-offset-1 col-sm-6 col-sm-offset-3">
+        <div class="col-md-12  well">
+            <div id="slider-thumbnails" class="slider slider-thumbnails thumbnails">
+                <div class="showcase">
+                    @if (childrenPhotos != null && childrenPhotos.Any())
+                    {
+                        var count = 1;
+                        foreach (var item in childrenPhotos)
+                        {
+                            <div class="showcase-slide">
+                                <div class="showcase-content">
+                                    <div class="showcase-content-wrapper" style="text-align:center;">
+                                        <img src="@item.PhotoPath" class="attachment-full" alt="@(count++)" style="width: 100%;" />
+                                    </div>
+                                </div>
+                                <!-- Put the caption content in a div with the class .showcase-caption -->
+                                <div class="showcase-caption">
+                                    @item.Remark
+                                </div>
+                                <div class="showcase-thumbnail display-hide">
+                                    <img src="@item.ThumbPath" width="60" height="60" alt="" />
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- 对图片的描述 -->
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <h2 class="no-top-space">@Model.AtlasName</h2>
+            </div>
+            <div class="col-md-12 blog-tag-data-inner">
+                <ul class="list-inline news-timeview">
+                    <li>
+                        <i class="fa fa-calendar"></i> @Model.CreateTime
+                    </li>
+                    <li><i class="fa fa-eye"></i> @Html.ViewTimesFormat(@Model.Hits)</li>
+                </ul>
+            </div>
+            <p>@Model.Remark</p>
+            <br>
+            @*<div class="row margin-bottom-15">
+                <div class="col-md-6">
+                    <ul class="list-inline blog-tags">
+                        <li>
+                            <i class="fa fa-tags"></i>
+                            <a href="#">
+                                技术创新
+                            </a>
+                            <a href="#">
+                                教育
+                            </a>
+                            <a href="#">
+                                人生
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>*@
+        </div>
+        <!-- 结束 对图片的描述 -->
+    </div>
+    <!--结束 图片内容-->
+    <!-- 中间栏 -->
+    @*<div class="row quote-v1">
+        <div class="col-md-7 quote-v1-inner">
+            <span>&nbsp;</span>
+        </div>
+        <div class="col-md-5 quote-v1-inner text-right">
+            <a class="btn-transparent" href="#"><i class="fa fa-rocket margin-right-10"></i>&nbsp;</a>
+            <a class="btn-transparent" href="#"><i class="fa fa-gift margin-right-10"></i>&nbsp;</a>
+        </div>
+    </div>*@
+    <!-- 结束中间栏 -->
+    <div class="clearfix"></div>
+    <!-- 相关推荐 -->
+    @*<div class="row recent-work margin-bottom-40">
+        <div class="col-md-3 blog-tags">
+            <h2><a href="javascript:;">相关推荐</a></h2>
+            <ul>
+                <li><a href="#"><i class="fa fa-tags"></i>爱情</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>职场</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>心灵</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>原创</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>心灵感悟</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>情绪管理</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>治愈系</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>恋爱心理</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>求索</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>求索</a></li>
+                <li><a href="#"><i class="fa fa-tags"></i>求索</a></li>
+            </ul>
+        </div>
+        @{
+            Html.RenderAction("_PostPopularGallery");
+        }
+    </div>*@
+    <!-- 结束 相关推荐 -->
+</div>
+<!-- 结束 主体 -->
+
+@section Scripts{
+    @*<script type="text/javascript" src="/assets/plugins/fancybox/source/jquery.fancybox.pack.js"></script>*@
+    <script type="text/javascript" src="/assets/plugins/bxslider/jquery.bxslider.min.js"></script>
+    <script src="~/assets/plugins/thumbnails/js/jquery.aw-showcase.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+            $("#slider-thumbnails .showcase").awShowcase({
+                show_caption: 'onhover',
+                continuous: true,
+                buttons: false,
+                auto: false,
+                thumbnails: true,
+                transition: 'vslide',
+                interval: 3000,
+                transition_speed: 800,
+                thumbnails_position: 'outside-last',
+                thumbnails_direction: 'horizontal', 
+                thumbnails_slidex: 1,
+                dynamic_height: true
+            });
+            App.initBxSlider();
+        });
+    </script>
+
+}

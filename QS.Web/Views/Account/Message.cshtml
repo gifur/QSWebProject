@@ -1,0 +1,168 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.DTO.Module.MessageDto>
+@{
+    ViewBag.Title = "最新通知";
+}
+
+<div class="page-container">
+
+    <!-- BEGIN BREADCRUMBS -->
+    <div class="row breadcrumbs margin-bottom-40">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
+                    <li>@Html.ActionLink("个人事务", "Message", "Account")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- END BREADCRUMBS -->
+    <!-- BEGIN CONTAINER -->
+    <div class="container min-hight margin-bottom-40">
+        <div class="row">
+            <div class="col-md-9">
+                <!-- BEGIN TAB CONTENT -->
+                <div class="tab-content">
+                    <!-- START TAB 1 -->
+                    <div id="tab_1" class="tab-pane active">
+                        <div id="accordion" class="panel-group">
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="@("#accordion_" + item.MId)">
+                                                    @item.Title
+                                                </a>
+                                                @if (ViewBag.Type == "unread")
+                                                {
+                                                    <button id="ignoreBtn" class="btn-message btn-link pull-right" value="@item.Appendix">忽略</button>
+                                                    <button id="readBtn" class="btn-message btn-link pull-right" value="@item.Appendix">标为已读</button>
+                                                }
+                                                else
+                                                {
+                                                    <button id="deleteBtn" class="btn-message btn-link pull-right" value="@item.Appendix">移除</button>
+                                                }
+                                            </h4>
+                                        </div>
+                                        <div id="@("accordion_" + item.MId)" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                @Html.Raw(item.Context)
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <h4 class="margin-top-20">暂无相关通知...</h4>
+                            }
+                            
+                        </div>
+                    </div>
+                    <!-- END TAB 1 -->
+                </div>
+                <!-- END TAB CONTENT -->
+            </div>
+            <div class="col-md-3">
+                <ul class="ver-inline-menu tabbable margin-bottom-10">
+                    <li class="@(ViewBag.Type.Equals("unread")? "active" : "")">
+                        <a href="@Url.Action("Message", "Account")">
+                            未读消息
+                        </a>
+                        @*<span class="after"></span>*@
+                    </li>
+                    <li class="@(ViewBag.Type.Equals("read")? "active" : "")">
+                        <a href="@Url.Action("Message", new{type = "read"})">已读消息</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTAINER -->
+</div>
+
+@section scripts {
+    <!--SignalR script to update the chat page and send messages.-->
+    <script>
+        // This optional function html-encodes messages for display in the page.
+        jQuery(document).ready(function () {
+            App.init();
+        });
+
+        var changeMessage = function () {
+            var $num = $('#message_num');
+            var current = parseInt($num.text());
+            current--;
+            $num.text(current);
+            if (current <= 0) {
+                $num.hide();
+            }
+        }
+
+        $('.panel-title #ignoreBtn').on('click', function () {
+            var $this = $(this);
+            $.ajax({
+                type: 'post',
+                data: { id: $this.val() },
+                url: '/Account/Delete',
+                success: function (evt) {
+                    if (evt == "true") {
+                        $this.closest('.panel-default').remove();
+                        changeMessage();
+                    } else {
+                        App.alert({ type: 'danger', message: '抱歉，出现未知错误，请刷新后再重试...', closeInSeconds: 8, icon: 'warning' });
+                    }
+                },
+                error: function (scrip) {
+                    App.alert({ type: 'danger', message: '抱歉，操作失败...', closeInSeconds: 8, icon: 'warning' });
+                }
+            });
+        });
+
+        $('.panel-title #readBtn').on('click', function () {
+            var $this = $(this);
+            $.ajax({
+                type: 'post',
+                data: { id: $this.val(), type : false },
+                url: '/Account/Delete',
+                success: function (evt) {
+                    if (evt == "true") {
+                        $this.closest('.panel-default').remove();
+                        changeMessage();
+                    } else {
+                        App.alert({ type: 'danger', message: '抱歉，出现未知错误，请刷新后再重试...', closeInSeconds: 8, icon: 'warning' });
+                    }
+                },
+                error: function (scrip) {
+                    App.alert({ type: 'danger', message: '抱歉，操作失败...', closeInSeconds: 8, icon: 'warning' });
+                }
+            });
+        });
+
+        $('.panel-title #deleteBtn').on('click', function () {
+            var $this = $(this);
+            $.ajax({
+                type: 'post',
+                data: { id: $this.val() },
+                url: '/Account/Delete',
+                success: function (evt) {
+                    if (evt == "true") {
+                        $this.closest('.panel-default').remove();
+                    } else {
+                        App.alert({ type: 'danger', message: '抱歉，出现未知错误，请刷新后再重试...', closeInSeconds: 8, icon: 'warning' });
+                    }
+                },
+                error: function (scrip) {
+                    App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,138 @@
+﻿@using Webdiyer.WebControls.Mvc
+@using QS.Web.Common
+@model PagedList<QS.DTO.Module.TagDto>
+@{
+    ViewBag.Title = "所有标签";
+}
+
+@section Styles{
+}
+
+<!-- 头部标题和面包屑导航-->
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="page-title">
+            所有标签
+        </h3>
+        <ul class="page-breadcrumb breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="@Url.Action("Index","OAuth", new{ Area = "Admin" })">
+                    主页
+                </a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <i class="fa fa-users"></i>
+                <a href="@Url.Action("Index","TagManage", new{ Area = "Admin" })">
+                    标签内容
+                </a>    
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 结束头部标题和面包屑导航-->
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet">
+            <div class="portlet-title">
+            </div>
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-advance table-hover">
+                        <thead>
+                            <tr>
+                                <th width="15%">
+                                    <i class="fa fa-coffee"></i> 标签名称
+                                </th>
+                                <th width="42%">
+                                    <i class="fa fa-archive"></i> 标签描述
+                                </th>
+                                <th width="12%">
+                                    <i class="fa fa-bookmark"></i> 所属媒介
+                                </th>
+                                <th width="8%">
+                                    <i class="fa fa-archive"></i> 数量
+                                </th>
+                                <th width="15%">
+                                    <i class="fa fa-calendar"></i> 创建时间
+                                </th>
+                                <th width="8%" class="text-right">
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td width="15%">
+                                            @item.TagName<br /><span class="text-muted">@item.TagEnglish</span>
+                                        </td>
+                                        <td width="42%">
+                                            @item.TagDescription
+                                        </td>
+                                        <td width="12%">
+                                            @Html.TagBelongFormat(@item.Belong)
+                                        </td>
+                                        <td width="8%">
+                                            @item.TagSum
+                                        </td>
+                                        <td width="15%">
+                                            @item.CreateTime
+                                        </td>
+                                        <td width="8%" class="text-right">
+                                            <button name="delete" value="@item.TagId" class="btn default btn-xs green-stripe ">删除</button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    @Html.Pager(Model, new PagerOptions { PageIndexParameterName = "pageIndex" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var $header = $('ul.page-sidebar-menu #media-header');
+            $header.addClass('active');
+            var $a = $header.children(':first');
+            $a.children('span.arrow').addClass('open').after("<span class=\"selected\"></span>");
+            $('ul.page-sidebar-menu #tag-header').children(':first').children('span.arrow').addClass('open');
+            $('ul.page-sidebar-menu #tag-list-link').addClass('active').closest('ul').attr('style', 'display:block');
+            App.init();
+            if ($('#mes').val()) {
+                bootbox.alert($('#mes').val());
+                $('#mes').val(null);
+            }
+            $('table').on('click', 'button[name=delete]', function() {
+                var $delete = $(this);
+                $.ajax({
+                    type: 'post',
+                    data: { id: ($delete.val()) },
+                    url: '/Admin/TagManage/Delete',
+                    success: function(evt) {
+                        if (evt != null && evt.Success) {
+                            App.alert({ type: 'success', message: '删除成功！', closeInSeconds: 8, icon: 'check-circle' });
+                            $delete.closest('tr').remove();
+                        } else if (evt != null) {
+                            App.alert({ type: 'danger', message: evt.Message, closeInSeconds: 8, icon: 'warning' });
+                        }
+                    },
+                    error: function () {
+                        App.alert({ type: 'danger', message: '抱歉，删除失败...', closeInSeconds: 8, icon: 'warning' });
+                    }
+                });
+            });
+        });
+
+    </script>
+}

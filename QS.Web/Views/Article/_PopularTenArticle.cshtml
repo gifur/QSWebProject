@@ -1,0 +1,21 @@
+﻿@model IEnumerable<QS.DTO.SharedModule.ArticleDto>
+<ul class="nav sidebar-ranks margin-bottom-40">
+    @if (Model != null && Model.Any())
+    {
+        var count = 0;
+        foreach (var item in Model)
+        {
+            <li><a href="@Url.Action("Item", new{id = @item.ArticleId})" title="@item.ArticleTitle"><span class="badge @(count < 3 ? "" : "badge-success")">@(++count)</span>@item.ArticleTitle</a></li>
+        }
+    }
+    @*<li><a href="#"><span class="badge">1</span>急切奔着家的温暖走入婚姻</a></li>
+    <li><a href="#"><span class="badge">2</span>回归家庭的陷阱：急切奔着家的温暖走入婚姻</a></li>
+    <li><a href="#"><span class="badge">3</span>用爱为自己的人生上色</a></li>
+    <li><a href="#"><span class="badge badge-success">4</span>近亲不如远邻：最关键的人脉是不熟的朋友</a></li>
+    <li><a href="#"><span class="badge badge-success">5</span>用爱为自己的人生上色</a></li>
+    <li><a href="#"><span class="badge badge-success">6</span>每天一点正能量：快乐的人生很简单</a></li>
+    <li><a href="#"><span class="badge badge-success">7</span>在爱情里，莫要失去自我</a></li>
+    <li><a href="#"><span class="badge badge-success">8</span>人生的承诺，很多都是说给自己听的</a></li>
+    <li><a href="#"><span class="badge badge-success">9</span>其实，无论你做什么，你都会变老</a></li>
+    <li><a href="#"><span class="badge badge-success">10</span>看到自己的影子，看到清楚的自我</a></li>*@
+</ul>

@@ -1,0 +1,104 @@
+﻿@using Webdiyer.WebControls.Mvc
+@model PagedList<QS.Web.Models.SearchItemModel>
+@{
+    ViewBag.Title = @ViewBag.KeyWord ?? @"求索一下";
+}
+
+@section Styles{
+    <link href="~/assets/css/pages/search-page-results.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="page-container">
+
+    <!-- 导航面包屑 -->
+    <div class="row breadcrumbs margin-bottom-20">
+        <div class="container">
+            <div class="col-md-4 col-sm-4">
+                <h1>&nbsp;</h1>
+            </div>
+            <div class="col-md-8 col-sm-8">
+                <ul class="pull-right breadcrumb">
+                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
+                    <li>@Html.ActionLink("求索一下", "Index", "Search")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 结束 面包屑 -->
+    <!-- 主体 -->
+    <div class="container min-hight show_contents">
+        <div class="row margin-bottom-40">
+            <div class="col-md-12 col-sm-12">
+                <!-- 查找框 -->
+                <div class="row search-form-default">
+                    <form class="form-inline" action="@Url.Action("Index", "Search")" method="post">
+                        <div class="input-group">
+                            <div class="input-cont">
+                                <input placeholder="请输入要查找的内容..." class="form-control" type="text" id="keyword" name="keyword" value=@ViewBag.KeyWord>
+                            </div>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default theme-btn" type="submit">求索一下 <i class="m-icon-swapright m-icon-white"></i></button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <!-- 结束查找框 -->
+                <!-- 显示查找结果 -->
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="search-result-item">
+                            @if (item.Type == QS.Web.Models.ResultItemType.Article)
+                            {
+                                <h4>@Html.ActionLink(@item.Title, "Item", "Article", new {id = @item.IntLink}, null)</h4>
+                            }
+                            else if (item.Type == QS.Web.Models.ResultItemType.News)
+                            {
+                                <h4>@Html.ActionLink(@item.Title, "Item", "News", new {id = @item.IntLink}, null)</h4>
+                            }
+                            <p>@item.Context</p>
+                            @if (item.Type == QS.Web.Models.ResultItemType.Article)
+                            {
+                                <p class="search-link">文章-@item.CreateTime.ToShortDateString()</p>
+                            }
+                            else if (item.Type == QS.Web.Models.ResultItemType.News)
+                            {
+                                <p class="search-link">新闻-@item.CreateTime.ToShortDateString()</p>
+                            }
+                        </div>
+                    }
+                }
+                else if (@ViewBag.KeyWord != null)
+                {
+                    <h4>抱歉，未找到与<strong>@(ViewBag.KeyWord)</strong>相关的内容。</h4>
+                }   
+                <!-- 结束 显示查找结果 -->
+                <!-- 页数导航 -->
+                <div class="text-center  margin-top-20">
+                    @Html.Pager(Model, new PagerOptions
+                   {
+                       PageIndexParameterName = "pageIndex",
+                       ShowFirstLast = false,
+                       ContainerTagName = "ul",
+                       CssClass = "pagination pagination-centered",
+                       PagerItemWrapperFormatString = "<li>{0}</li>",
+                       CurrentPagerItemWrapperFormatString = "<li class=\"active\"><a>{0}</a></li>"
+
+                   }, "Search", new { keyword = @ViewBag.KeyWord })
+                </div>
+                <!-- 结束页数导航 -->
+            </div>
+        </div>
+    </div>
+    <!-- 结束 主体 -->
+
+</div>
+
+@section Scripts{
+<script type="text/javascript">
+        jQuery(document).ready(function () {
+            App.init();
+        });
+</script>
+}
